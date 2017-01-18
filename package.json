@@ -1,0 +1,31 @@
+{
+  "name": "tame",
+  "version": "1.0.0",
+   "engines": {
+    "node": "0.12.7"
+  },
+  "description": "front end implementation for tame",
+  "main": "server.js",
+  "scripts": {
+    "test": "\"echo hello world\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codefornigeria/tame.git"
+  },
+  "keywords": [
+    "Sensors",
+    "Environment",
+    "Health",
+    "data"  
+  ],
+  "author": "codefornigeria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codefornigeria/tame.git"
+  },
+  "homepage": "https://github.com/codefornigeria/tame#readme",
+  "dependencies": {
+    "node-static": "^0.7.7"
+  }
+}
