@@ -231,7 +231,8 @@ a {
 }
 .filter-container .filter-header {
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
+  text-transform: uppercase;
 }
 .filter-container .filter-form label {
   font-size: 14px;
@@ -242,14 +243,7 @@ a {
 .filter-container .filter-form select {
   width: 100%;
   outline: none;
-  padding: 8px;
   margin-bottom: 20px;
-  background: none;
-  border: solid 1px #EAEAEA;
-  border-radius: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   font-size: 12px;
 }
 .filter-container button {
@@ -356,7 +350,7 @@ a {
   opacity: 0.5;
 }
 .footer div {
-  min-height: 200px;
+  min-height: 150px;
 }
 .footer div:nth-of-type(2) {
   text-transform: none;

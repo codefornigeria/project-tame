@@ -28,6 +28,7 @@
     <!--CSS_VENDORS-->
     <link rel="stylesheet" href="assets/vendor/animate/animate.css" type="text/css" />
     <link rel="stylesheet" href="assets/vendor/bootstraps/bootstraps.css" type="text/css" />
+    <link rel="stylesheet" href="assets/vendor/materialize.css" type="text/css" />
     <link rel="stylesheet" href="assets/vendor/font-awesome/font-awesome.css" type="text/css">
     <!--CSS_VENDORS END-->
 
@@ -47,6 +48,8 @@
     <script src="assets/vendor/angular/angular-chart/angular-chart.min.js"></script>
     <script src="assets/vendor/angular/ng-file-upload-shim.js"></script>
     <script src="assets/vendor/angular/ng-file-upload.js"></script>
+    <script src="assets/vendor/jquery.js"></script>
+    <script src="assets/vendor/materialize.min.js"></script>
     
     <!--JS_VENDORS END-->
 
@@ -54,6 +57,12 @@
     <script src="assets/js/app.js"></script>
     <script src="assets/js/controllers.js"></script>
     <script src="assets/js/directives.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('yeah');
+            $('select').material_select();
+          });
+    </script>
     <!--JS_SCRIPTS END-->
 
 </head>

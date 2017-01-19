@@ -91,20 +91,35 @@
 	<!--Filter-->
 	<div class="col-md-3">
 		<div class="filter-container">
-			<button class="btn btn-primary">Report a scheme</button>
-			<p class="filter-header">Filter reports</p>
+			<p class="filter-header">Report a scheme</p>
 			<hr>
 			<div class="filter-form">
-				<label>Which city?</label>
-				<input type="text" placeholder="Abuja">
-				<label>Category</label>
-				<select>
-					<option>Banking</option>
-					<option>Oil & Gas</option>
-					<option>Education</option>
-				</select>
-				<hr>
+				<div class="input-field">
+					<input type="text" class="validate" id="government">
+					<label for="government">Which area of Government?</label>
+				</div>
+				<div class="input-field">
+					<input type="text" class="validate" id="why">
+					<label for="why">Why were you asked to pay a bribe?</label>
+				</div>
+				<div class="input-field">
+					<input type="text" class="validate" id="city">
+					<label for="city">Which city?</label>
+				</div>
+				<div class="input-field">
+					<input type="text" class="validate" id="cost">
+					<label for="cost">How much?</label>
+				</div>
+				<div class="input-field">
+					<input type="text" class="validate" id="title">
+					<label for="title">Enter a title for your report</label>
+				</div>
+				<div class="input-field col s12">
+		          	<textarea id="report" class="materialize-textarea"></textarea>
+		          	<label for="report">Enter details of report</label>
+		        </div>
 			</div>
+			<button class="btn btn-primary">Report a scheme</button>
 		</div>
 	</div>
 </div>
@@ -113,7 +128,7 @@
 			<div class="col-md-8">
 			<p class="footer-header">About</p>
 			<hr>
-			Code for Nigeria is a non-profit civic technology movement. A network of civic-minded volunteers who contribute their talents, skills, expertise, and community knowledge as technological tools to improve public service, bring governments to account, and promote informed (data-driven) decision-making; leveraging open data + media, and backed by a core (full-time) tech team.
+			Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
 		</div>
 		<div class="col-md-4 p-t">
 			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>
