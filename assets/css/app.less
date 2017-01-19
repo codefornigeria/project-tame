@@ -321,11 +321,15 @@ a {
 			text-transform: none;
 			left: 0;
 		}
-		input, select {
+		input, select, textarea {
 			width: 100%;
 			outline: none;
 			margin-bottom: 20px;
 		   	font-size: 12px;
+		   	&:focus {
+		   		border-bottom: 1px solid #6699FE;
+    			box-shadow: 0 1px 0 0 #6699FE;
+		   	}
 		}
 	}
 	button {
