@@ -1,5 +1,16 @@
 <div class="container">
 	<div class="col-md-9">
+		<div class="filter">
+			<span>Filter by:</span>
+			<div class="input-field">
+				<input type="text" id="location">
+				<label for="location">Location</label>
+			</div>
+			<div class="input-field">
+				<input type="text" id="sector">
+				<label for="sector">Sector</label>
+			</div>
+		</div>
 		<div class="home-container">
 			<ul>
 				<li>
@@ -96,19 +107,11 @@
 			<div class="filter-form">
 				<div class="input-field">
 					<input type="text" class="validate" id="government">
-					<label for="government">Which area of Government?</label>
-				</div>
-				<div class="input-field">
-					<input type="text" class="validate" id="why">
-					<label for="why">Why were you asked to pay a bribe?</label>
+					<label for="government">What sector are you reporting on?</label>
 				</div>
 				<div class="input-field">
 					<input type="text" class="validate" id="city">
-					<label for="city">Which city?</label>
-				</div>
-				<div class="input-field">
-					<input type="text" class="validate" id="cost">
-					<label for="cost">How much?</label>
+					<label for="city">Where?</label>
 				</div>
 				<div class="input-field">
 					<input type="text" class="validate" id="title">
@@ -116,10 +119,10 @@
 				</div>
 				<div class="input-field col s12">
 		          	<textarea id="report" class="materialize-textarea"></textarea>
-		          	<label for="report">Enter details of report</label>
+		          	<label for="report">Enter details</label>
 		        </div>
 			</div>
-			<button class="btn btn-primary">Report a scheme</button>
+			<button class="btn btn-primary">Submit</button>
 		</div>
 	</div>
 </div>
