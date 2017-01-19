@@ -288,7 +288,7 @@ a {
 .filter-container .filter-form label {
   font-size: 14px;
   font-weight: 400;
-  text-transform: capitalize;
+  text-transform: none;
 }
 .filter-container .filter-form input,
 .filter-container .filter-form select {
