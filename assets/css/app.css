@@ -289,6 +289,7 @@ a {
   font-size: 14px;
   font-weight: 400;
   text-transform: none;
+  left: 0;
 }
 .filter-container .filter-form input,
 .filter-container .filter-form select {
