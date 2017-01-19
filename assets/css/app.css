@@ -104,6 +104,7 @@ a {
   float: left;
   padding: 20px;
   padding-bottom: 0;
+  position: relative;
 }
 .filter span {
   width: 12%;
@@ -271,6 +272,7 @@ a {
 }
 .filter-container {
   padding-top: 50px;
+  float: left;
 }
 .filter-container .filter-header {
   font-weight: 400;
