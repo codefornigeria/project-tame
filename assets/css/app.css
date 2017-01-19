@@ -109,6 +109,11 @@ a {
   width: 12%;
   float: left;
 }
+@media all and (min-width: 320px) and (max-width: 640px) {
+  .filter span {
+    width: 100%;
+  }
+}
 .filter .input-field {
   width: 40% !important;
   float: left;
@@ -116,8 +121,15 @@ a {
   margin-top: 0;
 }
 @media all and (min-width: 320px) and (max-width: 640px) {
+  .filter .input-field {
+    width: 100% !important;
+    margin: 0;
+  }
+}
+@media all and (min-width: 320px) and (max-width: 640px) {
   .filter {
     width: 100%;
+    margin-bottom: 20px;
   }
 }
 .home-container {
