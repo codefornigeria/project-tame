@@ -246,6 +246,19 @@ a {
 		    transform: translate(0,-20px);
 		    transition-delay: 0s !important;
 	    }
+	    .badge {
+	    	margin-bottom: 10px;
+	    	font-weight: normal;
+	    	&.blue {
+	    		background: blue;
+	    	}
+	    	&.amber {
+	    		background: #FFC200;
+	    	}
+	    	&.red {
+	    		background: indianred;
+	    	}
+	    }
 	    .card-body {
 		    position: relative;
 		    clear: both;
@@ -296,6 +309,16 @@ a {
     				margin-right: 20px;
 				    display: inline-block;
 				    color: #4B4F56;
+				    float: left;
+    			}
+    			.share-card {
+    				width: 50px;
+    				float: right;
+    				text-align: right;
+    				i {
+    					margin-left: 10px;
+    					font-size: 14px;
+    				}
     			}
 		    }
 		}    
