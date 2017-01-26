@@ -56,7 +56,7 @@
 					<label for="government">What sector are you reporting on?</label>
 				</div>
 				<div class="input-field">
-					<input type="text" class="validate" id="organization">
+					<input type="text" class="validate" id="organization" ng-model="organization">
 					<label for="organization">What is the name of the organization?</label>
 				</div>
 				<div class="input-field">
@@ -84,7 +84,7 @@
 		<i class="fa fa-close pull-right close" ng-click="close()"></i>
 		<div class="" ng-switch on="selection">
 			<div ng-switch-when="Step 1">
-			    <h3 class="text-center">Would you like to take a quick survey on Tai Solarin University?</h3>
+			    <h3 class="text-center">Would you like to take a quick survey on {{organization}}?</h3>
 			    <div class="col-md-5 col-md-offset-4 m-t-md">
 			    	<button class="btn btn-warning" ng-click="close()">No</button>
 			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
