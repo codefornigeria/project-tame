@@ -12,7 +12,7 @@ angular.module('app', [
 
 .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider',
   function($stateProvider, $urlRouterProvider, RestangularProvider) {
-  RestangularProvider.setBaseUrl('https://sahara-health-api.herokuapp.com/');
+  RestangularProvider.setBaseUrl('api');
 
   RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
       if (data.response && data.response.data) {

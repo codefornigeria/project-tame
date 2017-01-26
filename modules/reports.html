@@ -13,76 +13,24 @@
 		</div>
 		<div class="home-container">
 			<ul>
-				<li>
-					<a ui-sref="reports">
-						<div class="card">
+				<li ng-repeat="item in menuItems">
+					<a>
+						<div class="card" ng-click="setActive(item)" ng-class="{active : activeMenu === item}">
 							<div class="card-body">
 								<div class="card-title">
 									<div class="thumbnail">
 										
 									</div>
-									Police clearance for passport verification.
+									{{item.title}}
 								</div>
-								<div class="badge blue">Education</div>
-								<p class="card-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,kjhbjkvhgnkj ksgkjgk</p>
-							</div>
-							<div class="card-footer">
-								<div class="card-footer-wrapper">
-									<div class="card-type">Anonymous</div>
-									<div class="share-card">
-										<i class="fa fa-facebook-square"></i>
-										<i class="fa fa-twitter-square"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a ui-sref="reports">
-						<div class="card">
-							<div class="card-body">
-								<div class="card-title">
-									<div class="thumbnail">
-										
-									</div>
-									I paid 70000 but he asking more.
-								</div>
-								<div class="badge blue">Education</div>
-								<p class="card-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</p>
-							</div>
-							<div class="card-footer">
-								<div class="card-footer-wrapper">
-									<div class="card-type">Jide Taiwo</div>
-									<div class="share-card">
-										<i class="fa fa-facebook-square"></i>
-										<i class="fa fa-twitter-square"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a ui-sref="reports">
-						<div class="card">
-							<div class="card-body">
-								<div class="card-title">
-									<div class="thumbnail">
-										
-									</div>
-									I paid a bribe to the exam officer.
-								</div>
-								<div class="badge amber">Education</div>
-								<p class="card-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+								<div class="badge blue">{{item.badge}}</div>
+								<p class="card-description" ng-class="{'active': activeMenu === item}">
+									{{item.description}}
 								</p>
 							</div>
 							<div class="card-footer">
 								<div class="card-footer-wrapper">
-									<div class="card-type">Aina Shina</div>
+									<div class="card-type">{{item.name}}</div>
 									<div class="share-card">
 										<i class="fa fa-facebook-square"></i>
 										<i class="fa fa-twitter-square"></i>
@@ -92,59 +40,6 @@
 						</div>
 					</a>
 				</li>
-				<li>
-					<a ui-sref="reports">
-						<div class="card">
-							<div class="card-body">
-								<div class="card-title">
-									<div class="thumbnail">
-										
-									</div>
-									Police clearance for passport verification.
-								</div>
-								<div class="badge blue">Education</div>
-								<p class="card-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</p>
-							</div>
-							<div class="card-footer">
-								<div class="card-footer-wrapper">
-									<div class="card-type">Shina Rambo</div>
-									<div class="share-card">
-										<i class="fa fa-facebook-square"></i>
-										<i class="fa fa-twitter-square"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li>
-					<a ui-sref="reports">
-						<div class="card">
-							<div class="card-body">
-								<div class="card-title">
-									<div class="thumbnail">
-										
-									</div>
-									Customs clearance for my car.
-								</div>
-								<div class="badge red">Education</div>
-								<p class="card-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</p>
-							</div>
-							<div class="card-footer">
-								<div class="card-footer-wrapper">
-									<div class="card-type">Anonymous</div>
-									<div class="share-card">
-										<i class="fa fa-facebook-square"></i>
-										<i class="fa fa-twitter-square"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-					</a>
-				</li>
-
 			</ul>
 		</div>
 	</div>
@@ -160,6 +55,10 @@
 					<label for="government">What sector are you reporting on?</label>
 				</div>
 				<div class="input-field">
+					<input type="text" class="validate" id="organization">
+					<label for="organization">What is the name of the organization?</label>
+				</div>
+				<div class="input-field">
 					<input type="text" class="validate" id="city">
 					<label for="city">Where?</label>
 				</div>
@@ -172,7 +71,60 @@
 		          	<label for="report">Enter details</label>
 		        </div>
 			</div>
-			<button class="btn btn-primary">Submit</button>
+			<button class="btn btn-primary" ng-click="openOverlay()">Submit</button>
+		</div>
+	</div>
+</div>
+<div class="overlay" ng-if="overlay">
+	<div class="col-md-4 col-md-offset-4 card">
+		<i class="fa fa-close pull-right close" ng-click="close()"></i>
+		<div class="" ng-switch on="selection">
+			<div ng-switch-when="Step 1">
+			    <h3 class="text-center">Was the environment clean?</h3>
+			    <div class="col-md-5 col-md-offset-4 m-t-md">
+			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
+			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
+			    </div>
+			</div>
+			<div ng-switch-when="Step 2">
+			    <h3 class="text-center">Were the officials appropriately dressed?</h3>
+			    <div class="col-md-5 col-md-offset-4 m-t-md">
+			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
+			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
+			    </div>
+			</div>
+			<!-- 3rd Step -->
+			<div ng-switch-when="Step 3">
+			    <h3 class="text-center">Were you delayed entry?</h3>
+			    <div class="col-md-5 col-md-offset-4 m-t-md">
+			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
+			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
+			    </div>
+			</div>
+			<!-- 4th Step -->
+			<div ng-switch-when="Step 4">
+			    <h3 class="text-center">Were they nice to you?</h3>
+			    <div class="col-md-5 col-md-offset-4 m-t-md">
+			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
+			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
+			    </div>
+			</div>
+			<!-- 5th Step -->
+			<div ng-switch-when="Step 5">
+			    <h3 class="text-center">Were they rude to you?</h3>
+			    <div class="col-md-5 col-md-offset-4 m-t-md">
+			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
+			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
+			    </div>
+			</div>
+			<!-- 6th Step -->
+			<div ng-switch-when="Step 6" class="animated fadeIn">
+			    <h3 class="text-center">Very good</h3>
+			    <span class="rate">
+			    	<i class="fa fa-check"></i>
+			    </span>
+			    <button class="btn btn-primary center-block" ng-click="close()">Done</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -188,9 +140,10 @@
 			<p class="clickable"><i class="fa fa-twitter-square"></i><a href="https://twitter.com/codefornigeria" target="_blank">Follow us on Twitter</a></p>
 		</div>
 		<div class="col-md-8 partners">
-			<p class="footer-header">Built by  Code for Nigeria</p>
+			<p class="footer-header">Built by</p>
 			<hr>
 			<a href="http://www.codeforafrica.org" target="_blank"><img src="assets/img/logo.png"></a>
+			<a href="http://www.integritynigeria.org" target="_blank"><img src="assets/img/integrity.png"></a>
 		</div>
 		<div class="col-md-4 partners">
 			<p class="footer-header">Sponsored by</p>

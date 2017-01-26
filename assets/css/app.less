@@ -225,6 +225,12 @@ a {
 	    -moz-transition: all 250ms cubic-bezier(.02, .01, .47, 1);
 	    transition: all 250ms cubic-bezier(.02, .01, .47, 1);
 	    color: #4B4F56;
+	    &.active {
+			height: 400px !important;
+		}
+		.close {
+			position: absolute;
+		}
 	    @media @custom {
     		width: 100%;
     		padding: 20px;
@@ -300,6 +306,9 @@ a {
 			    text-overflow: ellipsis;
 			    color: #4B4F56;
 			    float: left;
+			    &.active {
+			    	height: auto;
+			    }
 			}
 		}
 	    .card-footer {
@@ -510,4 +519,40 @@ a {
 	margin-left: 0;
 	margin-right: 15px;
 	float: left;
+}
+.overlay {
+	width: 100%;
+	height: 100vh;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.5);
+	top: 0;
+	left: 0;
+	z-index: 9999999999;
+	.card {
+		background: white;
+		height: auto;
+		border-radius: 3px;
+		margin-top: 200px;
+		padding: 20px;
+		z-index: 9999999999999;
+		.btn-warning {
+			background: #FFC200;
+		}
+		.rate {
+			height: 150px;
+			width: 150px;
+			border-radius: 50%;
+			background: green;
+			margin: 20px auto;
+			display: block;
+			text-align: center;
+			line-height: 150px;
+			color: white;
+			font-size: 52px;
+		}
+	}
+}
+.center-block {
+	margin: 0 auto;
+	display: block;
 }
