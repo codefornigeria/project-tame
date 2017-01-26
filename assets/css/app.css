@@ -60,15 +60,19 @@ a {
   height: 40px;
   border: solid 1px #EAEAEA;
   border-radius: 3px;
+  margin-top: 10px;
+  padding-left: 10px;
+  line-height: normal;
 }
 .toolbar .search-bar table {
   height: 40px;
 }
 .toolbar .search-bar table td {
   padding: 0;
+  height: 40px;
 }
 .toolbar .search-bar table td.tags {
-  width: 150px;
+  width: 130px;
 }
 .toolbar .search-bar table td .filter-card {
   display: inline-block;
@@ -88,10 +92,11 @@ a {
 }
 .toolbar .search-bar input {
   width: 100%;
-  height: 40px;
+  height: 35px;
   outline: none;
   padding-left: 2%;
   margin: 0;
+  border: 0;
 }
 .toolbar .about {
   text-align: right;
