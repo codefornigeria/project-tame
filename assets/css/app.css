@@ -56,6 +56,29 @@ a {
   font-weight: 300;
   text-transform: capitalize !important;
 }
+.toolbar .search-bar {
+  height: 60px;
+}
+.toolbar .search-bar table {
+  height: 60px;
+}
+.toolbar .search-bar table td {
+  padding: 0;
+}
+.toolbar .search-bar table td.tags {
+  width: 150px;
+}
+.toolbar .search-bar table td .filter-card {
+  display: inline-block;
+  background: #F1F1F1;
+  height: 23px;
+  line-height: 23px;
+  margin: 2px;
+  padding-left: 3px;
+  padding-right: 3px;
+  color: #222222;
+  font-size: 13px;
+}
 @media all and (min-width: 320px) and (max-width: 640px) {
   .toolbar .search-bar {
     display: none;
@@ -68,6 +91,7 @@ a {
   border: solid 1px #EAEAEA;
   border-radius: 3px;
   padding-left: 2%;
+  margin: 0;
 }
 .toolbar .about {
   text-align: right;
@@ -225,7 +249,9 @@ a {
 }
 .home-container .card .badge {
   margin-bottom: 10px;
+  margin-right: 10px;
   font-weight: normal;
+  float: left;
 }
 .home-container .card .badge.blue {
   background: blue;
@@ -235,6 +261,10 @@ a {
 }
 .home-container .card .badge.red {
   background: indianred;
+}
+.home-container .card .date {
+  font-size: 13px;
+  float: right;
 }
 .home-container .card .card-body {
   position: relative;
@@ -259,10 +289,17 @@ a {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: grey;
+  border: 0;
+  background: none;
   float: left;
   margin-right: 10px;
   margin-top: 10px;
+  padding: 0;
+}
+.home-container .card .card-body .card-title .thumbnail img {
+  height: 100% !important;
+  margin: 0;
+  border-radius: 50%;
 }
 .home-container .card .card-body .card-description {
   height: 60px;

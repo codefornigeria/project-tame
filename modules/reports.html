@@ -19,11 +19,12 @@
 							<div class="card-body">
 								<div class="card-title">
 									<div class="thumbnail">
-										
+										<img src="assets/img/temideoye.jpeg">
 									</div>
 									{{item.title}}
 								</div>
-								<div class="badge blue">{{item.badge}}</div>
+								<div class="badge {{item.color}}">{{item.badge}}</div>
+								<div class="date">25th Jan 2017</div>
 								<p class="card-description" ng-class="{'active': activeMenu === item}">
 									{{item.description}}
 								</p>
@@ -71,7 +72,10 @@
 		          	<label for="report">Enter details</label>
 		        </div>
 			</div>
-			<button class="btn btn-primary" ng-click="openOverlay()">Submit</button>
+			<button class="btn btn-primary" ng-click="openOverlay()">
+				<span ng-hide="submitted">Submit</span>
+				<span ng-show="submitted">Submitted</span>
+			</button>
 		</div>
 	</div>
 </div>
@@ -80,13 +84,20 @@
 		<i class="fa fa-close pull-right close" ng-click="close()"></i>
 		<div class="" ng-switch on="selection">
 			<div ng-switch-when="Step 1">
+			    <h3 class="text-center">Would you like to take a quick survey on Tai Solarin University?</h3>
+			    <div class="col-md-5 col-md-offset-4 m-t-md">
+			    	<button class="btn btn-warning" ng-click="close()">No</button>
+			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
+			    </div>
+			</div>
+			<div ng-switch-when="Step 2">
 			    <h3 class="text-center">Was the environment clean?</h3>
 			    <div class="col-md-5 col-md-offset-4 m-t-md">
 			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
 			    	<button class="btn btn-primary" ng-click="incrementStep()">Yes</button>
 			    </div>
 			</div>
-			<div ng-switch-when="Step 2">
+			<div ng-switch-when="Step 3">
 			    <h3 class="text-center">Were the officials appropriately dressed?</h3>
 			    <div class="col-md-5 col-md-offset-4 m-t-md">
 			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
@@ -94,7 +105,7 @@
 			    </div>
 			</div>
 			<!-- 3rd Step -->
-			<div ng-switch-when="Step 3">
+			<div ng-switch-when="Step 4">
 			    <h3 class="text-center">Were you delayed entry?</h3>
 			    <div class="col-md-5 col-md-offset-4 m-t-md">
 			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
@@ -102,7 +113,7 @@
 			    </div>
 			</div>
 			<!-- 4th Step -->
-			<div ng-switch-when="Step 4">
+			<div ng-switch-when="Step 5">
 			    <h3 class="text-center">Were they nice to you?</h3>
 			    <div class="col-md-5 col-md-offset-4 m-t-md">
 			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
@@ -110,7 +121,7 @@
 			    </div>
 			</div>
 			<!-- 5th Step -->
-			<div ng-switch-when="Step 5">
+			<div ng-switch-when="Step 6">
 			    <h3 class="text-center">Were they rude to you?</h3>
 			    <div class="col-md-5 col-md-offset-4 m-t-md">
 			    	<button class="btn btn-warning" ng-click="incrementStep()">No</button>
@@ -118,7 +129,7 @@
 			    </div>
 			</div>
 			<!-- 6th Step -->
-			<div ng-switch-when="Step 6" class="animated fadeIn">
+			<div ng-switch-when="Step 7" class="animated fadeIn">
 			    <h3 class="text-center">Very good</h3>
 			    <span class="rate">
 			    	<i class="fa fa-check"></i>

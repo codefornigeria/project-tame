@@ -104,6 +104,27 @@ a {
 		}
 	}
 	.search-bar {
+		height: 60px;
+		table {
+			height: 60px;
+			td {
+				padding: 0;
+				&.tags {
+					width: 150px;
+				}
+				.filter-card {
+					display: inline-block;
+					background: #F1F1F1;
+					height: 23px;
+					line-height: 23px;
+					margin: 2px;
+					padding-left: 3px;
+					padding-right: 3px;
+					color: #222222;
+					font-size: 13px;
+				}
+			}
+		}
 		@media @mobile {
 			display: none;
 		}
@@ -114,6 +135,7 @@ a {
 			border: solid 1px #EAEAEA;
 			border-radius: 3px;
 			padding-left: 2%;
+			margin: 0;
 		}
 	}
 
@@ -254,7 +276,9 @@ a {
 	    }
 	    .badge {
 	    	margin-bottom: 10px;
+	    	margin-right: 10px;
 	    	font-weight: normal;
+	    	float: left;
 	    	&.blue {
 	    		background: blue;
 	    	}
@@ -264,6 +288,10 @@ a {
 	    	&.red {
 	    		background: indianred;
 	    	}
+	    }
+	    .date {
+	    	font-size: 13px;
+	    	float: right;
 	    }
 	    .card-body {
 		    position: relative;
@@ -286,10 +314,17 @@ a {
 			    	width: 50px;
 			    	height: 50px;
 			    	border-radius: 50%;
-			    	background: grey;
+			    	border: 0;
+			    	background: none;
 			    	float: left;
 			    	margin-right: 10px;
 			    	margin-top: 10px;
+			    	padding: 0;
+			    	img {
+			    		height: 100% !important;
+			    		margin: 0;
+			    		border-radius: 50%;
+			    	}
 			    }
 			}
 			.card-description {

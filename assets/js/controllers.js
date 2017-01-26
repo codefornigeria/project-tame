@@ -64,6 +64,7 @@ angular.module('app.controllers', [])
     }
 
     $scope.openOverlay = function() {
+        $scope.submitted = true;
         $scope.overlay = true;
     }
     $scope.close = function() {
