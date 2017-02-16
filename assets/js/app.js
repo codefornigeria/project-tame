@@ -26,7 +26,7 @@ angular.module('app', [
     $stateProvider
     .state('home', {
       url: '/',
-      templateUrl: 'modules/reports.html',
+      templateUrl: 'modules/home.html',
       controller: 'appCtrl',
     })
     .state('search', {
