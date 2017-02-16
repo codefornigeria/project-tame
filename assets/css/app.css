@@ -148,6 +148,7 @@ a {
   align-content: flex-start;
 }
 .home-container ul li {
+  width: 33.3333%;
   display: inline-block;
 }
 @media all and (min-width: 320px) and (max-width: 1024px) {
@@ -178,7 +179,7 @@ a {
 .home-container .card {
   display: inline-block;
   position: relative;
-  width: 355px;
+  width: 325px;
   background-color: white;
   vertical-align: top;
   text-align: left;

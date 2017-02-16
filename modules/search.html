@@ -1,0 +1,62 @@
+<div class="container">
+	<div class="col-md-12">
+		<div class="home-container">
+			<ul>
+				<li ng-repeat="item in menuItems">
+					<a>
+						<div class="card" ng-click="setActive(item)">
+							<div class="card-body">
+								<div class="card-title">
+									<div class="thumbnail">
+										<img src="assets/img/temideoye.jpeg">
+									</div>
+									{{item.title}}
+								</div>
+								<div class="badge {{item.color}}">{{item.badge}}</div>
+								<div class="date">25th Jan 2017</div>
+								<p class="card-description">
+									{{item.description}}
+								</p>
+							</div>
+							<div class="card-footer">
+								<div class="card-footer-wrapper">
+									<div class="card-type">{{item.name}}</div>
+								</div>
+							</div>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="footer">
+	<div class="container">
+			<div class="col-md-8">
+			<p class="footer-header">About</p>
+			<hr>
+			Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
+		</div>
+		<div class="col-md-4 p-t">
+			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>
+			<p class="clickable"><i class="fa fa-twitter-square"></i><a href="https://twitter.com/codefornigeria" target="_blank">Follow us on Twitter</a></p>
+		</div>
+		<div class="col-md-8 partners">
+			<p class="footer-header">Built by</p>
+			<hr>
+			<a href="http://www.codeforafrica.org" target="_blank"><img src="assets/img/logo.png"></a>
+			<a href="http://www.integritynigeria.org" target="_blank"><img src="assets/img/integrity.png"></a>
+		</div>
+		<div class="col-md-4 partners">
+			<p class="footer-header">Sponsored by</p>
+			<hr>
+			<a href="http://www.undp.org" target="_blank"><img src="assets/img/undp.png"></a>
+			<a href="http://www.europa.eu" target="_blank"><img src="assets/img/eu.jpg"></a>
+			<a href="http://www.unodc.org" target="_blank"><img src="assets/img/unodc.png"></a>
+		</div>
+		<p class="col-md-12 m-t-md text-center text-sm text-thin">
+			<a href="https://github.com/codefornigeria/project-tame" target="_blank">Fork this project on Github</a>
+		</p>
+	</div>
+</div>
