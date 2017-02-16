@@ -1,8 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:400,900,300,100);
 * {
   padding: 0;
   margin: 0;
-  font-family: 'Lato', Helvetica;
 }
 body {
   font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -13,16 +11,16 @@ body {
 .none {
   display: none;
 }
-.helper-text {
-  color: grey;
-  margin-top: 5px;
-  cursor: pointer;
-}
 .m-t-sm {
   margin-top: 15px;
 }
 .capitalize {
   text-transform: capitalize;
+}
+.helper-text {
+  color: grey;
+  margin-top: 5px;
+  cursor: pointer;
 }
 a {
   color: inherit;
@@ -124,43 +122,18 @@ a {
 .toolbar a:hover {
   color: inherit;
 }
-.filter {
-  width: 89%;
-  height: auto;
-  background: #ffffff;
-  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
-  border-radius: 3px;
-  float: left;
-  padding: 20px;
-  padding-bottom: 0;
-  position: relative;
+.main-search .hero-text {
+  font-size: 18px;
+  color: #333;
+  font-weight: 400;
+  margin-top: 100px;
 }
-.filter span {
-  width: 12%;
-  float: left;
-}
-@media all and (min-width: 320px) and (max-width: 640px) {
-  .filter span {
-    width: 100%;
-  }
-}
-.filter .input-field {
-  width: 40% !important;
-  float: left;
-  margin-right: 2%;
-  margin-top: 0;
-}
-@media all and (min-width: 320px) and (max-width: 640px) {
-  .filter .input-field {
-    width: 100% !important;
-    margin: 0;
-  }
-}
-@media all and (min-width: 320px) and (max-width: 640px) {
-  .filter {
-    width: 100%;
-    margin-bottom: 20px;
-  }
+.main-search .search-box {
+  width: 70%;
+  border: 0;
+  border-bottom: 1px solid #c5c5c5;
+  margin-top: 30px;
+  font-size: 16px;
 }
 .home-container {
   max-width: 1185px;
@@ -355,55 +328,6 @@ a {
   margin-left: 10px;
   font-size: 14px;
 }
-.filter-container {
-  padding-top: 50px;
-  float: left;
-  width: 100%;
-}
-@media all and (min-width: 320px) and (max-width: 640px) {
-  .filter-container {
-    width: 100%;
-  }
-}
-.filter-container .filter-header {
-  font-weight: 400;
-  font-size: 16px;
-  text-transform: uppercase;
-}
-.filter-container .filter-form label {
-  font-size: 14px;
-  font-weight: 400;
-  text-transform: none;
-  left: 0;
-}
-.filter-container .filter-form input,
-.filter-container .filter-form select,
-.filter-container .filter-form textarea {
-  width: 100%;
-  outline: none;
-  margin-bottom: 20px;
-  font-size: 12px;
-}
-.filter-container .filter-form input:focus,
-.filter-container .filter-form select:focus,
-.filter-container .filter-form textarea:focus {
-  border-bottom: 1px solid #6699FE;
-  box-shadow: 0 1px 0 0 #6699FE;
-}
-.filter-container button {
-  margin-bottom: 20px;
-  width: 100%;
-  height: 50px;
-  font-weight: 400;
-  border: 0;
-  background: #4080FF;
-  opacity: 0.8;
-  outline: none;
-}
-.filter-container button:hover {
-  background: #4080FF;
-  opacity: 1;
-}
 .content {
   margin-bottom: 90px;
   padding-top: 60px;
@@ -520,38 +444,6 @@ a {
   margin-left: 0;
   margin-right: 15px;
   float: left;
-}
-.overlay {
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  background: rgba(0, 0, 0, 0.5);
-  top: 0;
-  left: 0;
-  z-index: 9999999999;
-}
-.overlay .card {
-  background: white;
-  height: auto;
-  border-radius: 3px;
-  margin-top: 200px;
-  padding: 20px;
-  z-index: 9999999999999;
-}
-.overlay .card .btn-warning {
-  background: #FFC200;
-}
-.overlay .card .rate {
-  height: 150px;
-  width: 150px;
-  border-radius: 50%;
-  background: green;
-  margin: 20px auto;
-  display: block;
-  text-align: center;
-  line-height: 150px;
-  color: white;
-  font-size: 52px;
 }
 .center-block {
   margin: 0 auto;

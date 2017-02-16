@@ -25,44 +25,17 @@ angular.module('app', [
       
     $stateProvider
     .state('home', {
-      url: '/home',
+      url: '/',
       templateUrl: 'modules/reports.html',
       controller: 'appCtrl',
     })
-    .state('reports', {
-      url: '/reports/62462972349873',
-      templateUrl: 'modules/report.html',
+    .state('search', {
+      url: '/search',
+      templateUrl: 'modules/search.html',
       controller: 'appCtrl',
     })
 
       
-      $urlRouterProvider.otherwise('/home')  
+      $urlRouterProvider.otherwise('/')  
   }])
 
-.factory('locationService', ['$q',function($q) {
-    return  {
-        getLocation: function(){
-            var deferred = $q.defer();
-
-            if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                if(position){
-                    var userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    deferred.resolve(userLocation);
-
-                }else{
-                   deferred.reject(false)
-                }
-
-               return userLocation;
-            })
-            } else {
-                deferred.reject(false)
-            }  
-            return deferred.promise;
-        }
-    }
-}])
