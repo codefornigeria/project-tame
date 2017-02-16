@@ -34,6 +34,11 @@ angular.module('app', [
       templateUrl: 'modules/search.html',
       controller: 'appCtrl',
     })
+    .state('search-result', {
+      url: '/result',
+      templateUrl: 'modules/result.html',
+      controller: 'appCtrl',
+    })
 
       
       $urlRouterProvider.otherwise('/')  
