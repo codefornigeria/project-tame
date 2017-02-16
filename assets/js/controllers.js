@@ -11,15 +11,8 @@ angular.module('app.controllers', [])
         $scope.activeMenu = menuItem;
     }
 
-    $scope.addNewService = function() {
-        $scope.services.push ({name: $scope.track.newService});
-        Restangular.all('service').post({name: $scope.track.newService}).then(function(response) {
-            $scope.track.service = $scope.track.newService;
-            $scope.track.newService = '';
-        }), function(error){
-            $scope.error = error;
-            console.log(error)
-        };
+    $scope.search = function() {
+        $state.go('search')
     }
 
     $scope.openOverlay = function() {
