@@ -27,21 +27,19 @@
 			<div class="col-md-12 card-md" ng-click="showResult(person)">
 				<span class="col-md-12 no-padder">
 					<h3>{{person.name}}</h3>
-					<h5>Senator</h5>
+
 					<hr>
 				</span>
 
-				<span class="col-md-12 no-padder capitalize">
-					<p>{{person.name}} is a senator of the Federal republic of Nigeria.</p>
-				</span>
+				
 
 				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Political party</b>
+					<b>Sector</b>
 					<p></p>
 				</span>
 
 				<span class="col-md-6 col-xs-6 no-padder">
-					<b>State</b>
+					<b>Antidotes</b>
 					<p>{{person.state.name}}</p>
 				</span>
 
@@ -66,10 +64,7 @@
 		<div class="col-md-12 bio padder">
 			<i class="fa fa-close clickable right" ng-click="close()"></i>
 			<div class="avatar"></div>
-			<h1 class="text-center">{{entity.name}}</h1>
-			<p class="text-justify">Senator of the Federal Republic of Nigeria from Lagos State. He represents Lagos East in the current 7th National Assembly. Senator Ashafa is the Vice-Chairman, Senate Committee on Lands, Housing and Urban Development. He is also a member of the following Senate committees: Environment and Ecology Committee, Committee on Federal Character and Inter-Governmental Relations, Gas Committee, and Senate Services Committee.
-			</p>
-		</div>
+			</div>
 		<div class="col-xs-6 col-md-4 text-center b-b b-r p-t-sm relative">
 			<b class="relative">Budget In Care <span class="help-badge clickable" ng-click="help = !help">?</span></b>
 			<p ng-if="entity.totalBudget">{{entity.totalBudget | number: fractionSize}}</p>
@@ -80,12 +75,12 @@
 			</div>
 		</div>
 		<div class="col-xs-6 col-md-4 text-center b-b b-r p-t-sm">
-			<b>Political Party</b>
+			<b>Antidotes</b>
 			<p ng-if="entity.party">{{entity.party}}</p>
 			<p ng-if="!entity.party">Not Available</p>
 		</div>
 		<div class="col-xs-6 col-md-4 text-center b-b b-r p-t-sm">
-			<b>State</b>
+			<b>Sectors</b>
 			<p ng-if="entity.state.name">{{entity.state.name}}</p>
 			<p ng-if="!entity.state.name">Not Available</p>
 

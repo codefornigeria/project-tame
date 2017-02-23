@@ -80,18 +80,21 @@ angular.module('app', [
         }
       }).then(function(schemes){
         if(schemes.data.length){
-          $scope.schemes  =schemes.data
+          console.log(schemes.data)
+          $scope.$apply(function(){
+            $scope.persons  =schemes.data
+          })
         }
       })
-    Restangular.all('project').getList().then(function(response){
-
-        $scope.projects = response;
-    })
-
-    Restangular.all('person').getList().then(function(response){
-        $scope.persons = response;
-        console.log(response.plain())
-    })
+    // Restangular.all('project').getList().then(function(response){
+    //
+    //     $scope.projects = response;
+    // })
+    //
+    // Restangular.all('person').getList().then(function(response){
+    //     $scope.persons = response;
+    //     console.log(response.plain())
+    // })
     $scope.options = {
         tooltipEvents: [],
         showTooltips: true,
