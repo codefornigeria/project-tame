@@ -10,7 +10,7 @@
      var schemeService = $feathers.service('schemes')
       schemeService.find({
         query:{
-
+            $populate:'sectors'
         }
       }).then(function(schemes){
         if(schemes.data.length){

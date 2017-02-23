@@ -35,7 +35,10 @@
 
 				<span class="col-md-6 col-xs-6 no-padder">
 					<b>Sector</b>
-					<p></p>
+					<div ng-repeat="sector in person.sectors">
+						<p>{{sector.name}}</p>
+					</div>
+
 				</span>
 
 				<span class="col-md-6 col-xs-6 no-padder">
@@ -43,16 +46,7 @@
 					<p>{{person.state.name}}</p>
 				</span>
 
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>District</b>
-					<p>{{person.district.name}}</p>
-				</span>
-
-				<span class="col-md-6 col-xs-6 no-padder relative">
-					<b class="relative">Budget In Care</b>
-					<p ng-if="person.totalBudget">N{{person.totalBudget | number: fractionSize}}</p>
-					<p ng-if="!person.totalBudget">Not Available</p>
-				</span>
+				
 			</div>
 		</div>
 	</div>
