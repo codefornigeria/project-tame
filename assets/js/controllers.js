@@ -53,6 +53,10 @@
                $scope.total = schemes.total
                $scope.schemes  =schemes.data
                $scope.notFound = false
+             }else{
+               $scope.total = 0
+               $scope.schemes  =[]
+                $scope.notFound = false
              }
            }).catch(function(err){
              $scope.error = err
