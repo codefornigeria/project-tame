@@ -115,11 +115,10 @@ angular.module('app', [
                 $populate:'sectors' }
            }).then(function(schemes){
           //   console.log('showing search schemes',schemes)
-             if(schemes.data.length){
                $scope.total = schemes.total
                $scope.schemes  =schemes.data
                $scope.notFound = false
-             }
+
            }).catch(function(err){
              $scope.error = err
            })
@@ -171,7 +170,6 @@ angular.module('app', [
              }).then(function(schemes){
                console.log('showing search schemes',schemes)
 
-               if(schemes.data.length){
                  $scope.$apply(function () {
                    $scope.searching = false;
 
@@ -182,7 +180,7 @@ angular.module('app', [
 
 
                     // console.log($scope)
-               }
+
              }).catch(function(err){
                $scope.error = err
              })

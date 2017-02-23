@@ -49,11 +49,10 @@
                 $populate:'sectors' }
            }).then(function(schemes){
           //   console.log('showing search schemes',schemes)
-             if(schemes.data.length){
                $scope.total = schemes.total
                $scope.schemes  =schemes.data
                $scope.notFound = false
-             }
+
            }).catch(function(err){
              $scope.error = err
            })
@@ -105,7 +104,6 @@
              }).then(function(schemes){
                console.log('showing search schemes',schemes)
 
-               if(schemes.data.length){
                  $scope.$apply(function () {
                    $scope.searching = false;
 
@@ -116,7 +114,7 @@
 
 
                     // console.log($scope)
-               }
+
              }).catch(function(err){
                $scope.error = err
              })
