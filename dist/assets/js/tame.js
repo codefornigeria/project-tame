@@ -115,15 +115,10 @@ angular.module('app', [
                 $populate:'sectors' }
            }).then(function(schemes){
           //   console.log('showing search schemes',schemes)
-             if(schemes.data.length){
-               $scope.total = schemes.total
+                $scope.total = schemes.total
                $scope.schemes  =schemes.data
                $scope.notFound = false
-             }else{
-               $scope.total = 0
-               $scope.schemes  =[]
-                $scope.notFound = false
-             }
+
            }).catch(function(err){
              $scope.error = err
            })
