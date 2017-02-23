@@ -1,1 +1,1 @@
-# Tame 
+Data Kit is a platform that aims to provide information about Nigeria's budget and those responsible for them.

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Project TAME | Code for Nigeria</title>
+    <title>Budget Data Kit | Code for Nigeria</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="dcterms.format" content="text/html" />
     <meta name="dcterms.type" content="Text" />
@@ -25,75 +25,31 @@
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 
-    <!--CSS_VENDORS-->
-    <link rel="stylesheet" href="assets/vendor/animate/animate.css" type="text/css" />
-    <link rel="stylesheet" href="assets/vendor/bootstraps/bootstraps.css" type="text/css" />
-    <link rel="stylesheet" href="assets/vendor/materialize.css" type="text/css" />
-    <link rel="stylesheet" href="assets/vendor/font-awesome/font-awesome.css" type="text/css">
-    <!--CSS_VENDORS END-->
+    <!-- inject:css -->
 
-    <link rel="stylesheet" href="assets/css/app.css" type="text/css" />
-    <link rel="stylesheet" href="assets/css/ted.css" type="text/css" />
+    <!-- endinject -->
 
-    <!--JS_VENDORS-->
-    <script src="assets/vendor/angular/angular.js"></script>
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyCa_yjdOFGKXwc53nlOQEPKzByEGEkJjXo"></script>
-    <script src="assets/vendor/angular/ng-map.min.js"></script>
-    <script src="assets/vendor/angular/angular-animate/angular-animate.js"></script>
-    <script src="assets/vendor/angular/angular-bootstrap/ui-bootstrap-custom-tpls-0.14.3.min.js"></script>
-    <script src="assets/vendor/angular/angular-ui-router/angular-ui-router.js"></script>
-    <script src="assets/vendor/angular/restangular/restangular.min.js"></script>
-    <script src="assets/vendor/angular/underscore/underscore-min.js"></script>
-    <script src="assets/vendor/angular/angular-chart/Chart.js"></script>
-    <script src="assets/vendor/angular/angular-chart/angular-chart.min.js"></script>
-    <script src="assets/vendor/angular/ng-file-upload-shim.js"></script>
-    <script src="assets/vendor/angular/ng-file-upload.js"></script>
-    <script src="assets/vendor/jquery.js"></script>
-    <script src="assets/vendor/materialize.min.js"></script>
-    
-    <!--JS_VENDORS END-->
 
-    <!--JS_SCRIPTS-->
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/controllers.js"></script>
-    <script src="assets/js/directives.js"></script>
-    <script>
-        $(document).ready(function() {
-            console.log('yeah');
-            $('select').material_select();
-          });
-    </script>
-    <!--JS_SCRIPTS END-->
+    <!-- inject:js -->
+    <!-- endinject -->
 
 </head>
-    <body ng-app="app">
-        <div ng-show='stateIsLoading' class="loader">
-            <i class="fa fa-spinner fa-spin"></i>
-        </div>
-        <nav class="col-md-12 toolbar">
-            <div class="col-md-2 toolbar-logo">
-                <a ui-sref="home">Project TAME</a>
-            </div>
-            <div class="col-md-7 search-bar">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="tags">
-                                <span class="filter-card"> Lagos <i class="fa fa-close"></i></span>
-                                <span class="filter-card"> Abuja <i class="fa fa-close"></i></span>
-                            </td>
-                            <td>
-                                <input type="text" placeholder="Search...">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-3 about">
-                <a href="">Report a scheme</a>
-                <a ui-sref="home">Read reports</a>
+    <body>
+        <nav class="navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 tool-bar no-padder">
+                        <a ui-sref="home" href=""><img src="assets/img/cfnigeria.png" class="logo"></a>
+                        <a href="http://twitter.com/codefornigeria" target="_blank"><li class="fa fa-twitter"></li></a>
+                        <a href="http://facebook.com/codefornigeria" target="_blank"><li class="fa fa-facebook"></li></a>
+                        <li class="b-r divider"></li>
+                        <a href="mailto:hello@codefornigeria.org?Subject=Hello!" target="_top"><li>Get in touch</li></a>
+                        <li>Faqs</li>
+                    </div>
+                </div>
             </div>
         </nav>
-        <div ui-view></div>
+
+        <div ng-app="app" ui-view></div>
     </body>
 </html>
