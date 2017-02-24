@@ -1,12 +1,12 @@
 <div class="hero">
 	<div class="col-md-6 col-md-offset-3 p-t-lg text-center">
 		<p class="header">TAME</p>
-		<p class="sub-header">Track Corruption Schemes and Antidotes</p>
+		<p class="sub-header">Track Recent Schemes and Antidotes</p>
 	</div>
 	<div class="col-md-4 col-md-offset-4 index-5 home-search">
 		<form>
 			<span class="fa fa-search"></span>
-			<input class="col-md-12 search-box" type="text" ng-model="searchKeyword" placeholder="Health, Education ...." ng-enter="search()">
+			<input class="col-md-12 search-box" type="text" ng-model="searchKeyword" placeholder="What are you looking for?." ng-enter="search()">
 		</form>
 	</div>
 </div>
@@ -22,7 +22,7 @@
 
 	<!--Senators-->
 	<div class="row padder-top">
-		<span class="col-md-12 text-md text-bold padder-bottom" ng-show="persons">Corruption Schemes</span>
+		<span class="col-md-12 text-md text-bold padder-bottom" ng-show="persons">Recent Schemes</span>
 		<div class="col-md-4 clickable" ng-repeat="person in persons | orderBy:orderProp | limitTo:quantity">
 			<div class="col-md-12 card-md" ng-click="showResult(person)">
 				<span class="col-md-12 no-padder">
