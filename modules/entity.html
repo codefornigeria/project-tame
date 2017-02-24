@@ -41,94 +41,10 @@
 			</div>
 		</div>
 		<div class="row padder-top m-t-sm rel"   ng-if="entity">
-			<div class="col-md-8" ng-hide="showComparison">
-				<div class="col-md-6 col-sm-6 m-b-md shadow-mobile entity-card" ng-repeat="contract in contracts">
-					<div class="col-md-12 card-md">
-						<span class="col-md-12 no-padder">
-							<p class="project-desc">{{contract.description}}</p>
-							<hr>
-						</span>
 
-						<span class="col-md-6 col-xs-6 no-padder">
-							<b>Cost</b>
-							<p ng-if="contract.cost">N{{contract.cost | number: fractionSize}}</p>
-							<p ng-if="!contract.cost">Not Available</p>
-						</span>
-
-						<span class="col-md-6 col-xs-6 no-padder">
-							<b>Ministry</b>
-							<p ng-if="contract.ministry">{{contract.ministry}}</p>
-							<p ng-if="!contract.ministry">Not Available</p>
-						</span>
-
-						<span class="col-md-6 col-xs-6 no-padder">
-							<b>Agency</b>
-							<p ng-if="contract.agency">{{contract.agency}}</p>
-							<p ng-if="!contract.agency">Not Available</p>
-						</span>
-
-						<span class="col-md-6 col-xs-6 no-padder">
-							<b>State</b>
-							<p ng-if="contract.district.name">{{contract.district.name}}</p>
-							<p ng-if="!contract.district.name">Not Available</p>
-						</span>
-
-						<span class="col-md-12 no-padder clickable text-center m-t-lg text-sm" ng-click="compare(contract)">
-							COMPARE WITH OTHER PROJECTS
-						</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-md-4 b-l b-r b-b b-t panel" ng-hide="showComparison">
-				<div class="col-md-12 bio">
-					<div class="col-md-12 no-padder m-b-sm">
-						<div class="col-md-4 no-padder">
-							<div class="avatar"></div>
-						</div>
-						<div class="col-md-8 no-padder p-r p-l">
-							<h1 class="col-md-12 no-padder m-l-sm">{{entity.name}}</h1>
-							<span class="col-md-12 no-padder m-l-sm">{{entity.graphData.description}}</span>
-						</div>
-					</div>
-					<p>{{entity.graphData.detailedDescription.articleBody}}</p>
-				</div>
-				<div class="col-md-12 b-b p-t-sm">
-					<b>Political Party</b>
-					<p ng-if="entity.party">{{entity.party}}</p>
-					<p ng-if="!entity.party">Not Available</p>
-				</div>
-				<div class="col-md-12 b-b p-t-sm">
-					<b>State</b>
-					<p ng-if="entity.state.name">{{entity.state.name}}</p>
-					<p ng-if="!entity.state.name">Not Available</p>
-				</div>
-				<div class="col-md-12 b-b p-t-sm">
-					<b>District</b>
-					<p ng-if="entity.district.name" class="capitalize">{{entity.district.name}}</p>
-					<p ng-if="!entity.district.name">Not Available</p>
-				</div>
-				<div class="col-md-12 b-b p-t-sm">
-					<b>Country</b>
-					<p>Nigeria</p>
-				</div>
-				<div class="col-md-12 b-b p-t-sm">
-					<b>Phone Number</b>
-					<p ng-if="entity.phone">(234) {{entity.phone}}</p>
-					<p ng-if="!entity.phone">Not Available</p>
-				</div>
-				<div class="col-md-12 b-b p-t-sm">
-					<b>Email</b>
-					<p ng-if="entity.email">{{entity.email}}</p>
-					<p ng-if="!entity.email">Not Available</p>
-				</div>
-				<div class="col-md-12 p-t-sm">
-					<b>Total Budget</b>
-					<p ng-if="entity.email">{{entity.email}}</p>
-					<p ng-if="!entity.email">Not Available</p>
-				</div>
-			</div>
-
+			<scheme-entity-card></scheme-entity-card>
+			<scheme-antidote-card></scheme-antidote-card>
+			<scheme-effect-card></scheme-effect-card>
 			<!--See similar projects-->
 			<div class="comparison-container col-md-12 no-padder" ng-if="showComparison">
 				<div class="col-md-12">
@@ -205,7 +121,7 @@
 		<h3 class="text-md m-b-lg m-t-lg text-center" ng-if="entity">Found this useful? Share with others.</h3>
 		<div class="row" ng-if="entity">
 			<div class="col-md-2 col-md-offset-5 share-profile">
-				<a class="black-circle" href="https://twitter.com/intent/tweet?text= {{entity.name}}&url=http://budget-datakit.herokuapp.com/#/entity?query={{entity.id}}" target="_blank">
+				<a class="black-circle" href="https://twitter.com/intent/tweet?text= {{entity.name}}&url=http://tame-app.herokuapp.com/#/entity?query={{entity.id}}" target="_blank">
 					<i class="fa fa-twitter"></i>
 				</a>
 				<a class="black-circle" href="" target="_blank">

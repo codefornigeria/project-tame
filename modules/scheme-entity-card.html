@@ -1,0 +1,39 @@
+<div class="col-md-4 b-l b-r b-b b-t m-r-sm panel" ng-hide="showComparison">
+	<div class="col-md-12 bio">
+		<div class="col-md-12 no-padder m-b-sm">
+
+			<div class="col-md-12 no-padder">
+				<h1 class="col-md-12 no-padder m-l-sm">Corruption Scheme</h1>
+		</div>
+		</div>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Scheme Name</b>
+		<p ng-if="entity.name">{{entity.name}}</p>
+		<p ng-if="!entity.name">Not Available</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Level</b>
+		<p ng-if="entity.level">{{entity.level}}</p>
+		<p ng-if="!entity.level">Not Available</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Likelihood of Occurence</b>
+		<p ng-if="entity.district.name" class="capitalize">{{entity.district.name}}</p>
+		<p ng-if="!entity.district.name">Low</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Frequency of Occurence</b>
+		<p>Medium</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Subsceptible Areas</b>
+		<p> Admission, Registration, Examination/ Certification...</p>
+
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Scheme Operators</b>
+		<p>Administrative Staff, Non-Academic Staff ...</p>
+</div>
+
+</div>

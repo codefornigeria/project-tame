@@ -1,0 +1,41 @@
+<div class="col-md-4 b-l b-r b-b b-t m-r-sm panel" ng-hide="showComparison">
+	<div class="col-md-12 bio">
+		<div class="col-md-12 no-padder m-b-sm">
+
+			<div class="col-md-12 no-padder">
+				<h1 class="col-md-12 no-padder m-l-sm">Scheme Effects</h1>
+		</div>
+		</div>
+		<p>{{entity.graphData.detailedDescription.articleBody}}</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Loss of life</b>
+		<p ng-if="entity.party">{{entity.party}}</p>
+		<p ng-if="!entity.party">Blah blah blah .....</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Loss of property</b>
+		<p ng-if="entity.state.name">{{entity.state.name}}</p>
+		<p ng-if="!entity.state.name">Blah blah blah .....</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Financial misfortunate</b>
+		<p ng-if="entity.district.name" class="capitalize">{{entity.district.name}}</p>
+		<p ng-if="!entity.district.name">Blah blah blah .....</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Eroded values</b>
+		<p>Nigeria</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Increased apathy</b>
+		<p ng-if="entity.phone">(234) {{entity.phone}}</p>
+		<p ng-if="!entity.phone">Blah blah blah .....</p>
+	</div>
+	<div class="col-md-12 b-b p-t-sm">
+		<b>Impunity</b>
+		<p ng-if="entity.email">{{entity.email}}</p>
+		<p ng-if="!entity.email">Blah blah blah .....</p>
+	</div>
+
+</div>

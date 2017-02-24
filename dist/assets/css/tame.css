@@ -484,7 +484,9 @@ a {
 .m-t-lg {
 	margin-top: 60px;
 }
-
+.m-r-sm {
+	margin-right: 0px
+}
 .m-l-md {
 	margin-left: 30px !important;
 }
@@ -652,10 +654,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes sk-bouncedelay {
-  0%, 80%, 100% { 
+  0%, 80%, 100% {
     transform: scale(0);
     opacity: 0;
-  } 40% { 
+  } 40% {
     transform: scale(1.0);
     opacity: 1;
   }

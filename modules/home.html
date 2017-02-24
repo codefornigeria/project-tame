@@ -26,7 +26,7 @@
 		<div class="col-md-4 clickable" ng-repeat="person in persons | orderBy:orderProp | limitTo:quantity">
 			<div class="col-md-12 card-md" ng-click="showResult(person)">
 				<span class="col-md-12 no-padder">
-					<h3>{{person.name}}</h3>
+					<p>{{person.name}}</p>
 
 					<hr>
 				</span>
@@ -35,17 +35,37 @@
 
 				<span class="col-md-6 col-xs-6 no-padder">
 					<b>Sector</b>
-					<div ng-repeat="sector in person.sectors">
-						<p>{{sector.name}}</p>
-					</div>
+					<p> Education</p>
 
 				</span>
 
 				<span class="col-md-6 col-xs-6 no-padder">
 					<b>Antidotes</b>
-					<p>{{person.state.name}}</p>
+					<p>5</p>
 				</span>
 
+				<span class="col-md-6 col-xs-6 no-padder">
+					<b>Likelihood of Occurence</b>
+					<p>Low</p>
+
+				</span>
+
+				<span class="col-md-6 col-xs-6 no-padder">
+					<b>Frequency of Occurence</b>
+					<p>Medium</p>
+				</span>
+
+				<span class="col-md-12 col-xs-6 no-padder">
+					<b>Subsceptible Areas</b>
+					<p> Admission, Registration, Examination/ Certification...</p>
+
+				</span>
+
+				<span class="col-md-12 col-xs-6 no-padder">
+					<b>Scheme Operators</b>
+					<p>Administrative Staff, Non-Academic Staff ...</p>
+
+				</span>
 
 			</div>
 		</div>

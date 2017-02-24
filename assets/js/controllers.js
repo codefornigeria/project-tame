@@ -71,7 +71,7 @@
     }
 
     $scope.showResult = function(person) {
-        $state.go('entity', {query: person.id})
+        $state.go('entity', {query: person._id})
     }
 
     $scope.showProject = function(project) {
@@ -112,36 +112,18 @@
                    $scope.notFound = false
              });
 
-
-                    // console.log($scope)
-
              }).catch(function(err){
                $scope.error = err
              })
 
 
-    		// Restangular.one('search').get({query: $scope.searchKeyword}).then(function(response){
-        //         $scope.searching = false;
-        //         if (response.person == '' && response.project == '') {
-        //             $scope.notFound = true;
-        //         } else {
-        //             $scope.results = response;
-        //             $scope.persons = $scope.results.person;
-        //             console.log($scope.persons)
-        //             $scope.projects = $scope.results.project;
-        //             $scope.total =  parseInt($scope.results.person.length) +  parseInt($scope.results.project.length);
-        //         }
-        //      }, function(error){
-        //         $scope.searching = false;
-        //         $scope.error = error;
-        //     });
     	}
     }
 
     $scope.search();
 
     $scope.showResult = function(person) {
-        $state.go('entity', {query: person.id})
+        $state.go('entity', {query: person._id})
     }
 
     $scope.showProject = function(project) {
@@ -158,7 +140,7 @@
     }
 })
 
-.controller('entityCtrl', function($scope, Restangular, $state, $stateParams) {
+.controller('entityCtrl', function($scope, Restangular, $state, $stateParams,$feathers) {
     $scope.searchedEntity = $stateParams.query;
 
     $scope.search = function() {
@@ -185,17 +167,34 @@
     $scope.viewEntity = function() {
         if ($scope.searchedEntity){
             $scope.searching = true;
-            Restangular.one('person', $scope.searchedEntity).get().then(function(response){
+            var schemeService = $feathers.service('schemes')
+            schemeService.get($scope.searchedEntity , { query:
+            {  $populate:'sectors' }}).then(function(scheme){
+              console.log('showing scheme data',scheme)
+              $scope.$apply(function(){
                 $scope.searching = false;
-                $scope.entity = response;
-                $scope.searchKeyword = response.name;
-                $scope.contracts = response.projects;
-                $scope.total =  $scope.contracts.length;
-             }, function(error){
+                $scope.entity = scheme;
+                $scope.searchKeyword = scheme.name;
+                $scope.sectors = scheme.sectors;
+
+              })
+            }).catch(function(err){
+              $scope.$apply(function(){
                 $scope.searching = false;
-                $scope.error = error;
-                console.log(error)
-            });
+
+              })
+                })
+            // Restangular.one('person', $scope.searchedEntity).get().then(function(response){
+            //     $scope.searching = false;
+            //     $scope.entity = response;
+            //     $scope.searchKeyword = response.name;
+            //     $scope.contracts = response.projects;
+            //     $scope.total =  $scope.contracts.length;
+            //  }, function(error){
+            //     $scope.searching = false;
+            //     $scope.error = error;
+            //     console.log(error)
+            // });
         }
     }
 

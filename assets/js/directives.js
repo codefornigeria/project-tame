@@ -19,6 +19,24 @@ angular.module('app.directives', [])
         templateUrl: "modules/scheme-card.html"
     }
 })
+.directive('schemeEntityCard', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: "modules/scheme-entity-card.html"
+    }
+})
+.directive('schemeAntidoteCard', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: "modules/scheme-antidote-card.html"
+    }
+})
+.directive('schemeEffectCard', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: "modules/scheme-effect-card.html"
+    }
+})
 .directive('personCard', function () {
     return {
         restrict: 'EA',
