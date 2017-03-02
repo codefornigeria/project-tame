@@ -229,6 +229,7 @@ $scope.showEffect = false
            }
            $scope.addRating = function(){
              console.log('final rating', $scope.rating)
+             $state.go('scheme')
            }
 })
 .controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){
