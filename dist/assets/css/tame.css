@@ -80,6 +80,172 @@ a {
 .card-md-small {
   min-height:100px
 }
+.result {
+  position: absolute;
+  z-index: 9999;
+  border: 1px solid #DEE5E7;
+  background: #fff;
+  width: 100%;
+}
+.result li {
+  list-style: none;
+  color: rgba(0, 0, 0, 0.36);
+  padding: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 0.06;
+  border-bottom: 1px solid #DEE5E7;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.result li:hover {
+  background: #c5c5c5;
+  color: #333;
+  font-weight: 400;
+}
+
+.survey {
+  margin-bottom: 30px;
+  /*Custom radio buttons*/
+}
+@media all and (min-width: 320px) and (max-width: 640px) {
+  .survey .col-md-12,
+  .survey .col-md-6 {
+    padding: 0;
+  }
+}
+.survey h1 {
+  font-size: 24px;
+}
+.survey label {
+  color: #484848;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: none;
+}
+.survey input {
+  outline: none;
+  border: 1px #e9ebee solid;
+}
+.survey select {
+  -webkit-appearance: none;
+}
+.survey .rating-title {
+  font-size: 18px;
+}
+.survey .custom {
+  /* Base for label styling */
+  /* radio aspect */
+  /* checked mark aspect */
+  /* checked mark aspect changes */
+  /* disabled radio */
+  /* accessibility */
+}
+.survey .custom [type="radio"]:not(: checked),
+.survey .custom [type="radio"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+.survey .custom [type="radio"]:not(:checked) + label,
+.survey .custom [type="radio"]:checked + label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.survey .custom [type="radio"]:not(:checked) + label:before,
+.survey .custom [type="radio"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 17px;
+  height: 17px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+  border-radius: 3px;
+  box-shadow: none;
+}
+.survey .custom [type="radio"]:not(:checked) + label:after,
+.survey .custom [type="radio"]:checked + label:after {
+  content: '✔';
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  font-size: 18px;
+  line-height: 0.8;
+  color: #09ad7e;
+  transition: all .2s;
+}
+.survey .custom [type="radio"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+.survey .custom [type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+.survey .custom [type="radio"]:disabled:not(:checked) + label:before,
+.survey .custom [type="radio"]:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+.survey .custom [type="radio"]:disabled:checked + label:after {
+  color: #999;
+}
+.survey .custom [type="radio"]:disabled + label {
+  color: #aaa;
+}
+.survey .custom [type="radio"]:checked:focus + label:before,
+.survey .custom [type="radio"]:not(:checked):focus + label:before {
+  border: 1px dotted blue;
+}
+.survey .rating {
+  float: left;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+.survey .rating:not(:checked) > input {
+  position: absolute;
+  top: -9999px;
+  left: 0;
+  clip: rect(0, 0, 0, 0);
+}
+.survey .rating:not(:checked) > label {
+  float: right;
+  width: 2.3em;
+  padding: 0 .1em;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 100%;
+  line-height: 1.2;
+  color: #ddd;
+}
+.survey .rating:not(:checked) > label:before {
+  content: '★ ';
+  font-size: 18px;
+}
+.survey .rating > input:checked ~ label {
+  color: #ea0;
+}
+.survey .rating:not(:checked) > label:hover,
+.survey .rating:not(:checked) > label:hover ~ label {
+  color: #ea0;
+}
+.survey .rating > input:checked + label:hover,
+.survey .rating > input:checked + label:hover ~ label,
+.survey .rating > input:checked ~ label:hover,
+.survey .rating > input:checked ~ label:hover ~ label,
+.survey .rating > label:hover ~ input:checked ~ label {
+  color: #ea0;
+}
+.survey .rating > label:active {
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
+
 .card-md:hover {
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.15);
   transition: box-shadow 0.15s ease-out;

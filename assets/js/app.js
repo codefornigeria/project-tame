@@ -53,6 +53,11 @@ angular.module('app', [
         templateUrl: 'modules/scheme.html',
         controller: 'schemeCtrl'
     })
+    .state('ratings', {
+        url: '/ratings',
+        templateUrl: 'modules/ratings.html',
+        controller: 'ratingsCtrl'
+    })
       .state('results', {
           url: '/search?query',
           templateUrl: 'modules/search-result.html',

@@ -140,6 +140,52 @@
    }
 
 })
+.controller('ratingsCtrl',function($scope,$state,$stateParams,$feathers){
+
+
+   $scope.showResult = function(person) {
+       $state.go('entity', {query: person._id})
+   }
+   $scope.search = function() {
+       var address = $scope.rating.name;
+       var inputMin = 1;
+
+       if ($scope.rating.sector && $scope.rating.sector.length >= inputMin) {
+         var sectorService = $feathers.service('sectors')
+         sectorService.find({
+
+         }).then(function(sectors){
+
+           if(sectors.data.length){
+             console.log('showing sectors',sectors.data)
+             $scope.$apply(function(){
+               $scope.searching = true;
+               $scope.results = sectors.data
+
+             })
+           }
+         }).catch(function(err){
+           console.log(err)
+              $scope.searching = false;
+         })
+
+       } else {
+           $scope.searching = false;
+         }
+       }
+
+           $scope.addSector = function(result) {
+               $scope.rating.sectorId = result._id;
+
+               $scope.rating.sector = result.name;
+               $scope.searching = false;
+               $scope.showScheme();
+           }
+
+           $scope.showScheme = function(){
+
+           }
+})
 .controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){
   $scope.sectorFnc= function(){
      $scope.searching = true;
