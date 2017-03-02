@@ -179,11 +179,26 @@
 
                $scope.rating.sector = result.name;
                $scope.searching = false;
-               $scope.showScheme();
-           }
+                $scope.showScheme()
+             }
 
            $scope.showScheme = function(){
+             var groupService = $feathers.service('groups')
+             groupService.find({
 
+             }).then(function(groups){
+
+               if(groups.data.length){
+                 console.log('showing groups',groups.data)
+                 $scope.$apply(function(){
+                   $scope.schemeTypes = groups.data
+
+                 })
+               }
+             }).catch(function(err){
+               console.log(err)
+                  $scope.searching = false;
+             })
            }
 })
 .controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){
