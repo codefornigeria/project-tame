@@ -42,14 +42,23 @@
 							 <textarea class="form-control" ng-model="rating.comment" rows="5"></textarea>
 									 </div>
 
-	           	<div class="form-group animated animate-slow fadeIn relative col-md-6 no-padder-left" ng-show="rating.comment"> <!--ng-show="track.name"-->
+	           	<div class="form-group animated animate-slow fadeIn relative col-md-12 no-padder-left" ng-show="rating.comment"> <!--ng-show="track.name"-->
 					<label for="hospital">Type of Scheme</label>
-					<select class="form-control capitalize" id="schemeType" ng-model="rating.schemeType">
+					<select class="form-control capitalize" id="schemeType" ng-model="rating.schemeType" ng-change="loadEffect()">
 						<option value="">Choose the scheme types you have encountered </option>
 						<option ng-repeat="st in schemeTypes" class="capitalize" value="{{st.id}}">{{st.name}}</option>
 					</select>
 					<i class="fa fa-spinner fa-spin hospital-loader" ng-hide="schemeTypes"></i>
 	           	</div>
+							<div class="form-group animated animate-slow fadeIn relative col-md-12 no-padder-left" ng-show="showEffect"> <!--ng-show="track.name"-->
+				<label for="hospital">Scheme Effects</label>
+				<select class="form-control capitalize" id="schemeEffect" ng-model="rating.schemeEffect" >
+					<option value="">Effects of the Scheme</option>
+					<option ng-repeat="se in schemeEffects" class="capitalize" value="{{se.id}}">{{se.name}}</option>
+				</select>
+					<i class="fa fa-spinner fa-spin hospital-loader" ng-hide="schemeEffects"></i>
+				</div>
+
 
 	           	<div class="form-group animated animate-slow fadeIn col-md-6 no-padder-right" ng-show="track.hospital"> <!--ng-show="track.hospital"-->
 					<label for="hospital">What service are you reporting on? </label>
@@ -65,8 +74,8 @@
 	           		<button class="btn btn-primary form-control m-t-sm" ng-click="addNewService()">Add service</button>
 	           	</div>
 
-	           	<div class="col-md-12 no-padder animated animate-slow fadeIn rating_service" ng-show="track.service"> <!--ng-show="track.service"-->
-	           		<h1 class="rating-title">Rate the service</h1>
+	           	<div class="col-md-12 no-padder animated animate-slow fadeIn rating_service" ng-show="rating.organization"> <!--ng-show="track.service"-->
+	           		<h1 class="rating-title">Rate the organization</h1>
 	           		<span ng-repeat="rating in ratings">
 				        <div star-rating rating-value="rating.current" max="rating.max" on-rating-selected="getSelectedRating(rating)"></div>
 				    </span>
@@ -81,7 +90,7 @@
 	           		<span class="service-card" ng-class="{selected: blood}" ng-click="bloodBank()">Blood Availability</span>
 	           	</div>
 
-	           	<div class="form-group" ng-show="track.rating">
+	           	<div class="form-group" ng-show="rating.schemeType">
 					<label for="">Any feedback?</label>
 					<textarea class="form-control" ng-model="track.comment" rows="5"></textarea>
 	           	</div>
@@ -99,7 +108,7 @@
 				        </div>
 				     </span>
 	           	</div>
-	           	<button class="btn btn-primary animated fadeIn" ng-show="file" ng-click="addTrack()">Submit</button>
+	           	<button class="btn btn-primary animated fadeIn" ng-show="rating.organization" ng-click="addRating()">Submit</button>
 			</form>
 		</div>
 	</div>

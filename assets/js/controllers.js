@@ -142,7 +142,7 @@
 })
 .controller('ratingsCtrl',function($scope,$state,$stateParams,$feathers){
 
-
+$scope.showEffect = false
    $scope.showResult = function(person) {
        $state.go('entity', {query: person._id})
    }
@@ -191,7 +191,7 @@
                if(groups.data.length){
                  console.log('showing groups',groups.data)
                  $scope.$apply(function(){
-                   $scope.schemeTypes = groups.data
+                    $scope.schemeTypes = groups.data
 
                  })
                }
@@ -199,6 +199,33 @@
                console.log(err)
                   $scope.searching = false;
              })
+           }
+           $scope.loadEffect = function(){
+             $scope.showEffect = true
+             var storyService = $feathers.service('stories')
+             storyService.find({
+             }).then(function(stories){
+
+               if(stories.data.length){
+                 console.log('showing stories',stories.data)
+                 $scope.$apply(function(){
+                    $scope.schemeEffects = stories.data
+
+                 })
+               }
+             }).catch(function(err){
+               console.log(err)
+                  $scope.searching = false;
+             })
+           }
+           $scope.rating = 0;
+           $scope.ratings = [{
+               current: 1,
+               max: 5
+           }];
+
+           $scope.getSelectedRating = function (rating) {
+               $scope.rating.rate = rating;
            }
 })
 .controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){

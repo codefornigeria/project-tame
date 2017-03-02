@@ -224,7 +224,7 @@ angular.module('app', [
 })
 .controller('ratingsCtrl',function($scope,$state,$stateParams,$feathers){
 
-
+$scope.showEffect = false
    $scope.showResult = function(person) {
        $state.go('entity', {query: person._id})
    }
@@ -273,7 +273,7 @@ angular.module('app', [
                if(groups.data.length){
                  console.log('showing groups',groups.data)
                  $scope.$apply(function(){
-                   $scope.schemeTypes = groups.data
+                    $scope.schemeTypes = groups.data
 
                  })
                }
@@ -281,6 +281,33 @@ angular.module('app', [
                console.log(err)
                   $scope.searching = false;
              })
+           }
+           $scope.loadEffect = function(){
+             $scope.showEffect = true
+             var storyService = $feathers.service('stories')
+             storyService.find({
+             }).then(function(stories){
+
+               if(stories.data.length){
+                 console.log('showing stories',stories.data)
+                 $scope.$apply(function(){
+                    $scope.schemeEffects = stories.data
+
+                 })
+               }
+             }).catch(function(err){
+               console.log(err)
+                  $scope.searching = false;
+             })
+           }
+           $scope.rating = 0;
+           $scope.ratings = [{
+               current: 1,
+               max: 5
+           }];
+
+           $scope.getSelectedRating = function (rating) {
+               $scope.rating.rate = rating;
            }
 })
 .controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){
@@ -498,6 +525,46 @@ angular.module('app.directives', [])
         templateUrl: "modules/scheme-card.html"
     }
 })
+.directive('starRating', function () {
+    return {
+        restrict: 'A',
+        template: '<ul class="rating">' +
+            '<li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)">' +
+            '\u2605' +
+            '</li>' +
+            '</ul>',
+        scope: {
+            ratingValue: '=',
+            max: '=',
+            onRatingSelected: '&'
+        },
+        link: function (scope, elem, attrs) {
+
+            var updateStars = function () {
+                scope.stars = [];
+                for (var i = 0; i < scope.max; i++) {
+                    scope.stars.push({
+                        filled: i < scope.ratingValue
+                    });
+                }
+            };
+
+            scope.toggle = function (index) {
+                scope.ratingValue = index + 1;
+                scope.onRatingSelected({
+                    rating: index + 1
+                });
+            };
+
+            scope.$watch('ratingValue', function (oldVal, newVal) {
+                if (newVal) {
+                    updateStars();
+                }
+            });
+        }
+    }
+})
+
 .directive('schemeEntityCard', function () {
     return {
         restrict: 'EA',
