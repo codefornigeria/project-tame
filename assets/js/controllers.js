@@ -227,6 +227,9 @@ $scope.showEffect = false
            $scope.getSelectedRating = function (rating) {
                $scope.rating.rate = rating;
            }
+           $scope.addRating = function(){
+             console.log('final rating', $scope.rating)
+           }
 })
 .controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){
   $scope.sectorFnc= function(){
