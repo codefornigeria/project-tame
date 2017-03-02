@@ -40,7 +40,7 @@
     <!-- endinject -->
 
 </head>
-    <body>
+    <body ng-app="app">
         <nav class="navigation">
             <div class="container">
                 <div class="row">
@@ -51,14 +51,14 @@
                         <li class="b-r divider"></li>
                           <li>Login</li>
                           <a href="mailto:hello@codefornigeria.org?Subject=Hello!" target="_top"><li>Rate An Organization</li></a>
-                          <li>Search By Sector</li>
-                          <li>Search By Scheme</li>
+                          <li>  <a ui-sref="sector">Search By Sector</a></li>
+                          <li><a ui-sref="home">Search By Scheme</a></li>
 
                     </div>
                 </div>
             </div>
         </nav>
 
-        <div ng-app="app" ui-view></div>
+        <div  ui-view></div>
     </body>
 </html>

@@ -35704,6 +35704,2372 @@ angular.module("ngFeathers",[]).provider("$feathers",[function(){var a=null,b=nu
 
 })();
 
+/**
+ * Bunch of useful filters for angularJS(with no external dependencies!)
+ * @version v0.5.15 - 2017-01-17 * @link https://github.com/a8m/angular-filter
+ * @author Ariel Mashraki <ariel@mashraki.co.il>
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */
+(function ( window, angular, undefined ) {
+/*jshint globalstrict:true*/
+'use strict';
+
+var isDefined = angular.isDefined,
+    isUndefined = angular.isUndefined,
+    isFunction = angular.isFunction,
+    isString = angular.isString,
+    isNumber = angular.isNumber,
+    isObject = angular.isObject,
+    isArray = angular.isArray,
+    forEach = angular.forEach,
+    extend = angular.extend,
+    copy = angular.copy,
+    equals = angular.equals;
+
+
+/**
+ * @description
+ * get an object and return array of values
+ * @param object
+ * @returns {Array}
+ */
+function toArray(object) {
+  return isArray(object) 
+    ? object 
+    : Object.keys(object).map(function(key) {
+      return object[key];
+    });
+}
+
+/**
+ * @param value
+ * @returns {boolean}
+ */
+function isNull(value) {
+    return value === null;
+}
+
+/**
+ * @description
+ * return if object contains partial object
+ * @param partial{object}
+ * @param object{object}
+ * @returns {boolean}
+ */
+function objectContains(partial, object) {
+  var keys = Object.keys(partial);
+
+  return keys.map(function(el) {
+    return (object[el] !== undefined) && (object[el] == partial[el]);
+  }).indexOf(false) == -1;
+
+}
+
+/**
+ * @description
+ * search for approximate pattern in string
+ * @param word
+ * @param pattern
+ * @returns {*}
+ */
+function hasApproxPattern(word, pattern) {
+  // cheaper version of indexOf; instead of creating each
+  // iteration new str.
+  function indexOf(word, p, c) {
+    var j = 0;
+    while ((p + j) <= word.length) {
+      if (word.charAt(p + j) == c) return j;
+      j++;
+    }
+    return -1;
+  }
+  var p = 0;
+  for (var i = 0; i <= pattern.length; i++) {
+    var index = indexOf(word, p, pattern.charAt(i));
+    if (index == -1) return false;
+    p += index + 1;
+  }
+  return true
+}
+
+/**
+ * @description
+ * return the first n element of an array,
+ * if expression provided, is returns as long the expression return truthy
+ * @param array
+ * @param n {number}
+ * @param expression {$parse}
+ * @return array or single object
+ */
+function getFirstMatches(array, n, expression) {
+  var count = 0;
+
+  return array.filter(function(elm) {
+    var rest = isDefined(expression) ? (count < n && expression(elm)) : count < n;
+    count = rest ? count+1 : count;
+
+    return rest;
+  });
+}
+/**
+ * Polyfill to ECMA6 String.prototype.contains
+ */
+if (!String.prototype.contains) {
+  String.prototype.contains = function() {
+    return String.prototype.indexOf.apply(this, arguments) !== -1;
+  };
+}
+
+/**
+ * @param num {Number}
+ * @param decimal {Number}
+ * @returns {Number}
+ */
+function convertToDecimal(num, decimal){
+  return Math.round(num * Math.pow(10,decimal)) / (Math.pow(10, decimal));
+}
+
+/**
+ * @description
+ * Get an object, and return an array composed of it's properties names(nested too).
+ * @param obj {Object}
+ * @param stack {Array}
+ * @param parent {String}
+ * @returns {Array}
+ * @example
+ * parseKeys({ a:1, b: { c:2, d: { e: 3 } } }) ==> ["a", "b.c", "b.d.e"]
+ */
+function deepKeys(obj, stack, parent) {
+  stack = stack || [];
+  var keys = Object.keys(obj);
+
+  keys.forEach(function(el) {
+    //if it's a nested object
+    if(isObject(obj[el]) && !isArray(obj[el])) {
+      //concatenate the new parent if exist
+      var p = parent ? parent + '.' + el : parent;
+      deepKeys(obj[el], stack, p || el);
+    } else {
+      //create and save the key
+      var key = parent ? parent + '.' + el : el;
+      stack.push(key)
+    }
+  });
+  return stack
+}
+
+/**
+ * @description
+ * Test if given object is a Scope instance
+ * @param obj
+ * @returns {Boolean}
+ */
+function isScope(obj) {
+  return obj && obj.$evalAsync && obj.$watch;
+}
+
+/**
+ * @ngdoc filter
+ * @name a8m.angular
+ * @kind function
+ *
+ * @description
+ * reference to angular function
+ */
+
+angular.module('a8m.angular', [])
+
+    .filter('isUndefined', function () {
+      return function (input) {
+        return angular.isUndefined(input);
+      }
+    })
+    .filter('isDefined', function() {
+      return function (input) {
+        return angular.isDefined(input);
+      }
+    })
+    .filter('isFunction', function() {
+      return function (input) {
+        return angular.isFunction(input);
+      }
+    })
+    .filter('isString', function() {
+      return function (input) {
+        return angular.isString(input)
+      }
+    })
+    .filter('isNumber', function() {
+      return function (input) {
+        return angular.isNumber(input);
+      }
+    })
+    .filter('isArray', function() {
+      return function (input) {
+        return angular.isArray(input);
+      }
+    })
+    .filter('isObject', function() {
+      return function (input) {
+        return angular.isObject(input);
+      }
+    })
+    .filter('isEqual', function() {
+      return function (o1, o2) {
+        return angular.equals(o1, o2);
+      }
+    });
+
+/**
+ * @ngdoc filter
+ * @name a8m.conditions
+ * @kind function
+ *
+ * @description
+ * reference to math conditions
+ */
+ angular.module('a8m.conditions', [])
+
+  .filter({
+    isGreaterThan  : isGreaterThanFilter,
+    '>'            : isGreaterThanFilter,
+
+    isGreaterThanOrEqualTo  : isGreaterThanOrEqualToFilter,
+    '>='                    : isGreaterThanOrEqualToFilter,
+
+    isLessThan  : isLessThanFilter,
+    '<'         : isLessThanFilter,
+
+    isLessThanOrEqualTo  : isLessThanOrEqualToFilter,
+    '<='                 : isLessThanOrEqualToFilter,
+
+    isEqualTo  : isEqualToFilter,
+    '=='       : isEqualToFilter,
+
+    isNotEqualTo  : isNotEqualToFilter,
+    '!='          : isNotEqualToFilter,
+
+    isIdenticalTo  : isIdenticalToFilter,
+    '==='          : isIdenticalToFilter,
+
+    isNotIdenticalTo  : isNotIdenticalToFilter,
+    '!=='             : isNotIdenticalToFilter
+  });
+
+  function isGreaterThanFilter() {
+    return function (input, check) {
+      return input > check;
+    };
+  }
+
+  function isGreaterThanOrEqualToFilter() {
+    return function (input, check) {
+      return input >= check;
+    };
+  }
+
+  function isLessThanFilter() {
+    return function (input, check) {
+      return input < check;
+    };
+  }
+
+  function isLessThanOrEqualToFilter() {
+    return function (input, check) {
+      return input <= check;
+    };
+  }
+
+  function isEqualToFilter() {
+    return function (input, check) {
+      return input == check;
+    };
+  }
+
+  function isNotEqualToFilter() {
+    return function (input, check) {
+      return input != check;
+    };
+  }
+
+  function isIdenticalToFilter() {
+    return function (input, check) {
+      return input === check;
+    };
+  }
+
+  function isNotIdenticalToFilter() {
+    return function (input, check) {
+      return input !== check;
+    };
+  }
+/**
+ * @ngdoc filter
+ * @name isNull
+ * @kind function
+ *
+ * @description
+ * checks if value is null or not
+ * @return Boolean
+ */
+angular.module('a8m.is-null', [])
+    .filter('isNull', function () {
+      return function(input) {
+        return isNull(input);
+      }
+    });
+
+/**
+ * @ngdoc filter
+ * @name after-where
+ * @kind function
+ *
+ * @description
+ * get a collection and properties object, and returns all of the items
+ * in the collection after the first that found with the given properties.
+ *
+ */
+angular.module('a8m.after-where', [])
+    .filter('afterWhere', function() {
+      return function (collection, object) {
+
+        collection = isObject(collection)
+          ? toArray(collection)
+          : collection;
+
+        if(!isArray(collection) || isUndefined(object)) return collection;
+
+        var index = collection.map( function( elm ) {
+          return objectContains(object, elm);
+        }).indexOf( true );
+
+        return collection.slice((index === -1) ? 0 : index);
+      }
+    });
+
+/**
+ * @ngdoc filter
+ * @name after
+ * @kind function
+ *
+ * @description
+ * get a collection and specified count, and returns all of the items
+ * in the collection after the specified count.
+ *
+ */
+
+angular.module('a8m.after', [])
+    .filter('after', function() {
+      return function (collection, count) {
+        collection = isObject(collection)
+          ? toArray(collection)
+          : collection;
+
+        return (isArray(collection))
+          ? collection.slice(count)
+          : collection;
+      }
+    });
+
+/**
+ * @ngdoc filter
+ * @name before-where
+ * @kind function
+ *
+ * @description
+ * get a collection and properties object, and returns all of the items
+ * in the collection before the first that found with the given properties.
+ */
+angular.module('a8m.before-where', [])
+  .filter('beforeWhere', function() {
+    return function (collection, object) {
+
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      if(!isArray(collection) || isUndefined(object)) return collection;
+
+      var index = collection.map( function( elm ) {
+        return objectContains(object, elm);
+      }).indexOf( true );
+
+      return collection.slice(0, (index === -1) ? collection.length : ++index);
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name before
+ * @kind function
+ *
+ * @description
+ * get a collection and specified count, and returns all of the items
+ * in the collection before the specified count.
+ */
+angular.module('a8m.before', [])
+    .filter('before', function() {
+      return function (collection, count) {
+        collection = isObject(collection)
+          ? toArray(collection)
+          : collection;
+
+        return (isArray(collection))
+          ? collection.slice(0, (!count) ? count : --count)
+          : collection;
+      }
+    });
+
+/**
+ * @ngdoc filter
+ * @name chunkBy
+ * @kind function
+ *
+ * @description
+ * Collect data into fixed-length chunks or blocks
+ */
+
+angular.module('a8m.chunk-by', ['a8m.filter-watcher'])
+    .filter('chunkBy', ['filterWatcher', function (filterWatcher) {
+      return function (array, n, fillVal) {
+
+        return filterWatcher.isMemoized('chunkBy', arguments) ||
+            filterWatcher.memoize('chunkBy', arguments, this,
+                _chunkBy(array, n, fillVal));
+        /**
+         * @description
+         * Get array with size `n` in `val` inside it.
+         * @param n
+         * @param val
+         * @returns {Array}
+         */
+        function fill(n, val) {
+          var ret = [];
+          while (n--) ret[n] = val;
+          return ret;
+        }
+
+        function _chunkBy(array, n, fillVal) {
+          if (!isArray(array)) return array;
+          return array.map(function (el, i, self) {
+            i = i * n;
+            el = self.slice(i, i + n);
+            return !isUndefined(fillVal) && el.length < n
+                ? el.concat(fill(n - el.length, fillVal))
+                : el;
+          }).slice(0, Math.ceil(array.length / n));
+        }
+      }
+    }]);
+
+/**
+ * @ngdoc filter
+ * @name concat
+ * @kind function
+ *
+ * @description
+ * get (array/object, object/array) and return merged collection
+ */
+angular.module('a8m.concat', [])
+  .filter('concat', [function () {
+    return function (collection, joined) {
+
+      if (isUndefined(joined)) return collection;
+
+      if (isArray(collection)) {
+        return isObject(joined)
+          ? collection.concat(toArray(joined))
+          : collection.concat(joined);
+      }
+
+      if (isObject(collection)) {
+        var array = toArray(collection);
+        return (isObject(joined))
+          ? array.concat(toArray(joined))
+          : array.concat(joined);
+      }
+      return collection;
+    };
+  }
+]);
+
+/**
+ * @ngdoc filter
+ * @name contains
+ * @kind function
+ *
+ * @description
+ * Checks if given expression is present in one or more object in the collection
+ */
+angular.module('a8m.contains', [])
+  .filter({
+    contains: ['$parse', containsFilter],
+    some: ['$parse', containsFilter]
+  });
+
+function containsFilter($parse) {
+    return function (collection, expression) {
+
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      if(!isArray(collection) || isUndefined(expression)) {
+        return false;
+      }
+
+      return collection.some(function(elm) {
+        return ((isString(expression) && isObject(elm)) || isFunction(expression))
+          ? $parse(expression)(elm)
+          : elm === expression;
+      });
+
+    }
+ }
+
+/**
+ * @ngdoc filter
+ * @name countBy
+ * @kind function
+ *
+ * @description
+ * Sorts a list into groups and returns a count for the number of objects in each group.
+ */
+
+angular.module('a8m.count-by', [])
+
+  .filter('countBy', [ '$parse', function ( $parse ) {
+    return function (collection, property) {
+
+      var result = {},
+        get = $parse(property),
+        prop;
+
+      collection = (isObject(collection)) ? toArray(collection) : collection;
+
+      if(!isArray(collection) || isUndefined(property)) {
+        return collection;
+      }
+
+      collection.forEach( function( elm ) {
+        prop = get(elm);
+
+        if(!result[prop]) {
+          result[prop] = 0;
+        }
+
+        result[prop]++;
+      });
+
+      return result;
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name defaults
+ * @kind function
+ *
+ * @description
+ * defaultsFilter allows to specify a default fallback value for properties that resolve to undefined.
+ */
+angular.module('a8m.defaults', [])
+  .filter('defaults', ['$parse', function( $parse ) {
+    return function(collection, defaults) {
+
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      if(!isArray(collection) || !isObject(defaults)) {
+        return collection;
+      }
+
+      var keys = deepKeys(defaults);
+
+      collection.forEach(function(elm) {
+        //loop through all the keys
+        keys.forEach(function(key) {
+          var getter = $parse(key);
+          var setter = getter.assign;
+          //if it's not exist
+          if(isUndefined(getter(elm))) {
+            //get from defaults, and set to the returned object
+            setter(elm, getter(defaults))
+          }
+        });
+      });
+
+      return collection;
+    }
+  }]);
+/**
+ * @ngdoc filter
+ * @name every
+ * @kind function
+ *
+ * @description
+ * Checks if given expression is present in all members in the collection
+ *
+ */
+angular.module('a8m.every', [])
+  .filter('every', ['$parse', function($parse) {
+    return function (collection, expression) {
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      if(!isArray(collection) || isUndefined(expression)) {
+        return true;
+      }
+
+      return collection.every( function(elm) {
+        return (isObject(elm) || isFunction(expression))
+          ? $parse(expression)(elm)
+          : elm === expression;
+      });
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name filterBy
+ * @kind function
+ *
+ * @description
+ * filter by specific properties, avoid the rest
+ */
+angular.module('a8m.filter-by', [])
+  .filter('filterBy', ['$parse', function( $parse ) {
+    return function(collection, properties, search, strict) {
+      var comparator;
+
+      search = (isString(search) || isNumber(search)) ?
+        String(search).toLowerCase() : undefined;
+
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      if(!isArray(collection) || isUndefined(search)) {
+        return collection;
+      }
+
+      return collection.filter(function(elm) {
+        return properties.some(function(prop) {
+
+          /**
+           * check if there is concatenate properties
+           * example:
+           * object: { first: 'foo', last:'bar' }
+           * filterBy: ['first + last'] => search by full name(i.e 'foo bar')
+           */
+          if(!~prop.indexOf('+')) {
+            comparator = $parse(prop)(elm)
+          } else {
+            var propList = prop.replace(/\s+/g, '').split('+');
+            comparator = propList
+              .map(function(prop) { return $parse(prop)(elm); })
+              .join(' ');
+          }
+
+          if (!isString(comparator) && !isNumber(comparator)) {
+            return false;
+          }
+
+          comparator = String(comparator).toLowerCase();
+
+          return strict ? comparator === search : comparator.contains(search);
+        });
+      });
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name first
+ * @kind function
+ *
+ * @description
+ * Gets the first element or first n elements of an array
+ * if callback is provided, is returns as long the callback return truthy
+ */
+angular.module('a8m.first', [])
+  .filter('first', ['$parse', function( $parse ) {
+    return function(collection) {
+      var n
+        , getter
+        , args;
+
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      if(!isArray(collection)) {
+        return collection;
+      }
+
+      args = Array.prototype.slice.call(arguments, 1);
+      n = (isNumber(args[0])) ? args[0] : 1;
+      getter = (!isNumber(args[0]))  ? args[0] : (!isNumber(args[1])) ? args[1] : undefined;
+
+      return (args.length) ? getFirstMatches(collection, n,(getter) ? $parse(getter) : getter) :
+        collection[0];
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name flatten
+ * @kind function
+ *
+ * @description
+ * Flattens a nested array (the nesting can be to any depth).
+ * If you pass shallow, the array will only be flattened a single level
+ */
+angular.module('a8m.flatten', [])
+  .filter('flatten', function () {
+    return function(collection, shallow) {
+
+      shallow = shallow || false;
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      if(!isArray(collection)) {
+        return collection;
+      }
+
+      return !shallow
+        ? flatten(collection, 0)
+        : [].concat.apply([], collection);
+    }
+  });
+
+/**
+ * flatten nested array (the nesting can be to any depth).
+ * @param array {Array}
+ * @param i {int}
+ * @returns {Array}
+ * @private
+ */
+function flatten(array, i) {
+  i = i || 0;
+
+  if(i >= array.length)
+    return array;
+
+  if(isArray(array[i])) {
+    return flatten(array.slice(0,i)
+      .concat(array[i], array.slice(i+1)), i);
+  }
+  return flatten(array, i+1);
+}
+
+/**
+ * @ngdoc filter
+ * @name fuzzyByKey
+ * @kind function
+ *
+ * @description
+ * fuzzy string searching by key
+ */
+angular.module('a8m.fuzzy-by', [])
+  .filter('fuzzyBy', ['$parse', function ( $parse ) {
+    return function (collection, property, search, csensitive) {
+
+      var sensitive = csensitive || false,
+        prop, getter;
+
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      if(!isArray(collection) || isUndefined(property)
+        || isUndefined(search)) {
+        return collection;
+      }
+
+      getter = $parse(property);
+
+      return collection.filter(function(elm) {
+
+        prop = getter(elm);
+        if(!isString(prop)) {
+          return false;
+        }
+
+        prop = (sensitive) ? prop : prop.toLowerCase();
+        search = (sensitive) ? search : search.toLowerCase();
+
+        return hasApproxPattern(prop, search) !== false
+      })
+    }
+
+ }]);
+/**
+ * @ngdoc filter
+ * @name fuzzy
+ * @kind function
+ *
+ * @description
+ * fuzzy string searching for array of strings, objects
+ */
+angular.module('a8m.fuzzy', [])
+  .filter('fuzzy', function () {
+    return function (collection, search, csensitive) {
+      var sensitive = csensitive || false;
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      if(!isArray(collection) || isUndefined(search)) {
+        return collection;
+      }
+
+      search = (sensitive) ? search : search.toLowerCase();
+
+      return collection.filter(function(elm) {
+        if(isString(elm)) {
+          elm = (sensitive) ? elm : elm.toLowerCase();
+          return hasApproxPattern(elm, search) !== false
+        }
+        return (isObject(elm)) ? _hasApproximateKey(elm, search) : false;
+      });
+
+      /**
+       * checks if object has key{string} that match
+       * to fuzzy search pattern
+       * @param object
+       * @param search
+       * @returns {boolean}
+       * @private
+       */
+      function _hasApproximateKey(object, search) {
+        var properties = Object.keys(object),
+          prop, flag;
+        return 0 < properties.filter(function (elm) {
+          prop = object[elm];
+
+          //avoid iteration if we found some key that equal[performance]
+          if(flag) return true;
+
+          if (isString(prop)) {
+            prop = (sensitive) ? prop : prop.toLowerCase();
+            return flag = (hasApproxPattern(prop, search) !== false);
+          }
+
+          return false;
+
+        }).length;
+      }
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name groupBy
+ * @kind function
+ *
+ * @description
+ * Create an object composed of keys generated from the result of running each element of a collection,
+ * each key is an array of the elements.
+ */
+
+angular.module('a8m.group-by', [ 'a8m.filter-watcher' ])
+  .filter('groupBy', [ '$parse', 'filterWatcher', function ( $parse, filterWatcher ) {
+    return function (collection, property) {
+
+      if(!isObject(collection) || isUndefined(property)) {
+        return collection;
+      }
+
+      return filterWatcher.isMemoized('groupBy', arguments) ||
+        filterWatcher.memoize('groupBy', arguments, this,
+          _groupBy(collection, $parse(property)));
+
+      /**
+       * groupBy function
+       * @param collection
+       * @param getter
+       * @returns {{}}
+       */
+      function _groupBy(collection, getter) {
+        var result = {};
+        var prop;
+
+        forEach( collection, function( elm ) {
+          prop = getter(elm);
+
+          if(!result[prop]) {
+            result[prop] = [];
+          }
+          result[prop].push(elm);
+        });
+        return result;
+      }
+    }
+ }]);
+
+/**
+ * @ngdoc filter
+ * @name isEmpty
+ * @kind function
+ *
+ * @description
+ * get collection or string and return if it empty
+ */
+angular.module('a8m.is-empty', [])
+  .filter('isEmpty', function () {
+    return function(collection) {
+      return isObject(collection)
+        ? !toArray(collection).length
+        : !collection.length;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name join
+ * @kind function
+ *
+ * @description
+ * join a collection by a provided delimiter (space by default)
+ */
+angular.module('a8m.join', [])
+  .filter('join', function () {
+    return function (input, delimiter) {
+      if (isUndefined(input) || !isArray(input)) {
+        return input;
+      }
+      if (isUndefined(delimiter)) delimiter = ' ';
+
+      return input.join(delimiter);
+    };
+  })
+;
+
+/**
+ * @ngdoc filter
+ * @name last
+ * @kind function
+ *
+ * @description
+ * Gets the last element or last n elements of an array
+ * if callback is provided, is returns as long the callback return truthy
+ */
+angular.module('a8m.last', [])
+  .filter('last', ['$parse', function( $parse ) {
+    return function(collection) {
+      var n
+        , getter
+        , args
+        //cuz reverse change our src collection
+        //and we don't want side effects
+        , reversed = copy(collection);
+
+      reversed = isObject(reversed)
+        ? toArray(reversed)
+        : reversed;
+
+      if(!isArray(reversed)) {
+        return reversed;
+      }
+
+      args = Array.prototype.slice.call(arguments, 1);
+      n = (isNumber(args[0])) ? args[0] : 1;
+      getter = (!isNumber(args[0]))  ? args[0] : (!isNumber(args[1])) ? args[1] : undefined;
+
+      return (args.length)
+        //send reversed collection as arguments, and reverse it back as result
+        ? getFirstMatches(reversed.reverse(), n,(getter) ? $parse(getter) : getter).reverse()
+        //get the last element
+        : reversed[reversed.length-1];
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name map
+ * @kind function
+ *
+ * @description
+ * Returns a new collection of the results of each expression execution.
+ */
+angular.module('a8m.map', [])
+  .filter('map', ['$parse', function($parse) {
+    return function (collection, expression) {
+
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      if(!isArray(collection) || isUndefined(expression)) {
+        return collection;
+      }
+
+      return collection.map(function (elm) {
+        return $parse(expression)(elm);
+      });
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name omit
+ * @kind function
+ *
+ * @description
+ * filter collection by expression
+ */
+
+angular.module('a8m.omit', [])
+
+  .filter('omit', ['$parse', function($parse) {
+    return function (collection, expression) {
+
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      if(!isArray(collection) || isUndefined(expression)) {
+        return collection;
+      }
+
+      return collection.filter(function (elm) {
+        return !($parse(expression)(elm));
+      });
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name pick
+ * @kind function
+ *
+ * @description
+ * filter collection by expression
+ */
+
+angular.module('a8m.pick', [])
+
+  .filter('pick', ['$parse', function($parse) {
+    return function (collection, expression) {
+
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      if(!isArray(collection) || isUndefined(expression)) {
+        return collection;
+      }
+
+      return collection.filter(function (elm) {
+        return $parse(expression)(elm);
+      });
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name range
+ * @kind function
+ *
+ * @description
+ * rangeFilter provides some support for a for loop using numbers
+ */
+angular.module('a8m.range', [])
+  .filter('range', function () {
+    return function (input, total, start, increment, cb) {
+      start = start || 0;
+      increment = increment || 1;
+      for (var i = 0; i < parseInt(total); i++) {
+        var j = start + i * increment;
+        input.push(isFunction(cb) ? cb(j) : j);
+      }
+      return input;
+    };
+  });
+/**
+ * @ngdoc filter
+ * @name removeWith
+ * @kind function
+ *
+ * @description
+ * get collection and properties object, and removed elements
+ * with this properties
+ */
+
+angular.module('a8m.remove-with', [])
+  .filter('removeWith', function() {
+    return function (collection, object) {
+
+      if(isUndefined(object)) {
+        return collection;
+      }
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      return collection.filter(function (elm) {
+        return !objectContains(object, elm);
+      });
+    }
+  });
+
+
+/**
+ * @ngdoc filter
+ * @name remove
+ * @kind function
+ *
+ * @description
+ * remove specific members from collection
+ */
+
+angular.module('a8m.remove', [])
+
+  .filter('remove', function () {
+    return function (collection) {
+      collection = isObject(collection) ? toArray(collection) : collection;
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      if(!isArray(collection)) {
+        return collection;
+      }
+
+      return collection.filter( function( member ) {
+        return !args.some(function(nest) {
+          return equals(nest, member);
+        })
+      });
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name reverse
+ * @kind function
+ *
+ * @description
+ * Reverses a string or collection
+ */
+angular.module('a8m.reverse', [])
+    .filter('reverse',[ function () {
+      return function (input) {
+        input = isObject(input) ? toArray(input) : input;
+
+        if(isString(input)) {
+          return input.split('').reverse().join('');
+        }
+
+        return isArray(input)
+          ? input.slice().reverse()
+          : input;
+      }
+    }]);
+
+/**
+ * @ngdoc filter
+ * @name searchField
+ * @kind function
+ *
+ * @description
+ * for each member, join several strings field and add them to
+ * new field called 'searchField' (use for search filtering)
+ */
+angular.module('a8m.search-field', [])
+  .filter('searchField', ['$parse', function ($parse) {
+    return function (collection) {
+
+      var get, field;
+
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      if(!isArray(collection) || !args.length) {
+        return collection;
+      }
+
+      return collection.map(function(member) {
+
+        field = args.map(function(field) {
+          get = $parse(field);
+          return get(member);
+        }).join(' ');
+
+        return extend(member, { searchField: field });
+      });
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name toArray
+ * @kind function
+ *
+ * @description
+ * Convert objects into stable arrays.
+ * if addKey set to true,the filter also attaches a new property
+ * $key to the value containing the original key that was used in
+ * the object we are iterating over to reference the property
+ */
+angular.module('a8m.to-array', [])
+  .filter('toArray', function() {
+    return function (collection, addKey) {
+
+      if(!isObject(collection)) {
+        return collection;
+      }
+
+      return !addKey
+        ? toArray(collection)
+        : Object.keys(collection).map(function (key) {
+            return extend(collection[key], { $key: key });
+          });
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name unique/uniq
+ * @kind function
+ *
+ * @description
+ * get collection and filter duplicate members
+ * if uniqueFilter get a property(nested to) as argument it's
+ * filter by this property as unique identifier
+ */
+
+angular.module('a8m.unique', [])
+  .filter({
+      unique: ['$parse', uniqFilter],
+      uniq: ['$parse', uniqFilter]
+    });
+
+function uniqFilter($parse) {
+    return function (collection, property) {
+
+      collection = isObject(collection) ? toArray(collection) : collection;
+
+      if (!isArray(collection)) {
+        return collection;
+      }
+
+      //store all unique identifiers
+      var uniqueItems = [],
+          get = $parse(property);
+
+      return (isUndefined(property))
+        //if it's kind of primitive array
+        ? collection.filter(function (elm, pos, self) {
+          return self.indexOf(elm) === pos;
+        })
+        //else compare with equals
+        : collection.filter(function (elm) {
+          var prop = get(elm);
+          if(some(uniqueItems, prop)) {
+            return false;
+          }
+          uniqueItems.push(prop);
+          return true;
+      });
+
+      //checked if the unique identifier is already exist
+      function some(array, member) {
+        if(isUndefined(member)) {
+          return false;
+        }
+        return array.some(function(el) {
+          return equals(el, member);
+        });
+      }
+    }
+}
+
+/**
+ * @ngdoc filter
+ * @name where
+ * @kind function
+ *
+ * @description
+ * of each element in a collection to the given properties object,
+ * returning an array of all elements that have equivalent property values.
+ *
+ */
+angular.module('a8m.where', [])
+  .filter('where', function() {
+    return function (collection, object) {
+      if(isUndefined(object)) return collection;
+      collection = isObject(collection)
+        ? toArray(collection)
+        : collection;
+
+      return collection.filter(function (elm) {
+        return objectContains(object, elm);
+      });
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name xor
+ * @kind function
+ *
+ * @description
+ * Exclusive or filter by expression
+ */
+
+angular.module('a8m.xor', [])
+
+  .filter('xor', ['$parse', function($parse) {
+    return function (col1, col2, expression) {
+
+      expression = expression || false;
+
+      col1 = isObject(col1) ? toArray(col1) : col1;
+      col2 = isObject(col2) ? toArray(col2) : col2;
+
+      if(!isArray(col1) || !isArray(col2)) return col1;
+
+      return col1.concat(col2)
+        .filter(function(elm) {
+          return !(some(elm, col1) && some(elm, col2));
+        });
+
+      function some(el, col) {
+        var getter = $parse(expression);
+        return col.some(function(dElm) {
+          return expression
+            ? equals(getter(dElm), getter(el))
+            : equals(dElm, el);
+        });
+      }
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name abs
+ * @kind function
+ *
+ * @description
+ * Will return the absolute value of a number
+ */
+angular.module('a8m.math.abs', [])
+  .filter('abs', function () {
+    return function (input) {
+      return Math.abs(input);
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name formatBytes
+ * @kind function
+ *
+ * @description
+ * Convert bytes into appropriate display 
+ * 1024 bytes => 1 KB
+ */
+angular.module('a8m.math.byteFmt', [])
+  .filter('byteFmt', function () {
+    var compared = [{str: 'B', val: 1024}];
+    ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'].forEach(function(el, i) {
+      compared.push({str: el, val: compared[i].val * 1024 });
+    });
+    return function (bytes, decimal) {
+      if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
+        isNumber(bytes) && isFinite(bytes)) {
+        var i = 0;
+        while (i < compared.length-1 && bytes >= compared[i].val) i++;
+        bytes /= i > 0 ? compared[i-1].val : 1;
+        return convertToDecimal(bytes, decimal) + ' ' + compared[i].str;
+      }
+      return 'NaN';
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name degrees
+ * @kind function
+ *
+ * @description
+ * Convert angle from radians to degrees
+ */
+angular.module('a8m.math.degrees', [])
+  .filter('degrees', function () {
+    return function (radians, decimal) {
+      // if decimal is not an integer greater than -1, we cannot do. quit with error "NaN"
+      // if degrees is not a real number, we cannot do also. quit with error "NaN"
+      if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
+        isNumber(radians) && isFinite(radians)) {
+        var degrees = (radians * 180) / Math.PI;
+        return Math.round(degrees * Math.pow(10,decimal)) / (Math.pow(10,decimal));
+      } else {
+        return 'NaN';
+      }
+    }
+  });
+
+ 
+ 
+/**
+ * @ngdoc filter
+ * @name formatBytes
+ * @kind function
+ *
+ * @description
+ * Convert bytes into appropriate display 
+ * 1024 kilobytes => 1 MB
+ */
+angular.module('a8m.math.kbFmt', [])
+  .filter('kbFmt', function () {
+    var compared = [{str: 'KB', val: 1024}];
+    ['MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'].forEach(function(el, i) {
+      compared.push({str: el, val: compared[i].val * 1024 });
+    });
+    return function (bytes, decimal) {
+      if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
+        isNumber(bytes) && isFinite(bytes)) {
+        var i = 0;
+        while (i < compared.length-1 && bytes >= compared[i].val) i++;
+        bytes /= i > 0 ? compared[i-1].val : 1;
+        return convertToDecimal(bytes, decimal) + ' ' + compared[i].str;
+      }
+      return 'NaN';
+    }
+  });
+/**
+ * @ngdoc filter
+ * @name max
+ * @kind function
+ *
+ * @description
+ * Math.max will get an array and return the max value. if an expression
+ * is provided, will return max value by expression.
+ */
+angular.module('a8m.math.max', [])
+  .filter('max', ['$parse', function ($parse) {
+    return function (input, expression) {
+
+      if(!isArray(input)) {
+        return input;
+      }
+      return isUndefined(expression)
+        ? Math.max.apply(Math, input)
+        : input[indexByMax(input, expression)];
+    };
+
+    /**
+     * @private
+     * @param array
+     * @param exp
+     * @returns {number|*|Number}
+     */
+    function indexByMax(array, exp) {
+      var mappedArray = array.map(function(elm){
+        return $parse(exp)(elm);
+      });
+      return mappedArray.indexOf(Math.max.apply(Math, mappedArray));
+    }
+  }]);
+/**
+ * @ngdoc filter
+ * @name min
+ * @kind function
+ *
+ * @description
+ * Math.min will get an array and return the min value. if an expression
+ * is provided, will return min value by expression.
+ */
+angular.module('a8m.math.min', [])
+  .filter('min', ['$parse', function ($parse) {
+    return function (input, expression) {
+
+      if(!isArray(input)) {
+        return input;
+      }
+      return isUndefined(expression)
+        ? Math.min.apply(Math, input)
+        : input[indexByMin(input, expression)];
+    };
+
+    /**
+     * @private
+     * @param array
+     * @param exp
+     * @returns {number|*|Number}
+     */
+    function indexByMin(array, exp) {
+      var mappedArray = array.map(function(elm){
+        return $parse(exp)(elm);
+      });
+      return mappedArray.indexOf(Math.min.apply(Math, mappedArray));
+    }
+  }]);
+/**
+ * @ngdoc filter
+ * @name Percent
+ * @kind function
+ *
+ * @description
+ * percentage between two numbers
+ */
+angular.module('a8m.math.percent', [])
+  .filter('percent', function () {
+    return function (input, divided, round) {
+
+      var divider = isString(input) ? Number(input) : input;
+      divided = divided || 100;
+      round = round || false;
+
+      if (!isNumber(divider) || isNaN(divider)) return input;
+
+      return round
+        ? Math.round((divider / divided) * 100)
+        : (divider / divided) * 100;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name toRadians
+ * @kind function
+ *
+ * @description
+ * Convert angle from degrees to radians
+ */
+angular.module('a8m.math.radians', [])
+  .filter('radians', function() {
+    return function (degrees, decimal) {
+      // if decimal is not an integer greater than -1, we cannot do. quit with error "NaN"
+      // if degrees is not a real number, we cannot do also. quit with error "NaN"
+      if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
+        isNumber(degrees) && isFinite(degrees)) {
+        var radians = (degrees * 3.14159265359) / 180;
+        return Math.round(radians * Math.pow(10,decimal)) / (Math.pow(10,decimal));
+      }
+      return 'NaN';
+    }
+  });
+
+ 
+ 
+/**
+ * @ngdoc filter
+ * @name Radix
+ * @kind function
+ *
+ * @description
+ * converting decimal numbers to different bases(radix)
+ */
+angular.module('a8m.math.radix', [])
+  .filter('radix', function () {
+    return function (input, radix) {
+      var RANGE = /^[2-9]$|^[1-2]\d$|^3[0-6]$/;
+
+      if(!isNumber(input) || !RANGE.test(radix)) {
+        return input;
+      }
+
+      return input.toString(radix).toUpperCase();
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name formatBytes
+ * @kind function
+ *
+ * @description
+ * Convert number into abbreviations.
+ * i.e: K for one thousand, M for Million, B for billion
+ * e.g: number of users:235,221, decimal:1 => 235.2 K
+ */
+angular.module('a8m.math.shortFmt', [])
+  .filter('shortFmt', function () {
+    return function (number, decimal) {
+      if(isNumber(decimal) && isFinite(decimal) && decimal%1===0 && decimal >= 0 &&
+        isNumber(number) && isFinite(number)){
+        if(number < 1e3) {
+          return '' + number;  // Coerce to string
+        } else if(number < 1e6) {
+          return convertToDecimal((number / 1e3), decimal) + ' K';
+        } else if(number < 1e9){
+          return convertToDecimal((number / 1e6), decimal) + ' M';
+        } else {
+          return convertToDecimal((number / 1e9), decimal) + ' B';
+        }
+
+      }
+      return 'NaN';
+    }
+  });
+/**
+ * @ngdoc filter
+ * @name sum
+ * @kind function
+ *
+ * @description
+ * Sum up all values within an array
+ */
+angular.module('a8m.math.sum', [])
+  .filter('sum', function () {
+    return function (input, initial) {
+      return !isArray(input)
+        ? input
+        : input.reduce(function(prev, curr) {
+          return prev + curr;
+        }, initial || 0);
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name endsWith
+ * @kind function
+ *
+ * @description
+ * checks whether string ends with the ends parameter.
+ */
+angular.module('a8m.ends-with', [])
+
+  .filter('endsWith', function () {
+    return function (input, ends, csensitive) {
+
+      var sensitive = csensitive || false,
+        position;
+
+      if(!isString(input) || isUndefined(ends)) {
+        return input;
+      }
+
+      input = (sensitive) ? input : input.toLowerCase();
+      position = input.length - ends.length;
+
+      return input.indexOf((sensitive) ? ends : ends.toLowerCase(), position) !== -1;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name latinize
+ * @kind function
+ *
+ * @description
+ * remove accents/diacritics from a string
+ */
+angular.module('a8m.latinize', [])
+  .filter('latinize',[ function () {
+    var defaultDiacriticsRemovalap = [
+      {'base':'A', 'letters':'\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F'},
+      {'base':'AA','letters':'\uA732'},
+      {'base':'AE','letters':'\u00C6\u01FC\u01E2'},
+      {'base':'AO','letters':'\uA734'},
+      {'base':'AU','letters':'\uA736'},
+      {'base':'AV','letters':'\uA738\uA73A'},
+      {'base':'AY','letters':'\uA73C'},
+      {'base':'B', 'letters':'\u0042\u24B7\uFF22\u1E02\u1E04\u1E06\u0243\u0182\u0181'},
+      {'base':'C', 'letters':'\u0043\u24B8\uFF23\u0106\u0108\u010A\u010C\u00C7\u1E08\u0187\u023B\uA73E'},
+      {'base':'D', 'letters':'\u0044\u24B9\uFF24\u1E0A\u010E\u1E0C\u1E10\u1E12\u1E0E\u0110\u018B\u018A\u0189\uA779'},
+      {'base':'DZ','letters':'\u01F1\u01C4'},
+      {'base':'Dz','letters':'\u01F2\u01C5'},
+      {'base':'E', 'letters':'\u0045\u24BA\uFF25\u00C8\u00C9\u00CA\u1EC0\u1EBE\u1EC4\u1EC2\u1EBC\u0112\u1E14\u1E16\u0114\u0116\u00CB\u1EBA\u011A\u0204\u0206\u1EB8\u1EC6\u0228\u1E1C\u0118\u1E18\u1E1A\u0190\u018E'},
+      {'base':'F', 'letters':'\u0046\u24BB\uFF26\u1E1E\u0191\uA77B'},
+      {'base':'G', 'letters':'\u0047\u24BC\uFF27\u01F4\u011C\u1E20\u011E\u0120\u01E6\u0122\u01E4\u0193\uA7A0\uA77D\uA77E'},
+      {'base':'H', 'letters':'\u0048\u24BD\uFF28\u0124\u1E22\u1E26\u021E\u1E24\u1E28\u1E2A\u0126\u2C67\u2C75\uA78D'},
+      {'base':'I', 'letters':'\u0049\u24BE\uFF29\u00CC\u00CD\u00CE\u0128\u012A\u012C\u0130\u00CF\u1E2E\u1EC8\u01CF\u0208\u020A\u1ECA\u012E\u1E2C\u0197'},
+      {'base':'J', 'letters':'\u004A\u24BF\uFF2A\u0134\u0248'},
+      {'base':'K', 'letters':'\u004B\u24C0\uFF2B\u1E30\u01E8\u1E32\u0136\u1E34\u0198\u2C69\uA740\uA742\uA744\uA7A2'},
+      {'base':'L', 'letters':'\u004C\u24C1\uFF2C\u013F\u0139\u013D\u1E36\u1E38\u013B\u1E3C\u1E3A\u0141\u023D\u2C62\u2C60\uA748\uA746\uA780'},
+      {'base':'LJ','letters':'\u01C7'},
+      {'base':'Lj','letters':'\u01C8'},
+      {'base':'M', 'letters':'\u004D\u24C2\uFF2D\u1E3E\u1E40\u1E42\u2C6E\u019C'},
+      {'base':'N', 'letters':'\u004E\u24C3\uFF2E\u01F8\u0143\u00D1\u1E44\u0147\u1E46\u0145\u1E4A\u1E48\u0220\u019D\uA790\uA7A4'},
+      {'base':'NJ','letters':'\u01CA'},
+      {'base':'Nj','letters':'\u01CB'},
+      {'base':'O', 'letters':'\u004F\u24C4\uFF2F\u00D2\u00D3\u00D4\u1ED2\u1ED0\u1ED6\u1ED4\u00D5\u1E4C\u022C\u1E4E\u014C\u1E50\u1E52\u014E\u022E\u0230\u00D6\u022A\u1ECE\u0150\u01D1\u020C\u020E\u01A0\u1EDC\u1EDA\u1EE0\u1EDE\u1EE2\u1ECC\u1ED8\u01EA\u01EC\u00D8\u01FE\u0186\u019F\uA74A\uA74C'},
+      {'base':'OI','letters':'\u01A2'},
+      {'base':'OO','letters':'\uA74E'},
+      {'base':'OU','letters':'\u0222'},
+      {'base':'OE','letters':'\u008C\u0152'},
+      {'base':'oe','letters':'\u009C\u0153'},
+      {'base':'P', 'letters':'\u0050\u24C5\uFF30\u1E54\u1E56\u01A4\u2C63\uA750\uA752\uA754'},
+      {'base':'Q', 'letters':'\u0051\u24C6\uFF31\uA756\uA758\u024A'},
+      {'base':'R', 'letters':'\u0052\u24C7\uFF32\u0154\u1E58\u0158\u0210\u0212\u1E5A\u1E5C\u0156\u1E5E\u024C\u2C64\uA75A\uA7A6\uA782'},
+      {'base':'S', 'letters':'\u0053\u24C8\uFF33\u1E9E\u015A\u1E64\u015C\u1E60\u0160\u1E66\u1E62\u1E68\u0218\u015E\u2C7E\uA7A8\uA784'},
+      {'base':'T', 'letters':'\u0054\u24C9\uFF34\u1E6A\u0164\u1E6C\u021A\u0162\u1E70\u1E6E\u0166\u01AC\u01AE\u023E\uA786'},
+      {'base':'TZ','letters':'\uA728'},
+      {'base':'U', 'letters':'\u0055\u24CA\uFF35\u00D9\u00DA\u00DB\u0168\u1E78\u016A\u1E7A\u016C\u00DC\u01DB\u01D7\u01D5\u01D9\u1EE6\u016E\u0170\u01D3\u0214\u0216\u01AF\u1EEA\u1EE8\u1EEE\u1EEC\u1EF0\u1EE4\u1E72\u0172\u1E76\u1E74\u0244'},
+      {'base':'V', 'letters':'\u0056\u24CB\uFF36\u1E7C\u1E7E\u01B2\uA75E\u0245'},
+      {'base':'VY','letters':'\uA760'},
+      {'base':'W', 'letters':'\u0057\u24CC\uFF37\u1E80\u1E82\u0174\u1E86\u1E84\u1E88\u2C72'},
+      {'base':'X', 'letters':'\u0058\u24CD\uFF38\u1E8A\u1E8C'},
+      {'base':'Y', 'letters':'\u0059\u24CE\uFF39\u1EF2\u00DD\u0176\u1EF8\u0232\u1E8E\u0178\u1EF6\u1EF4\u01B3\u024E\u1EFE'},
+      {'base':'Z', 'letters':'\u005A\u24CF\uFF3A\u0179\u1E90\u017B\u017D\u1E92\u1E94\u01B5\u0224\u2C7F\u2C6B\uA762'},
+      {'base':'a', 'letters':'\u0061\u24D0\uFF41\u1E9A\u00E0\u00E1\u00E2\u1EA7\u1EA5\u1EAB\u1EA9\u00E3\u0101\u0103\u1EB1\u1EAF\u1EB5\u1EB3\u0227\u01E1\u00E4\u01DF\u1EA3\u00E5\u01FB\u01CE\u0201\u0203\u1EA1\u1EAD\u1EB7\u1E01\u0105\u2C65\u0250'},
+      {'base':'aa','letters':'\uA733'},
+      {'base':'ae','letters':'\u00E6\u01FD\u01E3'},
+      {'base':'ao','letters':'\uA735'},
+      {'base':'au','letters':'\uA737'},
+      {'base':'av','letters':'\uA739\uA73B'},
+      {'base':'ay','letters':'\uA73D'},
+      {'base':'b', 'letters':'\u0062\u24D1\uFF42\u1E03\u1E05\u1E07\u0180\u0183\u0253'},
+      {'base':'c', 'letters':'\u0063\u24D2\uFF43\u0107\u0109\u010B\u010D\u00E7\u1E09\u0188\u023C\uA73F\u2184'},
+      {'base':'d', 'letters':'\u0064\u24D3\uFF44\u1E0B\u010F\u1E0D\u1E11\u1E13\u1E0F\u0111\u018C\u0256\u0257\uA77A'},
+      {'base':'dz','letters':'\u01F3\u01C6'},
+      {'base':'e', 'letters':'\u0065\u24D4\uFF45\u00E8\u00E9\u00EA\u1EC1\u1EBF\u1EC5\u1EC3\u1EBD\u0113\u1E15\u1E17\u0115\u0117\u00EB\u1EBB\u011B\u0205\u0207\u1EB9\u1EC7\u0229\u1E1D\u0119\u1E19\u1E1B\u0247\u025B\u01DD'},
+      {'base':'f', 'letters':'\u0066\u24D5\uFF46\u1E1F\u0192\uA77C'},
+      {'base':'g', 'letters':'\u0067\u24D6\uFF47\u01F5\u011D\u1E21\u011F\u0121\u01E7\u0123\u01E5\u0260\uA7A1\u1D79\uA77F'},
+      {'base':'h', 'letters':'\u0068\u24D7\uFF48\u0125\u1E23\u1E27\u021F\u1E25\u1E29\u1E2B\u1E96\u0127\u2C68\u2C76\u0265'},
+      {'base':'hv','letters':'\u0195'},
+      {'base':'i', 'letters':'\u0069\u24D8\uFF49\u00EC\u00ED\u00EE\u0129\u012B\u012D\u00EF\u1E2F\u1EC9\u01D0\u0209\u020B\u1ECB\u012F\u1E2D\u0268\u0131'},
+      {'base':'j', 'letters':'\u006A\u24D9\uFF4A\u0135\u01F0\u0249'},
+      {'base':'k', 'letters':'\u006B\u24DA\uFF4B\u1E31\u01E9\u1E33\u0137\u1E35\u0199\u2C6A\uA741\uA743\uA745\uA7A3'},
+      {'base':'l', 'letters':'\u006C\u24DB\uFF4C\u0140\u013A\u013E\u1E37\u1E39\u013C\u1E3D\u1E3B\u017F\u0142\u019A\u026B\u2C61\uA749\uA781\uA747'},
+      {'base':'lj','letters':'\u01C9'},
+      {'base':'m', 'letters':'\u006D\u24DC\uFF4D\u1E3F\u1E41\u1E43\u0271\u026F'},
+      {'base':'n', 'letters':'\u006E\u24DD\uFF4E\u01F9\u0144\u00F1\u1E45\u0148\u1E47\u0146\u1E4B\u1E49\u019E\u0272\u0149\uA791\uA7A5'},
+      {'base':'nj','letters':'\u01CC'},
+      {'base':'o', 'letters':'\u006F\u24DE\uFF4F\u00F2\u00F3\u00F4\u1ED3\u1ED1\u1ED7\u1ED5\u00F5\u1E4D\u022D\u1E4F\u014D\u1E51\u1E53\u014F\u022F\u0231\u00F6\u022B\u1ECF\u0151\u01D2\u020D\u020F\u01A1\u1EDD\u1EDB\u1EE1\u1EDF\u1EE3\u1ECD\u1ED9\u01EB\u01ED\u00F8\u01FF\u0254\uA74B\uA74D\u0275'},
+      {'base':'oi','letters':'\u01A3'},
+      {'base':'ou','letters':'\u0223'},
+      {'base':'oo','letters':'\uA74F'},
+      {'base':'p','letters':'\u0070\u24DF\uFF50\u1E55\u1E57\u01A5\u1D7D\uA751\uA753\uA755'},
+      {'base':'q','letters':'\u0071\u24E0\uFF51\u024B\uA757\uA759'},
+      {'base':'r','letters':'\u0072\u24E1\uFF52\u0155\u1E59\u0159\u0211\u0213\u1E5B\u1E5D\u0157\u1E5F\u024D\u027D\uA75B\uA7A7\uA783'},
+      {'base':'s','letters':'\u0073\u24E2\uFF53\u00DF\u015B\u1E65\u015D\u1E61\u0161\u1E67\u1E63\u1E69\u0219\u015F\u023F\uA7A9\uA785\u1E9B'},
+      {'base':'t','letters':'\u0074\u24E3\uFF54\u1E6B\u1E97\u0165\u1E6D\u021B\u0163\u1E71\u1E6F\u0167\u01AD\u0288\u2C66\uA787'},
+      {'base':'tz','letters':'\uA729'},
+      {'base':'u','letters': '\u0075\u24E4\uFF55\u00F9\u00FA\u00FB\u0169\u1E79\u016B\u1E7B\u016D\u00FC\u01DC\u01D8\u01D6\u01DA\u1EE7\u016F\u0171\u01D4\u0215\u0217\u01B0\u1EEB\u1EE9\u1EEF\u1EED\u1EF1\u1EE5\u1E73\u0173\u1E77\u1E75\u0289'},
+      {'base':'v','letters':'\u0076\u24E5\uFF56\u1E7D\u1E7F\u028B\uA75F\u028C'},
+      {'base':'vy','letters':'\uA761'},
+      {'base':'w','letters':'\u0077\u24E6\uFF57\u1E81\u1E83\u0175\u1E87\u1E85\u1E98\u1E89\u2C73'},
+      {'base':'x','letters':'\u0078\u24E7\uFF58\u1E8B\u1E8D'},
+      {'base':'y','letters':'\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF'},
+      {'base':'z','letters':'\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763'}
+    ];
+
+    var diacriticsMap = {};
+    for (var i = 0; i < defaultDiacriticsRemovalap.length; i++) {
+      var letters = defaultDiacriticsRemovalap[i].letters.split("");
+      for (var j = 0; j < letters.length ; j++){
+        diacriticsMap[letters[j]] = defaultDiacriticsRemovalap[i].base;
+      }
+    }
+
+    // "what?" version ... http://jsperf.com/diacritics/12
+    function removeDiacritics (str) {
+      return str.replace(/[^\u0000-\u007E]/g, function(a){
+        return diacriticsMap[a] || a;
+      });
+    }
+
+    return function (input) {
+
+      return isString(input)
+        ? removeDiacritics(input)
+        : input;
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name ltrim
+ * @kind function
+ *
+ * @description
+ * Left trim. Similar to trimFilter, but only for left side.
+ */
+angular.module('a8m.ltrim', [])
+  .filter('ltrim', function () {
+    return function(input, chars) {
+
+      var trim = chars || '\\s';
+
+      return isString(input)
+        ? input.replace(new RegExp('^' + trim + '+'), '')
+        : input;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name match
+ * @kind function
+ *
+ * @description
+ * Return the matched pattern in a string.
+ */
+angular.module('a8m.match', [])
+  .filter('match', function () {
+    return function (input, pattern, flag) {
+
+      var reg = new RegExp(pattern, flag);
+
+      return isString(input)
+        ? input.match(reg)
+        : null;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name phone-us
+ * @kind function
+ *
+ * @description
+ * format a string or a number into a us-style
+ * phone number in the form (***) ***-****
+ */
+angular.module('a8m.phoneUS', [])
+  .filter('phoneUS', function () {
+    return function(num) {
+      num += '';
+      return '(' + num.slice(0, 3) + ') ' + num.slice(3, 6) + '-' + num.slice(6);
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name repeat
+ * @kind function
+ *
+ * @description
+ * Repeats a string n times
+ */
+angular.module('a8m.repeat', [])
+  .filter('repeat',[ function () {
+    return function (input, n, separator) {
+
+      var times = ~~n;
+
+      if(!isString(input)) {
+        return input;
+      }
+
+      return !times
+        ? input
+        : strRepeat(input, --n, separator || '');
+    }
+  }]);
+
+/**
+ * Repeats a string n times with given separator
+ * @param str string to repeat
+ * @param n number of times
+ * @param sep separator
+ * @returns {*}
+ */
+function strRepeat(str, n, sep) {
+  if(!n) {
+    return str;
+  }
+  return str + sep + strRepeat(str, --n, sep);
+}
+/**
+* @ngdoc filter
+* @name rtrim
+* @kind function
+*
+* @description
+* Right trim. Similar to trimFilter, but only for right side.
+*/
+angular.module('a8m.rtrim', [])
+  .filter('rtrim', function () {
+    return function(input, chars) {
+
+      var trim = chars || '\\s';
+
+      return isString(input)
+        ? input.replace(new RegExp(trim + '+$'), '')
+        : input;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name slugify
+ * @kind function
+ *
+ * @description
+ * remove spaces from string, replace with "-" or given argument
+ */
+angular.module('a8m.slugify', [])
+  .filter('slugify',[ function () {
+    return function (input, sub) {
+
+      var replace = (isUndefined(sub)) ? '-' : sub;
+
+      return isString(input)
+        ? input.toLowerCase().replace(/\s+/g, replace)
+        : input;
+    }
+  }]);
+
+/**
+ * @ngdoc filter
+ * @name split
+ * @kind function
+ *
+ * @description
+ * split a string by a provided delimiter (none '' by default) and skip first n-delimiters
+ */
+angular.module('a8m.split', [])
+  .filter('split', function () {
+    function escapeRegExp(str) {
+      return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
+
+    return function (input, delimiter, skip) {
+      var _regexp, _matches, _splitted, _temp;
+
+      if (isUndefined(input) || !isString(input)) {
+        return null;
+      }
+      if (isUndefined(delimiter)) delimiter = '';
+      if (isNaN(skip)) skip = 0;
+
+      _regexp = new RegExp(escapeRegExp(delimiter), 'g');
+      _matches = input.match(_regexp);
+      
+      if (isNull(_matches) || skip >= _matches.length) {
+        return [input];
+      }
+
+      if (skip === 0) return input.split(delimiter);
+      
+      _splitted = input.split(delimiter);
+      _temp = _splitted.splice(0, skip + 1);
+      _splitted.unshift(_temp.join(delimiter));
+    
+      return _splitted;
+    };
+  })
+;
+
+/**
+ * @ngdoc filter
+ * @name startWith
+ * @kind function
+ *
+ * @description
+ * checks whether string starts with the starts parameter.
+ */
+angular.module('a8m.starts-with', [])
+  .filter('startsWith', function () {
+    return function (input, start, csensitive) {
+
+      var sensitive = csensitive || false;
+
+      if(!isString(input) || isUndefined(start)) {
+        return input;
+      }
+
+      input = (sensitive) ? input : input.toLowerCase();
+
+      return !input.indexOf((sensitive) ? start : start.toLowerCase());
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name stringular
+ * @kind function
+ *
+ * @description
+ * get string with {n} and replace match with enumeration values
+ */
+angular.module('a8m.stringular', [])
+  .filter('stringular', function () {
+    return function(input) {
+
+      var args = Array.prototype.slice.call(arguments, 1);
+
+      return input.replace(/{(\d+)}/g, function (match, number) {
+        return isUndefined(args[number]) ? match : args[number];
+      });
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name stripTags
+ * @kind function
+ *
+ * @description
+ * strip html tags from string
+ */
+angular.module('a8m.strip-tags', [])
+  .filter('stripTags', function () {
+    return function(input) {
+      return isString(input)
+        ? input.replace(/<\S[^><]*>/g, '')
+        : input;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name test
+ * @kind function
+ *
+ * @description
+ * test if a string match a pattern.
+ */
+angular.module('a8m.test', [])
+  .filter('test', function () {
+    return function (input, pattern, flag) {
+
+      var reg = new RegExp(pattern, flag);
+
+      return isString(input)
+        ? reg.test(input)
+        : input;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name trim
+ * @kind function
+ *
+ * @description
+ *  Strip whitespace (or other characters) from the beginning and end of a string
+ */
+angular.module('a8m.trim', [])
+  .filter('trim', function () {
+    return function(input, chars) {
+
+      var trim = chars || '\\s';
+
+      return isString(input)
+        ? input.replace(new RegExp('^' + trim + '+|' + trim + '+$', 'g'), '')
+        : input;
+    }
+  });
+
+/**
+ * @ngdoc filter
+ * @name truncate
+ * @kind function
+ *
+ * @description
+ * truncates a string given a specified length, providing a custom string to denote an omission.
+ */
+angular.module('a8m.truncate', [])
+  .filter('truncate', function () {
+    return function(input, length, suffix, preserve) {
+
+      length = isUndefined(length) ? input.length : length;
+      preserve = preserve || false;
+      suffix = suffix || '';
+
+      if(!isString(input) || (input.length <= length)) return input;
+
+      return input.substring(0, (preserve)
+        ? ((input.indexOf(' ', length) === -1) ? input.length : input.indexOf(' ', length))
+        : length) + suffix;
+    };
+  });
+
+/**
+ * @ngdoc filter
+ * @name ucfirst
+ * @kind function
+ *
+ * @description
+ * ucfirst
+ */
+angular.module('a8m.ucfirst', [])
+  .filter({
+    ucfirst: ucfirstFilter,
+    titleize: ucfirstFilter
+  });
+
+function ucfirstFilter() {
+  return function (input) {
+    return isString(input)
+      ? input
+      .split(' ')
+      .map(function (ch) {
+        return ch.charAt(0).toUpperCase() + ch.substring(1);
+      })
+      .join(' ')
+      : input;
+  }
+}
+
+/**
+ * @ngdoc filter
+ * @name uriComponentEncode
+ * @kind function
+ *
+ * @description
+ * get string as parameter and return encoded string
+ */
+angular.module('a8m.uri-component-encode', [])
+  .filter('uriComponentEncode',['$window', function ($window) {
+      return function (input) {
+        return isString(input)
+          ? $window.encodeURIComponent(input)
+          : input;
+      }
+    }]);
+
+/**
+ * @ngdoc filter
+ * @name uriEncode
+ * @kind function
+ *
+ * @description
+ * get string as parameter and return encoded string
+ */
+angular.module('a8m.uri-encode', [])
+  .filter('uriEncode',['$window', function ($window) {
+      return function (input) {
+        return isString(input)
+          ? $window.encodeURI(input)
+          : input;
+      }
+    }]);
+
+/**
+ * @ngdoc filter
+ * @name wrap
+ * @kind function
+ *
+ * @description
+ * Wrap a string with another string
+ */
+angular.module('a8m.wrap', [])
+  .filter('wrap', function () {
+    return function(input, wrap, ends) {
+      return isString(input) && isDefined(wrap)
+        ? [wrap, input, ends || wrap].join('')
+        : input;
+    }
+  });
+
+/**
+ * @ngdoc provider
+ * @name filterWatcher
+ * @kind function
+ *
+ * @description
+ * store specific filters result in $$cache, based on scope life time(avoid memory leak).
+ * on scope.$destroy remove it's cache from $$cache container
+ */
+
+angular.module('a8m.filter-watcher', [])
+  .provider('filterWatcher', function() {
+
+    this.$get = ['$window', '$rootScope', function($window, $rootScope) {
+
+      /**
+       * Cache storing
+       * @type {Object}
+       */
+      var $$cache = {};
+
+      /**
+       * Scope listeners container
+       * scope.$destroy => remove all cache keys
+       * bind to current scope.
+       * @type {Object}
+       */
+      var $$listeners = {};
+
+      /**
+       * $timeout without triggering the digest cycle
+       * @type {function}
+       */
+      var $$timeout = $window.setTimeout;
+
+      /**
+       * @description
+       * get `HashKey` string based on the given arguments.
+       * @param fName
+       * @param args
+       * @returns {string}
+       */
+      function getHashKey(fName, args) {
+        function replacerFactory() {
+          var cache = [];
+          return function(key, val) {
+            if(isObject(val) && !isNull(val)) {
+              if (~cache.indexOf(val)) return '[Circular]';
+              cache.push(val)
+            }
+            if($window == val) return '$WINDOW';
+            if($window.document == val) return '$DOCUMENT';
+            if(isScope(val)) return '$SCOPE';
+            return val;
+          }
+        }
+        return [fName, JSON.stringify(args, replacerFactory())]
+          .join('#')
+          .replace(/"/g,'');
+      }
+
+      /**
+       * @description
+       * fir on $scope.$destroy,
+       * remove cache based scope from `$$cache`,
+       * and remove itself from `$$listeners`
+       * @param event
+       */
+      function removeCache(event) {
+        var id = event.targetScope.$id;
+        forEach($$listeners[id], function(key) {
+          delete $$cache[key];
+        });
+        delete $$listeners[id];
+      }
+
+      /**
+       * @description
+       * for angular version that greater than v.1.3.0
+       * it clear cache when the digest cycle is end.
+       */
+      function cleanStateless() {
+        $$timeout(function() {
+          if(!$rootScope.$$phase)
+            $$cache = {};
+        }, 2000);
+      }
+
+      /**
+       * @description
+       * Store hashKeys in $$listeners container
+       * on scope.$destroy, remove them all(bind an event).
+       * @param scope
+       * @param hashKey
+       * @returns {*}
+       */
+      function addListener(scope, hashKey) {
+        var id = scope.$id;
+        if(isUndefined($$listeners[id])) {
+          scope.$on('$destroy', removeCache);
+          $$listeners[id] = [];
+        }
+        return $$listeners[id].push(hashKey);
+      }
+
+      /**
+       * @description
+       * return the `cacheKey` or undefined.
+       * @param filterName
+       * @param args
+       * @returns {*}
+       */
+      function $$isMemoized(filterName, args) {
+        var hashKey = getHashKey(filterName, args);
+        return $$cache[hashKey];
+      }
+
+      /**
+       * @description
+       * store `result` in `$$cache` container, based on the hashKey.
+       * add $destroy listener and return result
+       * @param filterName
+       * @param args
+       * @param scope
+       * @param result
+       * @returns {*}
+       */
+      function $$memoize(filterName, args, scope, result) {
+        var hashKey = getHashKey(filterName, args);
+        //store result in `$$cache` container
+        $$cache[hashKey] = result;
+        // for angular versions that less than 1.3
+        // add to `$destroy` listener, a cleaner callback
+        if(isScope(scope)) {
+          addListener(scope, hashKey);
+        } else {
+          cleanStateless();
+        }
+        return result;
+      }
+
+      return {
+        isMemoized: $$isMemoized,
+        memoize: $$memoize
+      }
+    }];
+  });
+  
+
+/**
+ * @ngdoc module
+ * @name angular.filters
+ * @description
+ * Bunch of useful filters for angularJS
+ */
+
+angular.module('angular.filter', [
+
+  'a8m.ucfirst',
+  'a8m.uri-encode',
+  'a8m.uri-component-encode',
+  'a8m.slugify',
+  'a8m.latinize',
+  'a8m.strip-tags',
+  'a8m.stringular',
+  'a8m.truncate',
+  'a8m.starts-with',
+  'a8m.ends-with',
+  'a8m.wrap',
+  'a8m.trim',
+  'a8m.ltrim',
+  'a8m.rtrim',
+  'a8m.repeat',
+  'a8m.test',
+  'a8m.match',
+  'a8m.split',
+
+  'a8m.to-array',
+  'a8m.concat',
+  'a8m.contains',
+  'a8m.unique',
+  'a8m.is-empty',
+  'a8m.after',
+  'a8m.after-where',
+  'a8m.before',
+  'a8m.before-where',
+  'a8m.defaults',
+  'a8m.where',
+  'a8m.reverse',
+  'a8m.remove',
+  'a8m.remove-with',
+  'a8m.group-by',
+  'a8m.count-by',
+  'a8m.chunk-by',
+  'a8m.search-field',
+  'a8m.fuzzy-by',
+  'a8m.fuzzy',
+  'a8m.omit',
+  'a8m.pick',
+  'a8m.every',
+  'a8m.filter-by',
+  'a8m.xor',
+  'a8m.map',
+  'a8m.first',
+  'a8m.last',
+  'a8m.flatten',
+  'a8m.join',
+  'a8m.range',
+
+  'a8m.math.max',
+  'a8m.math.min',
+  'a8m.math.abs',
+  'a8m.math.percent',
+  'a8m.math.radix',
+  'a8m.math.sum',
+  'a8m.math.degrees',
+  'a8m.math.radians',
+  'a8m.math.byteFmt',
+  'a8m.math.kbFmt',
+  'a8m.math.shortFmt',
+
+  'a8m.angular',
+  'a8m.conditions',
+  'a8m.is-null',
+
+  'a8m.filter-watcher'
+]);
+})( window, window.angular );
 /*! jQuery v2.1.4 | (c) 2005, 2015 jQuery Foundation, Inc. | jquery.org/license */
 !function(a,b){"object"==typeof module&&"object"==typeof module.exports?module.exports=a.document?b(a,!0):function(a){if(!a.document)throw new Error("jQuery requires a window with a document");return b(a)}:b(a)}("undefined"!=typeof window?window:this,function(a,b){var c=[],d=c.slice,e=c.concat,f=c.push,g=c.indexOf,h={},i=h.toString,j=h.hasOwnProperty,k={},l=a.document,m="2.1.4",n=function(a,b){return new n.fn.init(a,b)},o=/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,p=/^-ms-/,q=/-([\da-z])/gi,r=function(a,b){return b.toUpperCase()};n.fn=n.prototype={jquery:m,constructor:n,selector:"",length:0,toArray:function(){return d.call(this)},get:function(a){return null!=a?0>a?this[a+this.length]:this[a]:d.call(this)},pushStack:function(a){var b=n.merge(this.constructor(),a);return b.prevObject=this,b.context=this.context,b},each:function(a,b){return n.each(this,a,b)},map:function(a){return this.pushStack(n.map(this,function(b,c){return a.call(b,c,b)}))},slice:function(){return this.pushStack(d.apply(this,arguments))},first:function(){return this.eq(0)},last:function(){return this.eq(-1)},eq:function(a){var b=this.length,c=+a+(0>a?b:0);return this.pushStack(c>=0&&b>c?[this[c]]:[])},end:function(){return this.prevObject||this.constructor(null)},push:f,sort:c.sort,splice:c.splice},n.extend=n.fn.extend=function(){var a,b,c,d,e,f,g=arguments[0]||{},h=1,i=arguments.length,j=!1;for("boolean"==typeof g&&(j=g,g=arguments[h]||{},h++),"object"==typeof g||n.isFunction(g)||(g={}),h===i&&(g=this,h--);i>h;h++)if(null!=(a=arguments[h]))for(b in a)c=g[b],d=a[b],g!==d&&(j&&d&&(n.isPlainObject(d)||(e=n.isArray(d)))?(e?(e=!1,f=c&&n.isArray(c)?c:[]):f=c&&n.isPlainObject(c)?c:{},g[b]=n.extend(j,f,d)):void 0!==d&&(g[b]=d));return g},n.extend({expando:"jQuery"+(m+Math.random()).replace(/\D/g,""),isReady:!0,error:function(a){throw new Error(a)},noop:function(){},isFunction:function(a){return"function"===n.type(a)},isArray:Array.isArray,isWindow:function(a){return null!=a&&a===a.window},isNumeric:function(a){return!n.isArray(a)&&a-parseFloat(a)+1>=0},isPlainObject:function(a){return"object"!==n.type(a)||a.nodeType||n.isWindow(a)?!1:a.constructor&&!j.call(a.constructor.prototype,"isPrototypeOf")?!1:!0},isEmptyObject:function(a){var b;for(b in a)return!1;return!0},type:function(a){return null==a?a+"":"object"==typeof a||"function"==typeof a?h[i.call(a)]||"object":typeof a},globalEval:function(a){var b,c=eval;a=n.trim(a),a&&(1===a.indexOf("use strict")?(b=l.createElement("script"),b.text=a,l.head.appendChild(b).parentNode.removeChild(b)):c(a))},camelCase:function(a){return a.replace(p,"ms-").replace(q,r)},nodeName:function(a,b){return a.nodeName&&a.nodeName.toLowerCase()===b.toLowerCase()},each:function(a,b,c){var d,e=0,f=a.length,g=s(a);if(c){if(g){for(;f>e;e++)if(d=b.apply(a[e],c),d===!1)break}else for(e in a)if(d=b.apply(a[e],c),d===!1)break}else if(g){for(;f>e;e++)if(d=b.call(a[e],e,a[e]),d===!1)break}else for(e in a)if(d=b.call(a[e],e,a[e]),d===!1)break;return a},trim:function(a){return null==a?"":(a+"").replace(o,"")},makeArray:function(a,b){var c=b||[];return null!=a&&(s(Object(a))?n.merge(c,"string"==typeof a?[a]:a):f.call(c,a)),c},inArray:function(a,b,c){return null==b?-1:g.call(b,a,c)},merge:function(a,b){for(var c=+b.length,d=0,e=a.length;c>d;d++)a[e++]=b[d];return a.length=e,a},grep:function(a,b,c){for(var d,e=[],f=0,g=a.length,h=!c;g>f;f++)d=!b(a[f],f),d!==h&&e.push(a[f]);return e},map:function(a,b,c){var d,f=0,g=a.length,h=s(a),i=[];if(h)for(;g>f;f++)d=b(a[f],f,c),null!=d&&i.push(d);else for(f in a)d=b(a[f],f,c),null!=d&&i.push(d);return e.apply([],i)},guid:1,proxy:function(a,b){var c,e,f;return"string"==typeof b&&(c=a[b],b=a,a=c),n.isFunction(a)?(e=d.call(arguments,2),f=function(){return a.apply(b||this,e.concat(d.call(arguments)))},f.guid=a.guid=a.guid||n.guid++,f):void 0},now:Date.now,support:k}),n.each("Boolean Number String Function Array Date RegExp Object Error".split(" "),function(a,b){h["[object "+b+"]"]=b.toLowerCase()});function s(a){var b="length"in a&&a.length,c=n.type(a);return"function"===c||n.isWindow(a)?!1:1===a.nodeType&&b?!0:"array"===c||0===b||"number"==typeof b&&b>0&&b-1 in a}var t=function(a){var b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u="sizzle"+1*new Date,v=a.document,w=0,x=0,y=ha(),z=ha(),A=ha(),B=function(a,b){return a===b&&(l=!0),0},C=1<<31,D={}.hasOwnProperty,E=[],F=E.pop,G=E.push,H=E.push,I=E.slice,J=function(a,b){for(var c=0,d=a.length;d>c;c++)if(a[c]===b)return c;return-1},K="checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",L="[\\x20\\t\\r\\n\\f]",M="(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",N=M.replace("w","w#"),O="\\["+L+"*("+M+")(?:"+L+"*([*^$|!~]?=)"+L+"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|("+N+"))|)"+L+"*\\]",P=":("+M+")(?:\\((('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|((?:\\\\.|[^\\\\()[\\]]|"+O+")*)|.*)\\)|)",Q=new RegExp(L+"+","g"),R=new RegExp("^"+L+"+|((?:^|[^\\\\])(?:\\\\.)*)"+L+"+$","g"),S=new RegExp("^"+L+"*,"+L+"*"),T=new RegExp("^"+L+"*([>+~]|"+L+")"+L+"*"),U=new RegExp("="+L+"*([^\\]'\"]*?)"+L+"*\\]","g"),V=new RegExp(P),W=new RegExp("^"+N+"$"),X={ID:new RegExp("^#("+M+")"),CLASS:new RegExp("^\\.("+M+")"),TAG:new RegExp("^("+M.replace("w","w*")+")"),ATTR:new RegExp("^"+O),PSEUDO:new RegExp("^"+P),CHILD:new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\("+L+"*(even|odd|(([+-]|)(\\d*)n|)"+L+"*(?:([+-]|)"+L+"*(\\d+)|))"+L+"*\\)|)","i"),bool:new RegExp("^(?:"+K+")$","i"),needsContext:new RegExp("^"+L+"*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\("+L+"*((?:-\\d)?\\d*)"+L+"*\\)|)(?=[^-]|$)","i")},Y=/^(?:input|select|textarea|button)$/i,Z=/^h\d$/i,$=/^[^{]+\{\s*\[native \w/,_=/^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,aa=/[+~]/,ba=/'|\\/g,ca=new RegExp("\\\\([\\da-f]{1,6}"+L+"?|("+L+")|.)","ig"),da=function(a,b,c){var d="0x"+b-65536;return d!==d||c?b:0>d?String.fromCharCode(d+65536):String.fromCharCode(d>>10|55296,1023&d|56320)},ea=function(){m()};try{H.apply(E=I.call(v.childNodes),v.childNodes),E[v.childNodes.length].nodeType}catch(fa){H={apply:E.length?function(a,b){G.apply(a,I.call(b))}:function(a,b){var c=a.length,d=0;while(a[c++]=b[d++]);a.length=c-1}}}function ga(a,b,d,e){var f,h,j,k,l,o,r,s,w,x;if((b?b.ownerDocument||b:v)!==n&&m(b),b=b||n,d=d||[],k=b.nodeType,"string"!=typeof a||!a||1!==k&&9!==k&&11!==k)return d;if(!e&&p){if(11!==k&&(f=_.exec(a)))if(j=f[1]){if(9===k){if(h=b.getElementById(j),!h||!h.parentNode)return d;if(h.id===j)return d.push(h),d}else if(b.ownerDocument&&(h=b.ownerDocument.getElementById(j))&&t(b,h)&&h.id===j)return d.push(h),d}else{if(f[2])return H.apply(d,b.getElementsByTagName(a)),d;if((j=f[3])&&c.getElementsByClassName)return H.apply(d,b.getElementsByClassName(j)),d}if(c.qsa&&(!q||!q.test(a))){if(s=r=u,w=b,x=1!==k&&a,1===k&&"object"!==b.nodeName.toLowerCase()){o=g(a),(r=b.getAttribute("id"))?s=r.replace(ba,"\\$&"):b.setAttribute("id",s),s="[id='"+s+"'] ",l=o.length;while(l--)o[l]=s+ra(o[l]);w=aa.test(a)&&pa(b.parentNode)||b,x=o.join(",")}if(x)try{return H.apply(d,w.querySelectorAll(x)),d}catch(y){}finally{r||b.removeAttribute("id")}}}return i(a.replace(R,"$1"),b,d,e)}function ha(){var a=[];function b(c,e){return a.push(c+" ")>d.cacheLength&&delete b[a.shift()],b[c+" "]=e}return b}function ia(a){return a[u]=!0,a}function ja(a){var b=n.createElement("div");try{return!!a(b)}catch(c){return!1}finally{b.parentNode&&b.parentNode.removeChild(b),b=null}}function ka(a,b){var c=a.split("|"),e=a.length;while(e--)d.attrHandle[c[e]]=b}function la(a,b){var c=b&&a,d=c&&1===a.nodeType&&1===b.nodeType&&(~b.sourceIndex||C)-(~a.sourceIndex||C);if(d)return d;if(c)while(c=c.nextSibling)if(c===b)return-1;return a?1:-1}function ma(a){return function(b){var c=b.nodeName.toLowerCase();return"input"===c&&b.type===a}}function na(a){return function(b){var c=b.nodeName.toLowerCase();return("input"===c||"button"===c)&&b.type===a}}function oa(a){return ia(function(b){return b=+b,ia(function(c,d){var e,f=a([],c.length,b),g=f.length;while(g--)c[e=f[g]]&&(c[e]=!(d[e]=c[e]))})})}function pa(a){return a&&"undefined"!=typeof a.getElementsByTagName&&a}c=ga.support={},f=ga.isXML=function(a){var b=a&&(a.ownerDocument||a).documentElement;return b?"HTML"!==b.nodeName:!1},m=ga.setDocument=function(a){var b,e,g=a?a.ownerDocument||a:v;return g!==n&&9===g.nodeType&&g.documentElement?(n=g,o=g.documentElement,e=g.defaultView,e&&e!==e.top&&(e.addEventListener?e.addEventListener("unload",ea,!1):e.attachEvent&&e.attachEvent("onunload",ea)),p=!f(g),c.attributes=ja(function(a){return a.className="i",!a.getAttribute("className")}),c.getElementsByTagName=ja(function(a){return a.appendChild(g.createComment("")),!a.getElementsByTagName("*").length}),c.getElementsByClassName=$.test(g.getElementsByClassName),c.getById=ja(function(a){return o.appendChild(a).id=u,!g.getElementsByName||!g.getElementsByName(u).length}),c.getById?(d.find.ID=function(a,b){if("undefined"!=typeof b.getElementById&&p){var c=b.getElementById(a);return c&&c.parentNode?[c]:[]}},d.filter.ID=function(a){var b=a.replace(ca,da);return function(a){return a.getAttribute("id")===b}}):(delete d.find.ID,d.filter.ID=function(a){var b=a.replace(ca,da);return function(a){var c="undefined"!=typeof a.getAttributeNode&&a.getAttributeNode("id");return c&&c.value===b}}),d.find.TAG=c.getElementsByTagName?function(a,b){return"undefined"!=typeof b.getElementsByTagName?b.getElementsByTagName(a):c.qsa?b.querySelectorAll(a):void 0}:function(a,b){var c,d=[],e=0,f=b.getElementsByTagName(a);if("*"===a){while(c=f[e++])1===c.nodeType&&d.push(c);return d}return f},d.find.CLASS=c.getElementsByClassName&&function(a,b){return p?b.getElementsByClassName(a):void 0},r=[],q=[],(c.qsa=$.test(g.querySelectorAll))&&(ja(function(a){o.appendChild(a).innerHTML="<a id='"+u+"'></a><select id='"+u+"-\f]' msallowcapture=''><option selected=''></option></select>",a.querySelectorAll("[msallowcapture^='']").length&&q.push("[*^$]="+L+"*(?:''|\"\")"),a.querySelectorAll("[selected]").length||q.push("\\["+L+"*(?:value|"+K+")"),a.querySelectorAll("[id~="+u+"-]").length||q.push("~="),a.querySelectorAll(":checked").length||q.push(":checked"),a.querySelectorAll("a#"+u+"+*").length||q.push(".#.+[+~]")}),ja(function(a){var b=g.createElement("input");b.setAttribute("type","hidden"),a.appendChild(b).setAttribute("name","D"),a.querySelectorAll("[name=d]").length&&q.push("name"+L+"*[*^$|!~]?="),a.querySelectorAll(":enabled").length||q.push(":enabled",":disabled"),a.querySelectorAll("*,:x"),q.push(",.*:")})),(c.matchesSelector=$.test(s=o.matches||o.webkitMatchesSelector||o.mozMatchesSelector||o.oMatchesSelector||o.msMatchesSelector))&&ja(function(a){c.disconnectedMatch=s.call(a,"div"),s.call(a,"[s!='']:x"),r.push("!=",P)}),q=q.length&&new RegExp(q.join("|")),r=r.length&&new RegExp(r.join("|")),b=$.test(o.compareDocumentPosition),t=b||$.test(o.contains)?function(a,b){var c=9===a.nodeType?a.documentElement:a,d=b&&b.parentNode;return a===d||!(!d||1!==d.nodeType||!(c.contains?c.contains(d):a.compareDocumentPosition&&16&a.compareDocumentPosition(d)))}:function(a,b){if(b)while(b=b.parentNode)if(b===a)return!0;return!1},B=b?function(a,b){if(a===b)return l=!0,0;var d=!a.compareDocumentPosition-!b.compareDocumentPosition;return d?d:(d=(a.ownerDocument||a)===(b.ownerDocument||b)?a.compareDocumentPosition(b):1,1&d||!c.sortDetached&&b.compareDocumentPosition(a)===d?a===g||a.ownerDocument===v&&t(v,a)?-1:b===g||b.ownerDocument===v&&t(v,b)?1:k?J(k,a)-J(k,b):0:4&d?-1:1)}:function(a,b){if(a===b)return l=!0,0;var c,d=0,e=a.parentNode,f=b.parentNode,h=[a],i=[b];if(!e||!f)return a===g?-1:b===g?1:e?-1:f?1:k?J(k,a)-J(k,b):0;if(e===f)return la(a,b);c=a;while(c=c.parentNode)h.unshift(c);c=b;while(c=c.parentNode)i.unshift(c);while(h[d]===i[d])d++;return d?la(h[d],i[d]):h[d]===v?-1:i[d]===v?1:0},g):n},ga.matches=function(a,b){return ga(a,null,null,b)},ga.matchesSelector=function(a,b){if((a.ownerDocument||a)!==n&&m(a),b=b.replace(U,"='$1']"),!(!c.matchesSelector||!p||r&&r.test(b)||q&&q.test(b)))try{var d=s.call(a,b);if(d||c.disconnectedMatch||a.document&&11!==a.document.nodeType)return d}catch(e){}return ga(b,n,null,[a]).length>0},ga.contains=function(a,b){return(a.ownerDocument||a)!==n&&m(a),t(a,b)},ga.attr=function(a,b){(a.ownerDocument||a)!==n&&m(a);var e=d.attrHandle[b.toLowerCase()],f=e&&D.call(d.attrHandle,b.toLowerCase())?e(a,b,!p):void 0;return void 0!==f?f:c.attributes||!p?a.getAttribute(b):(f=a.getAttributeNode(b))&&f.specified?f.value:null},ga.error=function(a){throw new Error("Syntax error, unrecognized expression: "+a)},ga.uniqueSort=function(a){var b,d=[],e=0,f=0;if(l=!c.detectDuplicates,k=!c.sortStable&&a.slice(0),a.sort(B),l){while(b=a[f++])b===a[f]&&(e=d.push(f));while(e--)a.splice(d[e],1)}return k=null,a},e=ga.getText=function(a){var b,c="",d=0,f=a.nodeType;if(f){if(1===f||9===f||11===f){if("string"==typeof a.textContent)return a.textContent;for(a=a.firstChild;a;a=a.nextSibling)c+=e(a)}else if(3===f||4===f)return a.nodeValue}else while(b=a[d++])c+=e(b);return c},d=ga.selectors={cacheLength:50,createPseudo:ia,match:X,attrHandle:{},find:{},relative:{">":{dir:"parentNode",first:!0}," ":{dir:"parentNode"},"+":{dir:"previousSibling",first:!0},"~":{dir:"previousSibling"}},preFilter:{ATTR:function(a){return a[1]=a[1].replace(ca,da),a[3]=(a[3]||a[4]||a[5]||"").replace(ca,da),"~="===a[2]&&(a[3]=" "+a[3]+" "),a.slice(0,4)},CHILD:function(a){return a[1]=a[1].toLowerCase(),"nth"===a[1].slice(0,3)?(a[3]||ga.error(a[0]),a[4]=+(a[4]?a[5]+(a[6]||1):2*("even"===a[3]||"odd"===a[3])),a[5]=+(a[7]+a[8]||"odd"===a[3])):a[3]&&ga.error(a[0]),a},PSEUDO:function(a){var b,c=!a[6]&&a[2];return X.CHILD.test(a[0])?null:(a[3]?a[2]=a[4]||a[5]||"":c&&V.test(c)&&(b=g(c,!0))&&(b=c.indexOf(")",c.length-b)-c.length)&&(a[0]=a[0].slice(0,b),a[2]=c.slice(0,b)),a.slice(0,3))}},filter:{TAG:function(a){var b=a.replace(ca,da).toLowerCase();return"*"===a?function(){return!0}:function(a){return a.nodeName&&a.nodeName.toLowerCase()===b}},CLASS:function(a){var b=y[a+" "];return b||(b=new RegExp("(^|"+L+")"+a+"("+L+"|$)"))&&y(a,function(a){return b.test("string"==typeof a.className&&a.className||"undefined"!=typeof a.getAttribute&&a.getAttribute("class")||"")})},ATTR:function(a,b,c){return function(d){var e=ga.attr(d,a);return null==e?"!="===b:b?(e+="","="===b?e===c:"!="===b?e!==c:"^="===b?c&&0===e.indexOf(c):"*="===b?c&&e.indexOf(c)>-1:"$="===b?c&&e.slice(-c.length)===c:"~="===b?(" "+e.replace(Q," ")+" ").indexOf(c)>-1:"|="===b?e===c||e.slice(0,c.length+1)===c+"-":!1):!0}},CHILD:function(a,b,c,d,e){var f="nth"!==a.slice(0,3),g="last"!==a.slice(-4),h="of-type"===b;return 1===d&&0===e?function(a){return!!a.parentNode}:function(b,c,i){var j,k,l,m,n,o,p=f!==g?"nextSibling":"previousSibling",q=b.parentNode,r=h&&b.nodeName.toLowerCase(),s=!i&&!h;if(q){if(f){while(p){l=b;while(l=l[p])if(h?l.nodeName.toLowerCase()===r:1===l.nodeType)return!1;o=p="only"===a&&!o&&"nextSibling"}return!0}if(o=[g?q.firstChild:q.lastChild],g&&s){k=q[u]||(q[u]={}),j=k[a]||[],n=j[0]===w&&j[1],m=j[0]===w&&j[2],l=n&&q.childNodes[n];while(l=++n&&l&&l[p]||(m=n=0)||o.pop())if(1===l.nodeType&&++m&&l===b){k[a]=[w,n,m];break}}else if(s&&(j=(b[u]||(b[u]={}))[a])&&j[0]===w)m=j[1];else while(l=++n&&l&&l[p]||(m=n=0)||o.pop())if((h?l.nodeName.toLowerCase()===r:1===l.nodeType)&&++m&&(s&&((l[u]||(l[u]={}))[a]=[w,m]),l===b))break;return m-=e,m===d||m%d===0&&m/d>=0}}},PSEUDO:function(a,b){var c,e=d.pseudos[a]||d.setFilters[a.toLowerCase()]||ga.error("unsupported pseudo: "+a);return e[u]?e(b):e.length>1?(c=[a,a,"",b],d.setFilters.hasOwnProperty(a.toLowerCase())?ia(function(a,c){var d,f=e(a,b),g=f.length;while(g--)d=J(a,f[g]),a[d]=!(c[d]=f[g])}):function(a){return e(a,0,c)}):e}},pseudos:{not:ia(function(a){var b=[],c=[],d=h(a.replace(R,"$1"));return d[u]?ia(function(a,b,c,e){var f,g=d(a,null,e,[]),h=a.length;while(h--)(f=g[h])&&(a[h]=!(b[h]=f))}):function(a,e,f){return b[0]=a,d(b,null,f,c),b[0]=null,!c.pop()}}),has:ia(function(a){return function(b){return ga(a,b).length>0}}),contains:ia(function(a){return a=a.replace(ca,da),function(b){return(b.textContent||b.innerText||e(b)).indexOf(a)>-1}}),lang:ia(function(a){return W.test(a||"")||ga.error("unsupported lang: "+a),a=a.replace(ca,da).toLowerCase(),function(b){var c;do if(c=p?b.lang:b.getAttribute("xml:lang")||b.getAttribute("lang"))return c=c.toLowerCase(),c===a||0===c.indexOf(a+"-");while((b=b.parentNode)&&1===b.nodeType);return!1}}),target:function(b){var c=a.location&&a.location.hash;return c&&c.slice(1)===b.id},root:function(a){return a===o},focus:function(a){return a===n.activeElement&&(!n.hasFocus||n.hasFocus())&&!!(a.type||a.href||~a.tabIndex)},enabled:function(a){return a.disabled===!1},disabled:function(a){return a.disabled===!0},checked:function(a){var b=a.nodeName.toLowerCase();return"input"===b&&!!a.checked||"option"===b&&!!a.selected},selected:function(a){return a.parentNode&&a.parentNode.selectedIndex,a.selected===!0},empty:function(a){for(a=a.firstChild;a;a=a.nextSibling)if(a.nodeType<6)return!1;return!0},parent:function(a){return!d.pseudos.empty(a)},header:function(a){return Z.test(a.nodeName)},input:function(a){return Y.test(a.nodeName)},button:function(a){var b=a.nodeName.toLowerCase();return"input"===b&&"button"===a.type||"button"===b},text:function(a){var b;return"input"===a.nodeName.toLowerCase()&&"text"===a.type&&(null==(b=a.getAttribute("type"))||"text"===b.toLowerCase())},first:oa(function(){return[0]}),last:oa(function(a,b){return[b-1]}),eq:oa(function(a,b,c){return[0>c?c+b:c]}),even:oa(function(a,b){for(var c=0;b>c;c+=2)a.push(c);return a}),odd:oa(function(a,b){for(var c=1;b>c;c+=2)a.push(c);return a}),lt:oa(function(a,b,c){for(var d=0>c?c+b:c;--d>=0;)a.push(d);return a}),gt:oa(function(a,b,c){for(var d=0>c?c+b:c;++d<b;)a.push(d);return a})}},d.pseudos.nth=d.pseudos.eq;for(b in{radio:!0,checkbox:!0,file:!0,password:!0,image:!0})d.pseudos[b]=ma(b);for(b in{submit:!0,reset:!0})d.pseudos[b]=na(b);function qa(){}qa.prototype=d.filters=d.pseudos,d.setFilters=new qa,g=ga.tokenize=function(a,b){var c,e,f,g,h,i,j,k=z[a+" "];if(k)return b?0:k.slice(0);h=a,i=[],j=d.preFilter;while(h){(!c||(e=S.exec(h)))&&(e&&(h=h.slice(e[0].length)||h),i.push(f=[])),c=!1,(e=T.exec(h))&&(c=e.shift(),f.push({value:c,type:e[0].replace(R," ")}),h=h.slice(c.length));for(g in d.filter)!(e=X[g].exec(h))||j[g]&&!(e=j[g](e))||(c=e.shift(),f.push({value:c,type:g,matches:e}),h=h.slice(c.length));if(!c)break}return b?h.length:h?ga.error(a):z(a,i).slice(0)};function ra(a){for(var b=0,c=a.length,d="";c>b;b++)d+=a[b].value;return d}function sa(a,b,c){var d=b.dir,e=c&&"parentNode"===d,f=x++;return b.first?function(b,c,f){while(b=b[d])if(1===b.nodeType||e)return a(b,c,f)}:function(b,c,g){var h,i,j=[w,f];if(g){while(b=b[d])if((1===b.nodeType||e)&&a(b,c,g))return!0}else while(b=b[d])if(1===b.nodeType||e){if(i=b[u]||(b[u]={}),(h=i[d])&&h[0]===w&&h[1]===f)return j[2]=h[2];if(i[d]=j,j[2]=a(b,c,g))return!0}}}function ta(a){return a.length>1?function(b,c,d){var e=a.length;while(e--)if(!a[e](b,c,d))return!1;return!0}:a[0]}function ua(a,b,c){for(var d=0,e=b.length;e>d;d++)ga(a,b[d],c);return c}function va(a,b,c,d,e){for(var f,g=[],h=0,i=a.length,j=null!=b;i>h;h++)(f=a[h])&&(!c||c(f,d,e))&&(g.push(f),j&&b.push(h));return g}function wa(a,b,c,d,e,f){return d&&!d[u]&&(d=wa(d)),e&&!e[u]&&(e=wa(e,f)),ia(function(f,g,h,i){var j,k,l,m=[],n=[],o=g.length,p=f||ua(b||"*",h.nodeType?[h]:h,[]),q=!a||!f&&b?p:va(p,m,a,h,i),r=c?e||(f?a:o||d)?[]:g:q;if(c&&c(q,r,h,i),d){j=va(r,n),d(j,[],h,i),k=j.length;while(k--)(l=j[k])&&(r[n[k]]=!(q[n[k]]=l))}if(f){if(e||a){if(e){j=[],k=r.length;while(k--)(l=r[k])&&j.push(q[k]=l);e(null,r=[],j,i)}k=r.length;while(k--)(l=r[k])&&(j=e?J(f,l):m[k])>-1&&(f[j]=!(g[j]=l))}}else r=va(r===g?r.splice(o,r.length):r),e?e(null,g,r,i):H.apply(g,r)})}function xa(a){for(var b,c,e,f=a.length,g=d.relative[a[0].type],h=g||d.relative[" "],i=g?1:0,k=sa(function(a){return a===b},h,!0),l=sa(function(a){return J(b,a)>-1},h,!0),m=[function(a,c,d){var e=!g&&(d||c!==j)||((b=c).nodeType?k(a,c,d):l(a,c,d));return b=null,e}];f>i;i++)if(c=d.relative[a[i].type])m=[sa(ta(m),c)];else{if(c=d.filter[a[i].type].apply(null,a[i].matches),c[u]){for(e=++i;f>e;e++)if(d.relative[a[e].type])break;return wa(i>1&&ta(m),i>1&&ra(a.slice(0,i-1).concat({value:" "===a[i-2].type?"*":""})).replace(R,"$1"),c,e>i&&xa(a.slice(i,e)),f>e&&xa(a=a.slice(e)),f>e&&ra(a))}m.push(c)}return ta(m)}function ya(a,b){var c=b.length>0,e=a.length>0,f=function(f,g,h,i,k){var l,m,o,p=0,q="0",r=f&&[],s=[],t=j,u=f||e&&d.find.TAG("*",k),v=w+=null==t?1:Math.random()||.1,x=u.length;for(k&&(j=g!==n&&g);q!==x&&null!=(l=u[q]);q++){if(e&&l){m=0;while(o=a[m++])if(o(l,g,h)){i.push(l);break}k&&(w=v)}c&&((l=!o&&l)&&p--,f&&r.push(l))}if(p+=q,c&&q!==p){m=0;while(o=b[m++])o(r,s,g,h);if(f){if(p>0)while(q--)r[q]||s[q]||(s[q]=F.call(i));s=va(s)}H.apply(i,s),k&&!f&&s.length>0&&p+b.length>1&&ga.uniqueSort(i)}return k&&(w=v,j=t),r};return c?ia(f):f}return h=ga.compile=function(a,b){var c,d=[],e=[],f=A[a+" "];if(!f){b||(b=g(a)),c=b.length;while(c--)f=xa(b[c]),f[u]?d.push(f):e.push(f);f=A(a,ya(e,d)),f.selector=a}return f},i=ga.select=function(a,b,e,f){var i,j,k,l,m,n="function"==typeof a&&a,o=!f&&g(a=n.selector||a);if(e=e||[],1===o.length){if(j=o[0]=o[0].slice(0),j.length>2&&"ID"===(k=j[0]).type&&c.getById&&9===b.nodeType&&p&&d.relative[j[1].type]){if(b=(d.find.ID(k.matches[0].replace(ca,da),b)||[])[0],!b)return e;n&&(b=b.parentNode),a=a.slice(j.shift().value.length)}i=X.needsContext.test(a)?0:j.length;while(i--){if(k=j[i],d.relative[l=k.type])break;if((m=d.find[l])&&(f=m(k.matches[0].replace(ca,da),aa.test(j[0].type)&&pa(b.parentNode)||b))){if(j.splice(i,1),a=f.length&&ra(j),!a)return H.apply(e,f),e;break}}}return(n||h(a,o))(f,b,!p,e,aa.test(a)&&pa(b.parentNode)||b),e},c.sortStable=u.split("").sort(B).join("")===u,c.detectDuplicates=!!l,m(),c.sortDetached=ja(function(a){return 1&a.compareDocumentPosition(n.createElement("div"))}),ja(function(a){return a.innerHTML="<a href='#'></a>","#"===a.firstChild.getAttribute("href")})||ka("type|href|height|width",function(a,b,c){return c?void 0:a.getAttribute(b,"type"===b.toLowerCase()?1:2)}),c.attributes&&ja(function(a){return a.innerHTML="<input/>",a.firstChild.setAttribute("value",""),""===a.firstChild.getAttribute("value")})||ka("value",function(a,b,c){return c||"input"!==a.nodeName.toLowerCase()?void 0:a.defaultValue}),ja(function(a){return null==a.getAttribute("disabled")})||ka(K,function(a,b,c){var d;return c?void 0:a[b]===!0?b.toLowerCase():(d=a.getAttributeNode(b))&&d.specified?d.value:null}),ga}(a);n.find=t,n.expr=t.selectors,n.expr[":"]=n.expr.pseudos,n.unique=t.uniqueSort,n.text=t.getText,n.isXMLDoc=t.isXML,n.contains=t.contains;var u=n.expr.match.needsContext,v=/^<(\w+)\s*\/?>(?:<\/\1>|)$/,w=/^.[^:#\[\.,]*$/;function x(a,b,c){if(n.isFunction(b))return n.grep(a,function(a,d){return!!b.call(a,d,a)!==c});if(b.nodeType)return n.grep(a,function(a){return a===b!==c});if("string"==typeof b){if(w.test(b))return n.filter(b,a,c);b=n.filter(b,a)}return n.grep(a,function(a){return g.call(b,a)>=0!==c})}n.filter=function(a,b,c){var d=b[0];return c&&(a=":not("+a+")"),1===b.length&&1===d.nodeType?n.find.matchesSelector(d,a)?[d]:[]:n.find.matches(a,n.grep(b,function(a){return 1===a.nodeType}))},n.fn.extend({find:function(a){var b,c=this.length,d=[],e=this;if("string"!=typeof a)return this.pushStack(n(a).filter(function(){for(b=0;c>b;b++)if(n.contains(e[b],this))return!0}));for(b=0;c>b;b++)n.find(a,e[b],d);return d=this.pushStack(c>1?n.unique(d):d),d.selector=this.selector?this.selector+" "+a:a,d},filter:function(a){return this.pushStack(x(this,a||[],!1))},not:function(a){return this.pushStack(x(this,a||[],!0))},is:function(a){return!!x(this,"string"==typeof a&&u.test(a)?n(a):a||[],!1).length}});var y,z=/^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,A=n.fn.init=function(a,b){var c,d;if(!a)return this;if("string"==typeof a){if(c="<"===a[0]&&">"===a[a.length-1]&&a.length>=3?[null,a,null]:z.exec(a),!c||!c[1]&&b)return!b||b.jquery?(b||y).find(a):this.constructor(b).find(a);if(c[1]){if(b=b instanceof n?b[0]:b,n.merge(this,n.parseHTML(c[1],b&&b.nodeType?b.ownerDocument||b:l,!0)),v.test(c[1])&&n.isPlainObject(b))for(c in b)n.isFunction(this[c])?this[c](b[c]):this.attr(c,b[c]);return this}return d=l.getElementById(c[2]),d&&d.parentNode&&(this.length=1,this[0]=d),this.context=l,this.selector=a,this}return a.nodeType?(this.context=this[0]=a,this.length=1,this):n.isFunction(a)?"undefined"!=typeof y.ready?y.ready(a):a(n):(void 0!==a.selector&&(this.selector=a.selector,this.context=a.context),n.makeArray(a,this))};A.prototype=n.fn,y=n(l);var B=/^(?:parents|prev(?:Until|All))/,C={children:!0,contents:!0,next:!0,prev:!0};n.extend({dir:function(a,b,c){var d=[],e=void 0!==c;while((a=a[b])&&9!==a.nodeType)if(1===a.nodeType){if(e&&n(a).is(c))break;d.push(a)}return d},sibling:function(a,b){for(var c=[];a;a=a.nextSibling)1===a.nodeType&&a!==b&&c.push(a);return c}}),n.fn.extend({has:function(a){var b=n(a,this),c=b.length;return this.filter(function(){for(var a=0;c>a;a++)if(n.contains(this,b[a]))return!0})},closest:function(a,b){for(var c,d=0,e=this.length,f=[],g=u.test(a)||"string"!=typeof a?n(a,b||this.context):0;e>d;d++)for(c=this[d];c&&c!==b;c=c.parentNode)if(c.nodeType<11&&(g?g.index(c)>-1:1===c.nodeType&&n.find.matchesSelector(c,a))){f.push(c);break}return this.pushStack(f.length>1?n.unique(f):f)},index:function(a){return a?"string"==typeof a?g.call(n(a),this[0]):g.call(this,a.jquery?a[0]:a):this[0]&&this[0].parentNode?this.first().prevAll().length:-1},add:function(a,b){return this.pushStack(n.unique(n.merge(this.get(),n(a,b))))},addBack:function(a){return this.add(null==a?this.prevObject:this.prevObject.filter(a))}});function D(a,b){while((a=a[b])&&1!==a.nodeType);return a}n.each({parent:function(a){var b=a.parentNode;return b&&11!==b.nodeType?b:null},parents:function(a){return n.dir(a,"parentNode")},parentsUntil:function(a,b,c){return n.dir(a,"parentNode",c)},next:function(a){return D(a,"nextSibling")},prev:function(a){return D(a,"previousSibling")},nextAll:function(a){return n.dir(a,"nextSibling")},prevAll:function(a){return n.dir(a,"previousSibling")},nextUntil:function(a,b,c){return n.dir(a,"nextSibling",c)},prevUntil:function(a,b,c){return n.dir(a,"previousSibling",c)},siblings:function(a){return n.sibling((a.parentNode||{}).firstChild,a)},children:function(a){return n.sibling(a.firstChild)},contents:function(a){return a.contentDocument||n.merge([],a.childNodes)}},function(a,b){n.fn[a]=function(c,d){var e=n.map(this,b,c);return"Until"!==a.slice(-5)&&(d=c),d&&"string"==typeof d&&(e=n.filter(d,e)),this.length>1&&(C[a]||n.unique(e),B.test(a)&&e.reverse()),this.pushStack(e)}});var E=/\S+/g,F={};function G(a){var b=F[a]={};return n.each(a.match(E)||[],function(a,c){b[c]=!0}),b}n.Callbacks=function(a){a="string"==typeof a?F[a]||G(a):n.extend({},a);var b,c,d,e,f,g,h=[],i=!a.once&&[],j=function(l){for(b=a.memory&&l,c=!0,g=e||0,e=0,f=h.length,d=!0;h&&f>g;g++)if(h[g].apply(l[0],l[1])===!1&&a.stopOnFalse){b=!1;break}d=!1,h&&(i?i.length&&j(i.shift()):b?h=[]:k.disable())},k={add:function(){if(h){var c=h.length;!function g(b){n.each(b,function(b,c){var d=n.type(c);"function"===d?a.unique&&k.has(c)||h.push(c):c&&c.length&&"string"!==d&&g(c)})}(arguments),d?f=h.length:b&&(e=c,j(b))}return this},remove:function(){return h&&n.each(arguments,function(a,b){var c;while((c=n.inArray(b,h,c))>-1)h.splice(c,1),d&&(f>=c&&f--,g>=c&&g--)}),this},has:function(a){return a?n.inArray(a,h)>-1:!(!h||!h.length)},empty:function(){return h=[],f=0,this},disable:function(){return h=i=b=void 0,this},disabled:function(){return!h},lock:function(){return i=void 0,b||k.disable(),this},locked:function(){return!i},fireWith:function(a,b){return!h||c&&!i||(b=b||[],b=[a,b.slice?b.slice():b],d?i.push(b):j(b)),this},fire:function(){return k.fireWith(this,arguments),this},fired:function(){return!!c}};return k},n.extend({Deferred:function(a){var b=[["resolve","done",n.Callbacks("once memory"),"resolved"],["reject","fail",n.Callbacks("once memory"),"rejected"],["notify","progress",n.Callbacks("memory")]],c="pending",d={state:function(){return c},always:function(){return e.done(arguments).fail(arguments),this},then:function(){var a=arguments;return n.Deferred(function(c){n.each(b,function(b,f){var g=n.isFunction(a[b])&&a[b];e[f[1]](function(){var a=g&&g.apply(this,arguments);a&&n.isFunction(a.promise)?a.promise().done(c.resolve).fail(c.reject).progress(c.notify):c[f[0]+"With"](this===d?c.promise():this,g?[a]:arguments)})}),a=null}).promise()},promise:function(a){return null!=a?n.extend(a,d):d}},e={};return d.pipe=d.then,n.each(b,function(a,f){var g=f[2],h=f[3];d[f[1]]=g.add,h&&g.add(function(){c=h},b[1^a][2].disable,b[2][2].lock),e[f[0]]=function(){return e[f[0]+"With"](this===e?d:this,arguments),this},e[f[0]+"With"]=g.fireWith}),d.promise(e),a&&a.call(e,e),e},when:function(a){var b=0,c=d.call(arguments),e=c.length,f=1!==e||a&&n.isFunction(a.promise)?e:0,g=1===f?a:n.Deferred(),h=function(a,b,c){return function(e){b[a]=this,c[a]=arguments.length>1?d.call(arguments):e,c===i?g.notifyWith(b,c):--f||g.resolveWith(b,c)}},i,j,k;if(e>1)for(i=new Array(e),j=new Array(e),k=new Array(e);e>b;b++)c[b]&&n.isFunction(c[b].promise)?c[b].promise().done(h(b,k,c)).fail(g.reject).progress(h(b,j,i)):--f;return f||g.resolveWith(k,c),g.promise()}});var H;n.fn.ready=function(a){return n.ready.promise().done(a),this},n.extend({isReady:!1,readyWait:1,holdReady:function(a){a?n.readyWait++:n.ready(!0)},ready:function(a){(a===!0?--n.readyWait:n.isReady)||(n.isReady=!0,a!==!0&&--n.readyWait>0||(H.resolveWith(l,[n]),n.fn.triggerHandler&&(n(l).triggerHandler("ready"),n(l).off("ready"))))}});function I(){l.removeEventListener("DOMContentLoaded",I,!1),a.removeEventListener("load",I,!1),n.ready()}n.ready.promise=function(b){return H||(H=n.Deferred(),"complete"===l.readyState?setTimeout(n.ready):(l.addEventListener("DOMContentLoaded",I,!1),a.addEventListener("load",I,!1))),H.promise(b)},n.ready.promise();var J=n.access=function(a,b,c,d,e,f,g){var h=0,i=a.length,j=null==c;if("object"===n.type(c)){e=!0;for(h in c)n.access(a,b,h,c[h],!0,f,g)}else if(void 0!==d&&(e=!0,n.isFunction(d)||(g=!0),j&&(g?(b.call(a,d),b=null):(j=b,b=function(a,b,c){return j.call(n(a),c)})),b))for(;i>h;h++)b(a[h],c,g?d:d.call(a[h],h,b(a[h],c)));return e?a:j?b.call(a):i?b(a[0],c):f};n.acceptData=function(a){return 1===a.nodeType||9===a.nodeType||!+a.nodeType};function K(){Object.defineProperty(this.cache={},0,{get:function(){return{}}}),this.expando=n.expando+K.uid++}K.uid=1,K.accepts=n.acceptData,K.prototype={key:function(a){if(!K.accepts(a))return 0;var b={},c=a[this.expando];if(!c){c=K.uid++;try{b[this.expando]={value:c},Object.defineProperties(a,b)}catch(d){b[this.expando]=c,n.extend(a,b)}}return this.cache[c]||(this.cache[c]={}),c},set:function(a,b,c){var d,e=this.key(a),f=this.cache[e];if("string"==typeof b)f[b]=c;else if(n.isEmptyObject(f))n.extend(this.cache[e],b);else for(d in b)f[d]=b[d];return f},get:function(a,b){var c=this.cache[this.key(a)];return void 0===b?c:c[b]},access:function(a,b,c){var d;return void 0===b||b&&"string"==typeof b&&void 0===c?(d=this.get(a,b),void 0!==d?d:this.get(a,n.camelCase(b))):(this.set(a,b,c),void 0!==c?c:b)},remove:function(a,b){var c,d,e,f=this.key(a),g=this.cache[f];if(void 0===b)this.cache[f]={};else{n.isArray(b)?d=b.concat(b.map(n.camelCase)):(e=n.camelCase(b),b in g?d=[b,e]:(d=e,d=d in g?[d]:d.match(E)||[])),c=d.length;while(c--)delete g[d[c]]}},hasData:function(a){return!n.isEmptyObject(this.cache[a[this.expando]]||{})},discard:function(a){a[this.expando]&&delete this.cache[a[this.expando]]}};var L=new K,M=new K,N=/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,O=/([A-Z])/g;function P(a,b,c){var d;if(void 0===c&&1===a.nodeType)if(d="data-"+b.replace(O,"-$1").toLowerCase(),c=a.getAttribute(d),"string"==typeof c){try{c="true"===c?!0:"false"===c?!1:"null"===c?null:+c+""===c?+c:N.test(c)?n.parseJSON(c):c}catch(e){}M.set(a,b,c)}else c=void 0;return c}n.extend({hasData:function(a){return M.hasData(a)||L.hasData(a)},data:function(a,b,c){
 return M.access(a,b,c)},removeData:function(a,b){M.remove(a,b)},_data:function(a,b,c){return L.access(a,b,c)},_removeData:function(a,b){L.remove(a,b)}}),n.fn.extend({data:function(a,b){var c,d,e,f=this[0],g=f&&f.attributes;if(void 0===a){if(this.length&&(e=M.get(f),1===f.nodeType&&!L.get(f,"hasDataAttrs"))){c=g.length;while(c--)g[c]&&(d=g[c].name,0===d.indexOf("data-")&&(d=n.camelCase(d.slice(5)),P(f,d,e[d])));L.set(f,"hasDataAttrs",!0)}return e}return"object"==typeof a?this.each(function(){M.set(this,a)}):J(this,function(b){var c,d=n.camelCase(a);if(f&&void 0===b){if(c=M.get(f,a),void 0!==c)return c;if(c=M.get(f,d),void 0!==c)return c;if(c=P(f,d,void 0),void 0!==c)return c}else this.each(function(){var c=M.get(this,d);M.set(this,d,b),-1!==a.indexOf("-")&&void 0!==c&&M.set(this,a,b)})},null,b,arguments.length>1,null,!0)},removeData:function(a){return this.each(function(){M.remove(this,a)})}}),n.extend({queue:function(a,b,c){var d;return a?(b=(b||"fx")+"queue",d=L.get(a,b),c&&(!d||n.isArray(c)?d=L.access(a,b,n.makeArray(c)):d.push(c)),d||[]):void 0},dequeue:function(a,b){b=b||"fx";var c=n.queue(a,b),d=c.length,e=c.shift(),f=n._queueHooks(a,b),g=function(){n.dequeue(a,b)};"inprogress"===e&&(e=c.shift(),d--),e&&("fx"===b&&c.unshift("inprogress"),delete f.stop,e.call(a,g,f)),!d&&f&&f.empty.fire()},_queueHooks:function(a,b){var c=b+"queueHooks";return L.get(a,c)||L.access(a,c,{empty:n.Callbacks("once memory").add(function(){L.remove(a,[b+"queue",c])})})}}),n.fn.extend({queue:function(a,b){var c=2;return"string"!=typeof a&&(b=a,a="fx",c--),arguments.length<c?n.queue(this[0],a):void 0===b?this:this.each(function(){var c=n.queue(this,a,b);n._queueHooks(this,a),"fx"===a&&"inprogress"!==c[0]&&n.dequeue(this,a)})},dequeue:function(a){return this.each(function(){n.dequeue(this,a)})},clearQueue:function(a){return this.queue(a||"fx",[])},promise:function(a,b){var c,d=1,e=n.Deferred(),f=this,g=this.length,h=function(){--d||e.resolveWith(f,[f])};"string"!=typeof a&&(b=a,a=void 0),a=a||"fx";while(g--)c=L.get(f[g],a+"queueHooks"),c&&c.empty&&(d++,c.empty.add(h));return h(),e.promise(b)}});var Q=/[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,R=["Top","Right","Bottom","Left"],S=function(a,b){return a=b||a,"none"===n.css(a,"display")||!n.contains(a.ownerDocument,a)},T=/^(?:checkbox|radio)$/i;!function(){var a=l.createDocumentFragment(),b=a.appendChild(l.createElement("div")),c=l.createElement("input");c.setAttribute("type","radio"),c.setAttribute("checked","checked"),c.setAttribute("name","t"),b.appendChild(c),k.checkClone=b.cloneNode(!0).cloneNode(!0).lastChild.checked,b.innerHTML="<textarea>x</textarea>",k.noCloneChecked=!!b.cloneNode(!0).lastChild.defaultValue}();var U="undefined";k.focusinBubbles="onfocusin"in a;var V=/^key/,W=/^(?:mouse|pointer|contextmenu)|click/,X=/^(?:focusinfocus|focusoutblur)$/,Y=/^([^.]*)(?:\.(.+)|)$/;function Z(){return!0}function $(){return!1}function _(){try{return l.activeElement}catch(a){}}n.event={global:{},add:function(a,b,c,d,e){var f,g,h,i,j,k,l,m,o,p,q,r=L.get(a);if(r){c.handler&&(f=c,c=f.handler,e=f.selector),c.guid||(c.guid=n.guid++),(i=r.events)||(i=r.events={}),(g=r.handle)||(g=r.handle=function(b){return typeof n!==U&&n.event.triggered!==b.type?n.event.dispatch.apply(a,arguments):void 0}),b=(b||"").match(E)||[""],j=b.length;while(j--)h=Y.exec(b[j])||[],o=q=h[1],p=(h[2]||"").split(".").sort(),o&&(l=n.event.special[o]||{},o=(e?l.delegateType:l.bindType)||o,l=n.event.special[o]||{},k=n.extend({type:o,origType:q,data:d,handler:c,guid:c.guid,selector:e,needsContext:e&&n.expr.match.needsContext.test(e),namespace:p.join(".")},f),(m=i[o])||(m=i[o]=[],m.delegateCount=0,l.setup&&l.setup.call(a,d,p,g)!==!1||a.addEventListener&&a.addEventListener(o,g,!1)),l.add&&(l.add.call(a,k),k.handler.guid||(k.handler.guid=c.guid)),e?m.splice(m.delegateCount++,0,k):m.push(k),n.event.global[o]=!0)}},remove:function(a,b,c,d,e){var f,g,h,i,j,k,l,m,o,p,q,r=L.hasData(a)&&L.get(a);if(r&&(i=r.events)){b=(b||"").match(E)||[""],j=b.length;while(j--)if(h=Y.exec(b[j])||[],o=q=h[1],p=(h[2]||"").split(".").sort(),o){l=n.event.special[o]||{},o=(d?l.delegateType:l.bindType)||o,m=i[o]||[],h=h[2]&&new RegExp("(^|\\.)"+p.join("\\.(?:.*\\.|)")+"(\\.|$)"),g=f=m.length;while(f--)k=m[f],!e&&q!==k.origType||c&&c.guid!==k.guid||h&&!h.test(k.namespace)||d&&d!==k.selector&&("**"!==d||!k.selector)||(m.splice(f,1),k.selector&&m.delegateCount--,l.remove&&l.remove.call(a,k));g&&!m.length&&(l.teardown&&l.teardown.call(a,p,r.handle)!==!1||n.removeEvent(a,o,r.handle),delete i[o])}else for(o in i)n.event.remove(a,o+b[j],c,d,!0);n.isEmptyObject(i)&&(delete r.handle,L.remove(a,"events"))}},trigger:function(b,c,d,e){var f,g,h,i,k,m,o,p=[d||l],q=j.call(b,"type")?b.type:b,r=j.call(b,"namespace")?b.namespace.split("."):[];if(g=h=d=d||l,3!==d.nodeType&&8!==d.nodeType&&!X.test(q+n.event.triggered)&&(q.indexOf(".")>=0&&(r=q.split("."),q=r.shift(),r.sort()),k=q.indexOf(":")<0&&"on"+q,b=b[n.expando]?b:new n.Event(q,"object"==typeof b&&b),b.isTrigger=e?2:3,b.namespace=r.join("."),b.namespace_re=b.namespace?new RegExp("(^|\\.)"+r.join("\\.(?:.*\\.|)")+"(\\.|$)"):null,b.result=void 0,b.target||(b.target=d),c=null==c?[b]:n.makeArray(c,[b]),o=n.event.special[q]||{},e||!o.trigger||o.trigger.apply(d,c)!==!1)){if(!e&&!o.noBubble&&!n.isWindow(d)){for(i=o.delegateType||q,X.test(i+q)||(g=g.parentNode);g;g=g.parentNode)p.push(g),h=g;h===(d.ownerDocument||l)&&p.push(h.defaultView||h.parentWindow||a)}f=0;while((g=p[f++])&&!b.isPropagationStopped())b.type=f>1?i:o.bindType||q,m=(L.get(g,"events")||{})[b.type]&&L.get(g,"handle"),m&&m.apply(g,c),m=k&&g[k],m&&m.apply&&n.acceptData(g)&&(b.result=m.apply(g,c),b.result===!1&&b.preventDefault());return b.type=q,e||b.isDefaultPrevented()||o._default&&o._default.apply(p.pop(),c)!==!1||!n.acceptData(d)||k&&n.isFunction(d[q])&&!n.isWindow(d)&&(h=d[k],h&&(d[k]=null),n.event.triggered=q,d[q](),n.event.triggered=void 0,h&&(d[k]=h)),b.result}},dispatch:function(a){a=n.event.fix(a);var b,c,e,f,g,h=[],i=d.call(arguments),j=(L.get(this,"events")||{})[a.type]||[],k=n.event.special[a.type]||{};if(i[0]=a,a.delegateTarget=this,!k.preDispatch||k.preDispatch.call(this,a)!==!1){h=n.event.handlers.call(this,a,j),b=0;while((f=h[b++])&&!a.isPropagationStopped()){a.currentTarget=f.elem,c=0;while((g=f.handlers[c++])&&!a.isImmediatePropagationStopped())(!a.namespace_re||a.namespace_re.test(g.namespace))&&(a.handleObj=g,a.data=g.data,e=((n.event.special[g.origType]||{}).handle||g.handler).apply(f.elem,i),void 0!==e&&(a.result=e)===!1&&(a.preventDefault(),a.stopPropagation()))}return k.postDispatch&&k.postDispatch.call(this,a),a.result}},handlers:function(a,b){var c,d,e,f,g=[],h=b.delegateCount,i=a.target;if(h&&i.nodeType&&(!a.button||"click"!==a.type))for(;i!==this;i=i.parentNode||this)if(i.disabled!==!0||"click"!==a.type){for(d=[],c=0;h>c;c++)f=b[c],e=f.selector+" ",void 0===d[e]&&(d[e]=f.needsContext?n(e,this).index(i)>=0:n.find(e,this,null,[i]).length),d[e]&&d.push(f);d.length&&g.push({elem:i,handlers:d})}return h<b.length&&g.push({elem:this,handlers:b.slice(h)}),g},props:"altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),fixHooks:{},keyHooks:{props:"char charCode key keyCode".split(" "),filter:function(a,b){return null==a.which&&(a.which=null!=b.charCode?b.charCode:b.keyCode),a}},mouseHooks:{props:"button buttons clientX clientY offsetX offsetY pageX pageY screenX screenY toElement".split(" "),filter:function(a,b){var c,d,e,f=b.button;return null==a.pageX&&null!=b.clientX&&(c=a.target.ownerDocument||l,d=c.documentElement,e=c.body,a.pageX=b.clientX+(d&&d.scrollLeft||e&&e.scrollLeft||0)-(d&&d.clientLeft||e&&e.clientLeft||0),a.pageY=b.clientY+(d&&d.scrollTop||e&&e.scrollTop||0)-(d&&d.clientTop||e&&e.clientTop||0)),a.which||void 0===f||(a.which=1&f?1:2&f?3:4&f?2:0),a}},fix:function(a){if(a[n.expando])return a;var b,c,d,e=a.type,f=a,g=this.fixHooks[e];g||(this.fixHooks[e]=g=W.test(e)?this.mouseHooks:V.test(e)?this.keyHooks:{}),d=g.props?this.props.concat(g.props):this.props,a=new n.Event(f),b=d.length;while(b--)c=d[b],a[c]=f[c];return a.target||(a.target=l),3===a.target.nodeType&&(a.target=a.target.parentNode),g.filter?g.filter(a,f):a},special:{load:{noBubble:!0},focus:{trigger:function(){return this!==_()&&this.focus?(this.focus(),!1):void 0},delegateType:"focusin"},blur:{trigger:function(){return this===_()&&this.blur?(this.blur(),!1):void 0},delegateType:"focusout"},click:{trigger:function(){return"checkbox"===this.type&&this.click&&n.nodeName(this,"input")?(this.click(),!1):void 0},_default:function(a){return n.nodeName(a.target,"a")}},beforeunload:{postDispatch:function(a){void 0!==a.result&&a.originalEvent&&(a.originalEvent.returnValue=a.result)}}},simulate:function(a,b,c,d){var e=n.extend(new n.Event,c,{type:a,isSimulated:!0,originalEvent:{}});d?n.event.trigger(e,null,b):n.event.dispatch.call(b,e),e.isDefaultPrevented()&&c.preventDefault()}},n.removeEvent=function(a,b,c){a.removeEventListener&&a.removeEventListener(b,c,!1)},n.Event=function(a,b){return this instanceof n.Event?(a&&a.type?(this.originalEvent=a,this.type=a.type,this.isDefaultPrevented=a.defaultPrevented||void 0===a.defaultPrevented&&a.returnValue===!1?Z:$):this.type=a,b&&n.extend(this,b),this.timeStamp=a&&a.timeStamp||n.now(),void(this[n.expando]=!0)):new n.Event(a,b)},n.Event.prototype={isDefaultPrevented:$,isPropagationStopped:$,isImmediatePropagationStopped:$,preventDefault:function(){var a=this.originalEvent;this.isDefaultPrevented=Z,a&&a.preventDefault&&a.preventDefault()},stopPropagation:function(){var a=this.originalEvent;this.isPropagationStopped=Z,a&&a.stopPropagation&&a.stopPropagation()},stopImmediatePropagation:function(){var a=this.originalEvent;this.isImmediatePropagationStopped=Z,a&&a.stopImmediatePropagation&&a.stopImmediatePropagation(),this.stopPropagation()}},n.each({mouseenter:"mouseover",mouseleave:"mouseout",pointerenter:"pointerover",pointerleave:"pointerout"},function(a,b){n.event.special[a]={delegateType:b,bindType:b,handle:function(a){var c,d=this,e=a.relatedTarget,f=a.handleObj;return(!e||e!==d&&!n.contains(d,e))&&(a.type=f.origType,c=f.handler.apply(this,arguments),a.type=b),c}}}),k.focusinBubbles||n.each({focus:"focusin",blur:"focusout"},function(a,b){var c=function(a){n.event.simulate(b,a.target,n.event.fix(a),!0)};n.event.special[b]={setup:function(){var d=this.ownerDocument||this,e=L.access(d,b);e||d.addEventListener(a,c,!0),L.access(d,b,(e||0)+1)},teardown:function(){var d=this.ownerDocument||this,e=L.access(d,b)-1;e?L.access(d,b,e):(d.removeEventListener(a,c,!0),L.remove(d,b))}}}),n.fn.extend({on:function(a,b,c,d,e){var f,g;if("object"==typeof a){"string"!=typeof b&&(c=c||b,b=void 0);for(g in a)this.on(g,b,c,a[g],e);return this}if(null==c&&null==d?(d=b,c=b=void 0):null==d&&("string"==typeof b?(d=c,c=void 0):(d=c,c=b,b=void 0)),d===!1)d=$;else if(!d)return this;return 1===e&&(f=d,d=function(a){return n().off(a),f.apply(this,arguments)},d.guid=f.guid||(f.guid=n.guid++)),this.each(function(){n.event.add(this,a,d,c,b)})},one:function(a,b,c,d){return this.on(a,b,c,d,1)},off:function(a,b,c){var d,e;if(a&&a.preventDefault&&a.handleObj)return d=a.handleObj,n(a.delegateTarget).off(d.namespace?d.origType+"."+d.namespace:d.origType,d.selector,d.handler),this;if("object"==typeof a){for(e in a)this.off(e,b,a[e]);return this}return(b===!1||"function"==typeof b)&&(c=b,b=void 0),c===!1&&(c=$),this.each(function(){n.event.remove(this,a,c,b)})},trigger:function(a,b){return this.each(function(){n.event.trigger(a,b,this)})},triggerHandler:function(a,b){var c=this[0];return c?n.event.trigger(a,b,c,!0):void 0}});var aa=/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,ba=/<([\w:]+)/,ca=/<|&#?\w+;/,da=/<(?:script|style|link)/i,ea=/checked\s*(?:[^=]|=\s*.checked.)/i,fa=/^$|\/(?:java|ecma)script/i,ga=/^true\/(.*)/,ha=/^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,ia={option:[1,"<select multiple='multiple'>","</select>"],thead:[1,"<table>","</table>"],col:[2,"<table><colgroup>","</colgroup></table>"],tr:[2,"<table><tbody>","</tbody></table>"],td:[3,"<table><tbody><tr>","</tr></tbody></table>"],_default:[0,"",""]};ia.optgroup=ia.option,ia.tbody=ia.tfoot=ia.colgroup=ia.caption=ia.thead,ia.th=ia.td;function ja(a,b){return n.nodeName(a,"table")&&n.nodeName(11!==b.nodeType?b:b.firstChild,"tr")?a.getElementsByTagName("tbody")[0]||a.appendChild(a.ownerDocument.createElement("tbody")):a}function ka(a){return a.type=(null!==a.getAttribute("type"))+"/"+a.type,a}function la(a){var b=ga.exec(a.type);return b?a.type=b[1]:a.removeAttribute("type"),a}function ma(a,b){for(var c=0,d=a.length;d>c;c++)L.set(a[c],"globalEval",!b||L.get(b[c],"globalEval"))}function na(a,b){var c,d,e,f,g,h,i,j;if(1===b.nodeType){if(L.hasData(a)&&(f=L.access(a),g=L.set(b,f),j=f.events)){delete g.handle,g.events={};for(e in j)for(c=0,d=j[e].length;d>c;c++)n.event.add(b,e,j[e][c])}M.hasData(a)&&(h=M.access(a),i=n.extend({},h),M.set(b,i))}}function oa(a,b){var c=a.getElementsByTagName?a.getElementsByTagName(b||"*"):a.querySelectorAll?a.querySelectorAll(b||"*"):[];return void 0===b||b&&n.nodeName(a,b)?n.merge([a],c):c}function pa(a,b){var c=b.nodeName.toLowerCase();"input"===c&&T.test(a.type)?b.checked=a.checked:("input"===c||"textarea"===c)&&(b.defaultValue=a.defaultValue)}n.extend({clone:function(a,b,c){var d,e,f,g,h=a.cloneNode(!0),i=n.contains(a.ownerDocument,a);if(!(k.noCloneChecked||1!==a.nodeType&&11!==a.nodeType||n.isXMLDoc(a)))for(g=oa(h),f=oa(a),d=0,e=f.length;e>d;d++)pa(f[d],g[d]);if(b)if(c)for(f=f||oa(a),g=g||oa(h),d=0,e=f.length;e>d;d++)na(f[d],g[d]);else na(a,h);return g=oa(h,"script"),g.length>0&&ma(g,!i&&oa(a,"script")),h},buildFragment:function(a,b,c,d){for(var e,f,g,h,i,j,k=b.createDocumentFragment(),l=[],m=0,o=a.length;o>m;m++)if(e=a[m],e||0===e)if("object"===n.type(e))n.merge(l,e.nodeType?[e]:e);else if(ca.test(e)){f=f||k.appendChild(b.createElement("div")),g=(ba.exec(e)||["",""])[1].toLowerCase(),h=ia[g]||ia._default,f.innerHTML=h[1]+e.replace(aa,"<$1></$2>")+h[2],j=h[0];while(j--)f=f.lastChild;n.merge(l,f.childNodes),f=k.firstChild,f.textContent=""}else l.push(b.createTextNode(e));k.textContent="",m=0;while(e=l[m++])if((!d||-1===n.inArray(e,d))&&(i=n.contains(e.ownerDocument,e),f=oa(k.appendChild(e),"script"),i&&ma(f),c)){j=0;while(e=f[j++])fa.test(e.type||"")&&c.push(e)}return k},cleanData:function(a){for(var b,c,d,e,f=n.event.special,g=0;void 0!==(c=a[g]);g++){if(n.acceptData(c)&&(e=c[L.expando],e&&(b=L.cache[e]))){if(b.events)for(d in b.events)f[d]?n.event.remove(c,d):n.removeEvent(c,d,b.handle);L.cache[e]&&delete L.cache[e]}delete M.cache[c[M.expando]]}}}),n.fn.extend({text:function(a){return J(this,function(a){return void 0===a?n.text(this):this.empty().each(function(){(1===this.nodeType||11===this.nodeType||9===this.nodeType)&&(this.textContent=a)})},null,a,arguments.length)},append:function(){return this.domManip(arguments,function(a){if(1===this.nodeType||11===this.nodeType||9===this.nodeType){var b=ja(this,a);b.appendChild(a)}})},prepend:function(){return this.domManip(arguments,function(a){if(1===this.nodeType||11===this.nodeType||9===this.nodeType){var b=ja(this,a);b.insertBefore(a,b.firstChild)}})},before:function(){return this.domManip(arguments,function(a){this.parentNode&&this.parentNode.insertBefore(a,this)})},after:function(){return this.domManip(arguments,function(a){this.parentNode&&this.parentNode.insertBefore(a,this.nextSibling)})},remove:function(a,b){for(var c,d=a?n.filter(a,this):this,e=0;null!=(c=d[e]);e++)b||1!==c.nodeType||n.cleanData(oa(c)),c.parentNode&&(b&&n.contains(c.ownerDocument,c)&&ma(oa(c,"script")),c.parentNode.removeChild(c));return this},empty:function(){for(var a,b=0;null!=(a=this[b]);b++)1===a.nodeType&&(n.cleanData(oa(a,!1)),a.textContent="");return this},clone:function(a,b){return a=null==a?!1:a,b=null==b?a:b,this.map(function(){return n.clone(this,a,b)})},html:function(a){return J(this,function(a){var b=this[0]||{},c=0,d=this.length;if(void 0===a&&1===b.nodeType)return b.innerHTML;if("string"==typeof a&&!da.test(a)&&!ia[(ba.exec(a)||["",""])[1].toLowerCase()]){a=a.replace(aa,"<$1></$2>");try{for(;d>c;c++)b=this[c]||{},1===b.nodeType&&(n.cleanData(oa(b,!1)),b.innerHTML=a);b=0}catch(e){}}b&&this.empty().append(a)},null,a,arguments.length)},replaceWith:function(){var a=arguments[0];return this.domManip(arguments,function(b){a=this.parentNode,n.cleanData(oa(this)),a&&a.replaceChild(b,this)}),a&&(a.length||a.nodeType)?this:this.remove()},detach:function(a){return this.remove(a,!0)},domManip:function(a,b){a=e.apply([],a);var c,d,f,g,h,i,j=0,l=this.length,m=this,o=l-1,p=a[0],q=n.isFunction(p);if(q||l>1&&"string"==typeof p&&!k.checkClone&&ea.test(p))return this.each(function(c){var d=m.eq(c);q&&(a[0]=p.call(this,c,d.html())),d.domManip(a,b)});if(l&&(c=n.buildFragment(a,this[0].ownerDocument,!1,this),d=c.firstChild,1===c.childNodes.length&&(c=d),d)){for(f=n.map(oa(c,"script"),ka),g=f.length;l>j;j++)h=c,j!==o&&(h=n.clone(h,!0,!0),g&&n.merge(f,oa(h,"script"))),b.call(this[j],h,j);if(g)for(i=f[f.length-1].ownerDocument,n.map(f,la),j=0;g>j;j++)h=f[j],fa.test(h.type||"")&&!L.access(h,"globalEval")&&n.contains(i,h)&&(h.src?n._evalUrl&&n._evalUrl(h.src):n.globalEval(h.textContent.replace(ha,"")))}return this}}),n.each({appendTo:"append",prependTo:"prepend",insertBefore:"before",insertAfter:"after",replaceAll:"replaceWith"},function(a,b){n.fn[a]=function(a){for(var c,d=[],e=n(a),g=e.length-1,h=0;g>=h;h++)c=h===g?this:this.clone(!0),n(e[h])[b](c),f.apply(d,c.get());return this.pushStack(d)}});var qa,ra={};function sa(b,c){var d,e=n(c.createElement(b)).appendTo(c.body),f=a.getDefaultComputedStyle&&(d=a.getDefaultComputedStyle(e[0]))?d.display:n.css(e[0],"display");return e.detach(),f}function ta(a){var b=l,c=ra[a];return c||(c=sa(a,b),"none"!==c&&c||(qa=(qa||n("<iframe frameborder='0' width='0' height='0'/>")).appendTo(b.documentElement),b=qa[0].contentDocument,b.write(),b.close(),c=sa(a,b),qa.detach()),ra[a]=c),c}var ua=/^margin/,va=new RegExp("^("+Q+")(?!px)[a-z%]+$","i"),wa=function(b){return b.ownerDocument.defaultView.opener?b.ownerDocument.defaultView.getComputedStyle(b,null):a.getComputedStyle(b,null)};function xa(a,b,c){var d,e,f,g,h=a.style;return c=c||wa(a),c&&(g=c.getPropertyValue(b)||c[b]),c&&(""!==g||n.contains(a.ownerDocument,a)||(g=n.style(a,b)),va.test(g)&&ua.test(b)&&(d=h.width,e=h.minWidth,f=h.maxWidth,h.minWidth=h.maxWidth=h.width=g,g=c.width,h.width=d,h.minWidth=e,h.maxWidth=f)),void 0!==g?g+"":g}function ya(a,b){return{get:function(){return a()?void delete this.get:(this.get=b).apply(this,arguments)}}}!function(){var b,c,d=l.documentElement,e=l.createElement("div"),f=l.createElement("div");if(f.style){f.style.backgroundClip="content-box",f.cloneNode(!0).style.backgroundClip="",k.clearCloneStyle="content-box"===f.style.backgroundClip,e.style.cssText="border:0;width:0;height:0;top:0;left:-9999px;margin-top:1px;position:absolute",e.appendChild(f);function g(){f.style.cssText="-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;display:block;margin-top:1%;top:1%;border:1px;padding:1px;width:4px;position:absolute",f.innerHTML="",d.appendChild(e);var g=a.getComputedStyle(f,null);b="1%"!==g.top,c="4px"===g.width,d.removeChild(e)}a.getComputedStyle&&n.extend(k,{pixelPosition:function(){return g(),b},boxSizingReliable:function(){return null==c&&g(),c},reliableMarginRight:function(){var b,c=f.appendChild(l.createElement("div"));return c.style.cssText=f.style.cssText="-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;display:block;margin:0;border:0;padding:0",c.style.marginRight=c.style.width="0",f.style.width="1px",d.appendChild(e),b=!parseFloat(a.getComputedStyle(c,null).marginRight),d.removeChild(e),f.removeChild(c),b}})}}(),n.swap=function(a,b,c,d){var e,f,g={};for(f in b)g[f]=a.style[f],a.style[f]=b[f];e=c.apply(a,d||[]);for(f in b)a.style[f]=g[f];return e};var za=/^(none|table(?!-c[ea]).+)/,Aa=new RegExp("^("+Q+")(.*)$","i"),Ba=new RegExp("^([+-])=("+Q+")","i"),Ca={position:"absolute",visibility:"hidden",display:"block"},Da={letterSpacing:"0",fontWeight:"400"},Ea=["Webkit","O","Moz","ms"];function Fa(a,b){if(b in a)return b;var c=b[0].toUpperCase()+b.slice(1),d=b,e=Ea.length;while(e--)if(b=Ea[e]+c,b in a)return b;return d}function Ga(a,b,c){var d=Aa.exec(b);return d?Math.max(0,d[1]-(c||0))+(d[2]||"px"):b}function Ha(a,b,c,d,e){for(var f=c===(d?"border":"content")?4:"width"===b?1:0,g=0;4>f;f+=2)"margin"===c&&(g+=n.css(a,c+R[f],!0,e)),d?("content"===c&&(g-=n.css(a,"padding"+R[f],!0,e)),"margin"!==c&&(g-=n.css(a,"border"+R[f]+"Width",!0,e))):(g+=n.css(a,"padding"+R[f],!0,e),"padding"!==c&&(g+=n.css(a,"border"+R[f]+"Width",!0,e)));return g}function Ia(a,b,c){var d=!0,e="width"===b?a.offsetWidth:a.offsetHeight,f=wa(a),g="border-box"===n.css(a,"boxSizing",!1,f);if(0>=e||null==e){if(e=xa(a,b,f),(0>e||null==e)&&(e=a.style[b]),va.test(e))return e;d=g&&(k.boxSizingReliable()||e===a.style[b]),e=parseFloat(e)||0}return e+Ha(a,b,c||(g?"border":"content"),d,f)+"px"}function Ja(a,b){for(var c,d,e,f=[],g=0,h=a.length;h>g;g++)d=a[g],d.style&&(f[g]=L.get(d,"olddisplay"),c=d.style.display,b?(f[g]||"none"!==c||(d.style.display=""),""===d.style.display&&S(d)&&(f[g]=L.access(d,"olddisplay",ta(d.nodeName)))):(e=S(d),"none"===c&&e||L.set(d,"olddisplay",e?c:n.css(d,"display"))));for(g=0;h>g;g++)d=a[g],d.style&&(b&&"none"!==d.style.display&&""!==d.style.display||(d.style.display=b?f[g]||"":"none"));return a}n.extend({cssHooks:{opacity:{get:function(a,b){if(b){var c=xa(a,"opacity");return""===c?"1":c}}}},cssNumber:{columnCount:!0,fillOpacity:!0,flexGrow:!0,flexShrink:!0,fontWeight:!0,lineHeight:!0,opacity:!0,order:!0,orphans:!0,widows:!0,zIndex:!0,zoom:!0},cssProps:{"float":"cssFloat"},style:function(a,b,c,d){if(a&&3!==a.nodeType&&8!==a.nodeType&&a.style){var e,f,g,h=n.camelCase(b),i=a.style;return b=n.cssProps[h]||(n.cssProps[h]=Fa(i,h)),g=n.cssHooks[b]||n.cssHooks[h],void 0===c?g&&"get"in g&&void 0!==(e=g.get(a,!1,d))?e:i[b]:(f=typeof c,"string"===f&&(e=Ba.exec(c))&&(c=(e[1]+1)*e[2]+parseFloat(n.css(a,b)),f="number"),null!=c&&c===c&&("number"!==f||n.cssNumber[h]||(c+="px"),k.clearCloneStyle||""!==c||0!==b.indexOf("background")||(i[b]="inherit"),g&&"set"in g&&void 0===(c=g.set(a,c,d))||(i[b]=c)),void 0)}},css:function(a,b,c,d){var e,f,g,h=n.camelCase(b);return b=n.cssProps[h]||(n.cssProps[h]=Fa(a.style,h)),g=n.cssHooks[b]||n.cssHooks[h],g&&"get"in g&&(e=g.get(a,!0,c)),void 0===e&&(e=xa(a,b,d)),"normal"===e&&b in Da&&(e=Da[b]),""===c||c?(f=parseFloat(e),c===!0||n.isNumeric(f)?f||0:e):e}}),n.each(["height","width"],function(a,b){n.cssHooks[b]={get:function(a,c,d){return c?za.test(n.css(a,"display"))&&0===a.offsetWidth?n.swap(a,Ca,function(){return Ia(a,b,d)}):Ia(a,b,d):void 0},set:function(a,c,d){var e=d&&wa(a);return Ga(a,c,d?Ha(a,b,d,"border-box"===n.css(a,"boxSizing",!1,e),e):0)}}}),n.cssHooks.marginRight=ya(k.reliableMarginRight,function(a,b){return b?n.swap(a,{display:"inline-block"},xa,[a,"marginRight"]):void 0}),n.each({margin:"",padding:"",border:"Width"},function(a,b){n.cssHooks[a+b]={expand:function(c){for(var d=0,e={},f="string"==typeof c?c.split(" "):[c];4>d;d++)e[a+R[d]+b]=f[d]||f[d-2]||f[0];return e}},ua.test(a)||(n.cssHooks[a+b].set=Ga)}),n.fn.extend({css:function(a,b){return J(this,function(a,b,c){var d,e,f={},g=0;if(n.isArray(b)){for(d=wa(a),e=b.length;e>g;g++)f[b[g]]=n.css(a,b[g],!1,d);return f}return void 0!==c?n.style(a,b,c):n.css(a,b)},a,b,arguments.length>1)},show:function(){return Ja(this,!0)},hide:function(){return Ja(this)},toggle:function(a){return"boolean"==typeof a?a?this.show():this.hide():this.each(function(){S(this)?n(this).show():n(this).hide()})}});function Ka(a,b,c,d,e){return new Ka.prototype.init(a,b,c,d,e)}n.Tween=Ka,Ka.prototype={constructor:Ka,init:function(a,b,c,d,e,f){this.elem=a,this.prop=c,this.easing=e||"swing",this.options=b,this.start=this.now=this.cur(),this.end=d,this.unit=f||(n.cssNumber[c]?"":"px")},cur:function(){var a=Ka.propHooks[this.prop];return a&&a.get?a.get(this):Ka.propHooks._default.get(this)},run:function(a){var b,c=Ka.propHooks[this.prop];return this.options.duration?this.pos=b=n.easing[this.easing](a,this.options.duration*a,0,1,this.options.duration):this.pos=b=a,this.now=(this.end-this.start)*b+this.start,this.options.step&&this.options.step.call(this.elem,this.now,this),c&&c.set?c.set(this):Ka.propHooks._default.set(this),this}},Ka.prototype.init.prototype=Ka.prototype,Ka.propHooks={_default:{get:function(a){var b;return null==a.elem[a.prop]||a.elem.style&&null!=a.elem.style[a.prop]?(b=n.css(a.elem,a.prop,""),b&&"auto"!==b?b:0):a.elem[a.prop]},set:function(a){n.fx.step[a.prop]?n.fx.step[a.prop](a):a.elem.style&&(null!=a.elem.style[n.cssProps[a.prop]]||n.cssHooks[a.prop])?n.style(a.elem,a.prop,a.now+a.unit):a.elem[a.prop]=a.now}}},Ka.propHooks.scrollTop=Ka.propHooks.scrollLeft={set:function(a){a.elem.nodeType&&a.elem.parentNode&&(a.elem[a.prop]=a.now)}},n.easing={linear:function(a){return a},swing:function(a){return.5-Math.cos(a*Math.PI)/2}},n.fx=Ka.prototype.init,n.fx.step={};var La,Ma,Na=/^(?:toggle|show|hide)$/,Oa=new RegExp("^(?:([+-])=|)("+Q+")([a-z%]*)$","i"),Pa=/queueHooks$/,Qa=[Va],Ra={"*":[function(a,b){var c=this.createTween(a,b),d=c.cur(),e=Oa.exec(b),f=e&&e[3]||(n.cssNumber[a]?"":"px"),g=(n.cssNumber[a]||"px"!==f&&+d)&&Oa.exec(n.css(c.elem,a)),h=1,i=20;if(g&&g[3]!==f){f=f||g[3],e=e||[],g=+d||1;do h=h||".5",g/=h,n.style(c.elem,a,g+f);while(h!==(h=c.cur()/d)&&1!==h&&--i)}return e&&(g=c.start=+g||+d||0,c.unit=f,c.end=e[1]?g+(e[1]+1)*e[2]:+e[2]),c}]};function Sa(){return setTimeout(function(){La=void 0}),La=n.now()}function Ta(a,b){var c,d=0,e={height:a};for(b=b?1:0;4>d;d+=2-b)c=R[d],e["margin"+c]=e["padding"+c]=a;return b&&(e.opacity=e.width=a),e}function Ua(a,b,c){for(var d,e=(Ra[b]||[]).concat(Ra["*"]),f=0,g=e.length;g>f;f++)if(d=e[f].call(c,b,a))return d}function Va(a,b,c){var d,e,f,g,h,i,j,k,l=this,m={},o=a.style,p=a.nodeType&&S(a),q=L.get(a,"fxshow");c.queue||(h=n._queueHooks(a,"fx"),null==h.unqueued&&(h.unqueued=0,i=h.empty.fire,h.empty.fire=function(){h.unqueued||i()}),h.unqueued++,l.always(function(){l.always(function(){h.unqueued--,n.queue(a,"fx").length||h.empty.fire()})})),1===a.nodeType&&("height"in b||"width"in b)&&(c.overflow=[o.overflow,o.overflowX,o.overflowY],j=n.css(a,"display"),k="none"===j?L.get(a,"olddisplay")||ta(a.nodeName):j,"inline"===k&&"none"===n.css(a,"float")&&(o.display="inline-block")),c.overflow&&(o.overflow="hidden",l.always(function(){o.overflow=c.overflow[0],o.overflowX=c.overflow[1],o.overflowY=c.overflow[2]}));for(d in b)if(e=b[d],Na.exec(e)){if(delete b[d],f=f||"toggle"===e,e===(p?"hide":"show")){if("show"!==e||!q||void 0===q[d])continue;p=!0}m[d]=q&&q[d]||n.style(a,d)}else j=void 0;if(n.isEmptyObject(m))"inline"===("none"===j?ta(a.nodeName):j)&&(o.display=j);else{q?"hidden"in q&&(p=q.hidden):q=L.access(a,"fxshow",{}),f&&(q.hidden=!p),p?n(a).show():l.done(function(){n(a).hide()}),l.done(function(){var b;L.remove(a,"fxshow");for(b in m)n.style(a,b,m[b])});for(d in m)g=Ua(p?q[d]:0,d,l),d in q||(q[d]=g.start,p&&(g.end=g.start,g.start="width"===d||"height"===d?1:0))}}function Wa(a,b){var c,d,e,f,g;for(c in a)if(d=n.camelCase(c),e=b[d],f=a[c],n.isArray(f)&&(e=f[1],f=a[c]=f[0]),c!==d&&(a[d]=f,delete a[c]),g=n.cssHooks[d],g&&"expand"in g){f=g.expand(f),delete a[d];for(c in f)c in a||(a[c]=f[c],b[c]=e)}else b[d]=e}function Xa(a,b,c){var d,e,f=0,g=Qa.length,h=n.Deferred().always(function(){delete i.elem}),i=function(){if(e)return!1;for(var b=La||Sa(),c=Math.max(0,j.startTime+j.duration-b),d=c/j.duration||0,f=1-d,g=0,i=j.tweens.length;i>g;g++)j.tweens[g].run(f);return h.notifyWith(a,[j,f,c]),1>f&&i?c:(h.resolveWith(a,[j]),!1)},j=h.promise({elem:a,props:n.extend({},b),opts:n.extend(!0,{specialEasing:{}},c),originalProperties:b,originalOptions:c,startTime:La||Sa(),duration:c.duration,tweens:[],createTween:function(b,c){var d=n.Tween(a,j.opts,b,c,j.opts.specialEasing[b]||j.opts.easing);return j.tweens.push(d),d},stop:function(b){var c=0,d=b?j.tweens.length:0;if(e)return this;for(e=!0;d>c;c++)j.tweens[c].run(1);return b?h.resolveWith(a,[j,b]):h.rejectWith(a,[j,b]),this}}),k=j.props;for(Wa(k,j.opts.specialEasing);g>f;f++)if(d=Qa[f].call(j,a,k,j.opts))return d;return n.map(k,Ua,j),n.isFunction(j.opts.start)&&j.opts.start.call(a,j),n.fx.timer(n.extend(i,{elem:a,anim:j,queue:j.opts.queue})),j.progress(j.opts.progress).done(j.opts.done,j.opts.complete).fail(j.opts.fail).always(j.opts.always)}n.Animation=n.extend(Xa,{tweener:function(a,b){n.isFunction(a)?(b=a,a=["*"]):a=a.split(" ");for(var c,d=0,e=a.length;e>d;d++)c=a[d],Ra[c]=Ra[c]||[],Ra[c].unshift(b)},prefilter:function(a,b){b?Qa.unshift(a):Qa.push(a)}}),n.speed=function(a,b,c){var d=a&&"object"==typeof a?n.extend({},a):{complete:c||!c&&b||n.isFunction(a)&&a,duration:a,easing:c&&b||b&&!n.isFunction(b)&&b};return d.duration=n.fx.off?0:"number"==typeof d.duration?d.duration:d.duration in n.fx.speeds?n.fx.speeds[d.duration]:n.fx.speeds._default,(null==d.queue||d.queue===!0)&&(d.queue="fx"),d.old=d.complete,d.complete=function(){n.isFunction(d.old)&&d.old.call(this),d.queue&&n.dequeue(this,d.queue)},d},n.fn.extend({fadeTo:function(a,b,c,d){return this.filter(S).css("opacity",0).show().end().animate({opacity:b},a,c,d)},animate:function(a,b,c,d){var e=n.isEmptyObject(a),f=n.speed(b,c,d),g=function(){var b=Xa(this,n.extend({},a),f);(e||L.get(this,"finish"))&&b.stop(!0)};return g.finish=g,e||f.queue===!1?this.each(g):this.queue(f.queue,g)},stop:function(a,b,c){var d=function(a){var b=a.stop;delete a.stop,b(c)};return"string"!=typeof a&&(c=b,b=a,a=void 0),b&&a!==!1&&this.queue(a||"fx",[]),this.each(function(){var b=!0,e=null!=a&&a+"queueHooks",f=n.timers,g=L.get(this);if(e)g[e]&&g[e].stop&&d(g[e]);else for(e in g)g[e]&&g[e].stop&&Pa.test(e)&&d(g[e]);for(e=f.length;e--;)f[e].elem!==this||null!=a&&f[e].queue!==a||(f[e].anim.stop(c),b=!1,f.splice(e,1));(b||!c)&&n.dequeue(this,a)})},finish:function(a){return a!==!1&&(a=a||"fx"),this.each(function(){var b,c=L.get(this),d=c[a+"queue"],e=c[a+"queueHooks"],f=n.timers,g=d?d.length:0;for(c.finish=!0,n.queue(this,a,[]),e&&e.stop&&e.stop.call(this,!0),b=f.length;b--;)f[b].elem===this&&f[b].queue===a&&(f[b].anim.stop(!0),f.splice(b,1));for(b=0;g>b;b++)d[b]&&d[b].finish&&d[b].finish.call(this);delete c.finish})}}),n.each(["toggle","show","hide"],function(a,b){var c=n.fn[b];n.fn[b]=function(a,d,e){return null==a||"boolean"==typeof a?c.apply(this,arguments):this.animate(Ta(b,!0),a,d,e)}}),n.each({slideDown:Ta("show"),slideUp:Ta("hide"),slideToggle:Ta("toggle"),fadeIn:{opacity:"show"},fadeOut:{opacity:"hide"},fadeToggle:{opacity:"toggle"}},function(a,b){n.fn[a]=function(a,c,d){return this.animate(b,a,c,d)}}),n.timers=[],n.fx.tick=function(){var a,b=0,c=n.timers;for(La=n.now();b<c.length;b++)a=c[b],a()||c[b]!==a||c.splice(b--,1);c.length||n.fx.stop(),La=void 0},n.fx.timer=function(a){n.timers.push(a),a()?n.fx.start():n.timers.pop()},n.fx.interval=13,n.fx.start=function(){Ma||(Ma=setInterval(n.fx.tick,n.fx.interval))},n.fx.stop=function(){clearInterval(Ma),Ma=null},n.fx.speeds={slow:600,fast:200,_default:400},n.fn.delay=function(a,b){return a=n.fx?n.fx.speeds[a]||a:a,b=b||"fx",this.queue(b,function(b,c){var d=setTimeout(b,a);c.stop=function(){clearTimeout(d)}})},function(){var a=l.createElement("input"),b=l.createElement("select"),c=b.appendChild(l.createElement("option"));a.type="checkbox",k.checkOn=""!==a.value,k.optSelected=c.selected,b.disabled=!0,k.optDisabled=!c.disabled,a=l.createElement("input"),a.value="t",a.type="radio",k.radioValue="t"===a.value}();var Ya,Za,$a=n.expr.attrHandle;n.fn.extend({attr:function(a,b){return J(this,n.attr,a,b,arguments.length>1)},removeAttr:function(a){return this.each(function(){n.removeAttr(this,a)})}}),n.extend({attr:function(a,b,c){var d,e,f=a.nodeType;if(a&&3!==f&&8!==f&&2!==f)return typeof a.getAttribute===U?n.prop(a,b,c):(1===f&&n.isXMLDoc(a)||(b=b.toLowerCase(),d=n.attrHooks[b]||(n.expr.match.bool.test(b)?Za:Ya)),

@@ -12,7 +12,8 @@ angular.module('app', [
     'app.config',
     'app.directives',
     'chart.js',
-    'angularUtils.directives.dirDisqus'
+    'angularUtils.directives.dirDisqus',
+    'angular.filter'
     ])
 
 .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config',
@@ -45,6 +46,16 @@ angular.module('app', [
         templateUrl: 'modules/home.html',
         controller: 'appCtrl'
     })
+    .state('sector', {
+        url: '/sector',
+        templateUrl: 'modules/sector.html',
+        controller: 'sectorCtrl'
+    })
+    .state('scheme', {
+        url: '/scheme?sector',
+        templateUrl: 'modules/scheme.html',
+        controller: 'schemeCtrl'
+    })
       .state('results', {
           url: '/search?query',
           templateUrl: 'modules/search-result.html',
@@ -73,10 +84,36 @@ angular.module('app', [
  }])
 .controller('appCtrl', function($scope, Restangular, $state, $stateParams,$feathers) {
 
+      $scope.sectorSplit= function(val){
+        console.log(val)
+        return val.name
+      }
+      var testQ = function(){
+           var schemeService = $feathers.service('schemes')
+           schemeService.find({
+             query:{
+               $populate:{
+                           path: 'sectors',
+                           select: 'name -_id',
+                           options: { limit: 5 }
+                         },
+               'sectors':'58b7eb8aba090a00118dfc6e'
+             }
+           }).then(function(schemes){
+             console.log('testq schemes',schemes)
+           }).catch(function(err){
+             console.log(err)
+           })
+      }
+      testQ()
      var schemeService = $feathers.service('schemes')
       schemeService.find({
         query:{
-            $populate:'sectors'
+            $populate:{
+                        path: 'sectors',
+                        select: 'name -_id',
+                        options: { limit: 5 }
+                      }
         }
       }).then(function(schemes){
         if(schemes.data.length){
@@ -85,6 +122,8 @@ angular.module('app', [
             $scope.persons  =schemes.data
           })
         }
+      }).catch(function(err){
+        console.log(err)
       })
     // Restangular.all('project').getList().then(function(response){
     //
@@ -112,7 +151,11 @@ angular.module('app', [
            schemeService.find({
              query:{
                 $text: { $search: $scope.searchKeyword },
-                $populate:'sectors' }
+                $populate:{
+                            path: 'sectors',
+                            select: 'name -_id',
+                            options: { limit: 5 }
+                          } }
            }).then(function(schemes){
           //   console.log('showing search schemes',schemes)
                $scope.total = schemes.total
@@ -123,14 +166,7 @@ angular.module('app', [
              $scope.error = err
            })
 
-            // Restangular.one('search').get({query: $scope.searchKeyword}).then(function(response){
-            //     $scope.results = response;
-            //     $scope.persons = $scope.results.person;
-            //     $scope.projects = $scope.results.project;
-            //     $scope.total =  parseInt($scope.results.person.length) +  parseInt($scope.results.project.length);
-            //  }, function(error){
-            //     $scope.error = error;
-            // })
+
 
             $state.go('results', {query: $scope.searchKeyword})
         }
@@ -153,7 +189,56 @@ angular.module('app', [
         $scope.projectNode = false;
     }
 })
+.controller('schemeCtrl',function($scope,$state,$stateParams,$feathers){
+  console.log($stateParams.sector)
+  var schemeService = $feathers.service('schemes')
+   schemeService.find({
+     query:{
+         $populate:{
+                     path: 'sectors',
+                     select: 'name -_id',
+                     options: { limit: 5 }
+                   },
+                   sectors:$stateParams.sector
+     }
+   }).then(function(schemes){
+     if(schemes.data.length){
+       console.log(schemes.data)
+       $scope.$apply(function(){
+         $scope.persons  =schemes.data
+       })
+     }
+   }).catch(function(err){
+     console.log(err)
+   })
+       $scope.quantity = 6;
+   $scope.showResult = function(person) {
+       $state.go('entity', {query: person._id})
+   }
 
+})
+.controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){
+  $scope.sectorFnc= function(){
+     $scope.searching = true;
+    var sectorService = $feathers.service('sectors')
+    sectorService.find({ query: {active: true}}).then(function(sectors){
+      console.log('show sectos', sectors)
+      $scope.$apply(function(){
+        $scope.searching =false
+        $scope.total = sectors.total
+        $scope.sectors  = sectors.data,
+         $scope.notFound = false
+      })
+    }).catch(function(err){
+         $scope.error = err
+    })
+  }
+  $scope.sectorFnc()
+  $scope.showResult = function(sector) {
+    console.log('scheme result called',sector)
+      $state.go('scheme', { sector: sector._id})
+  }
+})
 .controller('resultCtrl', function($scope, Restangular, $state, $stateParams,$feathers) {
 	$scope.searchKeyword = $stateParams.query;
   console.log($scope)
@@ -166,7 +251,12 @@ angular.module('app', [
              schemeService.find({
                query:{
                   $text: { $search: $scope.searchKeyword },
-                  $populate:'sectors' }
+                  $populate: {
+                              path: 'sectors',
+                              select: 'name -_id',
+                              options: { limit: 5 }
+                            }
+                           }
              }).then(function(schemes){
                console.log('showing search schemes',schemes)
 
@@ -235,7 +325,12 @@ angular.module('app', [
             $scope.searching = true;
             var schemeService = $feathers.service('schemes')
             schemeService.get($scope.searchedEntity , { query:
-            {  $populate:'sectors' }}).then(function(scheme){
+            { $populate: {
+                        path: 'sectors',
+                        select: 'name -_id',
+                        options: { limit: 5 }
+                      }
+            }}).then(function(scheme){
               console.log('showing scheme data',scheme)
               $scope.$apply(function(){
                 $scope.searching = false;

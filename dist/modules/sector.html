@@ -11,7 +11,7 @@
 	</div>
 </div>
 <div class="container min500">
-	<div class="spinner" ng-if="!persons">
+	<div class="spinner" ng-if="!sectors">
 		<div class="spinner__item1"></div>
 		<div class="spinner__item2"></div>
 		<div class="spinner__item3"></div>
@@ -22,53 +22,14 @@
 
 	<!--Senators-->
 	<div class="row padder-top">
-		<span class="col-md-12 text-md text-bold padder-bottom" ng-show="persons">Recent Schemes</span>
-		<div class="col-md-4 clickable" ng-repeat="person in persons | orderBy:orderProp | limitTo:quantity">
-			<div class="col-md-12 card-md" ng-click="showResult(person)">
-				<span class="col-md-12 no-padder">
-					<p>{{person.name}}</p>
+		<span class="col-md-12 text-md text-bold padder-bottom" ng-show="sectors">Sectors</span>
+		<div class="col-md-4 clickable" ng-repeat="sector in sectors | orderBy:orderProp ">
+			<div class="col-md-12 card-md card-md-small" ng-click="showResult(sector)">
+				<span class="col-md-12 padder-sm">
+					<H4>{{sector.name}}</H4>
 
-					<hr>
-				</span>
-
-
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Sector</b><br />
-					<span ng-repeat="sector in person.sectors | pick:sectorSplit">
-					 {{sector.name}},
-				</span>
 
 				</span>
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Antidotes</b>
-					<p>5</p>
-				</span>
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Likelihood of Occurence</b>
-					<p>Low</p>
-
-				</span>
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Frequency of Occurence</b>
-					<p>Medium</p>
-				</span>
-
-				<span class="col-md-12 col-xs-6 no-padder">
-					<b>Subsceptible Areas</b>
-					<p> Admission, Registration, Examination/ Certification...</p>
-
-				</span>
-
-				<span class="col-md-12 col-xs-6 no-padder">
-					<b>Scheme Operators</b>
-					<p>Administrative Staff, Non-Academic Staff ...</p>
-
-				</span>
-
 			</div>
 		</div>
 	</div>

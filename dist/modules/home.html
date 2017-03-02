@@ -34,8 +34,10 @@
 
 
 				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Sector</b>
-					<p> Education</p>
+					<b>Sector</b><br />
+					<span ng-repeat="sector in person.sectors | pick:sectorSplit">
+					 {{sector.name}},
+				</span>
 
 				</span>
 

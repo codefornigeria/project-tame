@@ -9,7 +9,8 @@ angular.module('app', [
     'app.config',
     'app.directives',
     'chart.js',
-    'angularUtils.directives.dirDisqus'
+    'angularUtils.directives.dirDisqus',
+    'angular.filter'
     ])
 
 .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config',
@@ -41,6 +42,16 @@ angular.module('app', [
         url: '',
         templateUrl: 'modules/home.html',
         controller: 'appCtrl'
+    })
+    .state('sector', {
+        url: '/sector',
+        templateUrl: 'modules/sector.html',
+        controller: 'sectorCtrl'
+    })
+    .state('scheme', {
+        url: '/scheme?sector',
+        templateUrl: 'modules/scheme.html',
+        controller: 'schemeCtrl'
     })
       .state('results', {
           url: '/search?query',
