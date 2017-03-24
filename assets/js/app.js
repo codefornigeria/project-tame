@@ -6,11 +6,13 @@ angular.module('app', [
     'restangular',
     'ui.bootstrap',
     'app.controllers',
+    'app.services',
     'app.config',
     'app.directives',
     'chart.js',
     'angularUtils.directives.dirDisqus',
-    'angular.filter'
+    'angular.filter',
+  
     ])
 
 .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config',
@@ -72,6 +74,21 @@ angular.module('app', [
           url: '/compare',
           templateUrl: 'modules/compare.html',
           controller: 'compareCtrl'
+      })
+      .state('login', {
+          url: '/login',
+          templateUrl: 'modules/login.html',
+          controller: 'loginCtrl'
+      })
+      .state('register', {
+          url: '/register',
+          templateUrl: 'modules/register.html',
+          controller: 'registerCtrl'
+      })
+      .state('verify', {
+          url: '/verify',
+          templateUrl: 'modules/verify.html',
+          controller: 'verifyCtrl' // verify email domain
       })
 
       $urlRouterProvider.otherwise('/404')

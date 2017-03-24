@@ -65,7 +65,12 @@ gulp.task('vendorjs', ['clean'], function(){
       'assets/vendor/angular/angular-chart/Chart.js',
       'assets/vendor/angular/angular-chart/angular-chart.min.js',
       'assets/vendor/angular/dirDisqus.js',
-
+    'assets/vendor/angular/angular-sanitize.min.js',
+    'assets/vendor/angular/tv4.js',
+    'assets/vendor/angular/tv4.async-jquery.js',
+    'assets/vendor/angular/ObjectPath.js',
+    'assets/vendor/angular/schema-form.min.js',
+    'assets/vendor/angular/dist/bootstrap-decorator.min.js',
 		'assets/vendor/*.js'
 		])
         .pipe(concat('vendor.js'))

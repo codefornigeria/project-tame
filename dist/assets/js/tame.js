@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"https://tame-api.herokuapp.com/","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030/","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 
 angular.module('app', [
@@ -9,11 +9,13 @@ angular.module('app', [
     'restangular',
     'ui.bootstrap',
     'app.controllers',
+    'app.services',
     'app.config',
     'app.directives',
     'chart.js',
     'angularUtils.directives.dirDisqus',
-    'angular.filter'
+    'angular.filter',
+  
     ])
 
 .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config',
@@ -75,6 +77,21 @@ angular.module('app', [
           url: '/compare',
           templateUrl: 'modules/compare.html',
           controller: 'compareCtrl'
+      })
+      .state('login', {
+          url: '/login',
+          templateUrl: 'modules/login.html',
+          controller: 'loginCtrl'
+      })
+      .state('register', {
+          url: '/register',
+          templateUrl: 'modules/register.html',
+          controller: 'registerCtrl'
+      })
+      .state('verify', {
+          url: '/verify',
+          templateUrl: 'modules/verify.html',
+          controller: 'verifyCtrl' // verify email domain
       })
 
       $urlRouterProvider.otherwise('/404')
@@ -507,6 +524,62 @@ $scope.showEffect = false
         })
     }
 })
+.controller('registerCtrl', function($scope, $state , $stateParams,$feathers, AuthService ,LocalService){
+  $scope.register = function(){
+  //  console.log ($scope.signup_data)
+      AuthService.signUp($scope.signup_data).then(function(res){
+          console.log(res);
+
+      }).catch(function(err){
+
+          console.log(err);
+      })
+  }
+})
+
+.controller('loginCtrl',function($scope,$state,$stateParams,$feathers){
+      $scope.login = function(loginData){
+
+      }
+      $scope.logout = function(){
+          $feathers.logout().then(function (params) {
+              console.log(params);
+              console.log("Logged out!!")
+          });
+      }
+      $scope.login = function(){
+        $scope.alert = false;
+            $feathers.authenticate($scope.user).then(function(res){
+              console.log(res);
+              $scope.$apply(function(){
+                $scope.alert = {
+                    type: 'success',
+                    message: 'Login successful'
+                };
+              })
+            }).catch(function(err){
+              console.log(err);
+                $scope.$apply(function(){
+                  $scope.alert = {
+                    type: 'danger',
+                    message: err.message || 'Invalid login parameters'
+                }})
+            })
+        };
+
+        $scope.register = function(){
+            AuthService.signUp($scope.signup_data).then(function(res){
+                console.log(res);
+
+            }).catch(function(err){
+
+                console.log(err);
+            })
+        }
+})
+.controller('verifyCtrl',function($scope,$state,$stateParams,$feathers){
+
+})
 
 angular.module('app.directives', [])
 
@@ -612,4 +685,42 @@ angular.module('app.directives', [])
         restrict: 'EA',
 		template: '<div class="overlay" ng-if="searching"><div class="spinner"><div class="spinner__item1"></div><div class="spinner__item2"></div><div class="spinner__item3"></div><div class="spinner__item4"></div></div></div>'
 	}
+})
+
+  angular.module('app.services', [])
+  .factory('AuthService', function($q, $feathers, $rootScope){
+  return {
+    login: function(user) {
+      return $feathers.authenticate({
+        type: 'local',
+        email: user.username,
+        password: user.password
+      })
+
+    },
+    signUp: function(signUpData){
+        console.log(signUpData);
+      var userService = $feathers.service('users')
+      return userService.create(signUpData)
+    },
+    facebookLogin: function() {
+
+    },
+    googleLogin: function() {
+
+    }
+
+  }
+}).factory('LocalService', function () {
+    return {
+        get: function (key) {
+            return localStorage.getItem(key);
+        },
+        set: function (key, val) {
+            return localStorage.setItem(key, val);
+        },
+        unset: function (key) {
+            return localStorage.removeItem(key);
+        }
+    }
 })

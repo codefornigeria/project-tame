@@ -425,3 +425,59 @@ $scope.showEffect = false
         })
     }
 })
+.controller('registerCtrl', function($scope, $state , $stateParams,$feathers, AuthService ,LocalService){
+  $scope.register = function(){
+  //  console.log ($scope.signup_data)
+      AuthService.signUp($scope.signup_data).then(function(res){
+          console.log(res);
+
+      }).catch(function(err){
+
+          console.log(err);
+      })
+  }
+})
+
+.controller('loginCtrl',function($scope,$state,$stateParams,$feathers){
+      $scope.login = function(loginData){
+
+      }
+      $scope.logout = function(){
+          $feathers.logout().then(function (params) {
+              console.log(params);
+              console.log("Logged out!!")
+          });
+      }
+      $scope.login = function(){
+        $scope.alert = false;
+            $feathers.authenticate($scope.user).then(function(res){
+              console.log(res);
+              $scope.$apply(function(){
+                $scope.alert = {
+                    type: 'success',
+                    message: 'Login successful'
+                };
+              })
+            }).catch(function(err){
+              console.log(err);
+                $scope.$apply(function(){
+                  $scope.alert = {
+                    type: 'danger',
+                    message: err.message || 'Invalid login parameters'
+                }})
+            })
+        };
+
+        $scope.register = function(){
+            AuthService.signUp($scope.signup_data).then(function(res){
+                console.log(res);
+
+            }).catch(function(err){
+
+                console.log(err);
+            })
+        }
+})
+.controller('verifyCtrl',function($scope,$state,$stateParams,$feathers){
+
+})
