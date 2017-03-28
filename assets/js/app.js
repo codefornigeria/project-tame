@@ -12,9 +12,41 @@ angular.module('app', [
     'chart.js',
     'angularUtils.directives.dirDisqus',
     'angular.filter',
-  
-    ])
 
+    ])
+    .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
+              $rootScope.currentUser = {
+                  isLoggedIn: LocalService.get('feathers-jwt')
+              }
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+          //         $("#ui-view").html("");
+          //         $(".page-preloading").removeClass('hidden');
+          // //code state routing
+          //   // If it's a parent state, redirect to it's child
+          //         if (toState.redirectTo) {
+          //             event.preventDefault();
+          //             var params = toParams;
+          //             if (!_.isEmpty(fromParams)) _.extend(toParams, $location.search());
+          //             $state.go(toState.redirectTo, params);
+          //             return;
+          //         }
+        })
+        $rootScope.$on('$stateChangeSuccess', function() {
+        //  $(".page-preloading").addClass('hidden');
+        });
+          $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
+              event.preventDefault();
+              // console.log(event);
+              // console.log(toState);
+              // console.log(toParams);
+              // console.log(fromState);
+              // console.log(fromParams);
+
+              // $(".page-preloading").addClass('hidden');
+          });
+    })
 .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config',
   function($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider,$feathersProvider,Config) {
     $feathersProvider.setEndpoint(Config.api)
@@ -43,7 +75,23 @@ angular.module('app', [
       .state('home', {
         url: '',
         templateUrl: 'modules/home.html',
-        controller: 'appCtrl'
+        controller: 'appCtrl',
+        resolve:{
+          user: function($q,$feathers,$state,LocalService){
+              //  authManagement  :
+            //  var token = LocalService.get('feathers-jwt')
+            return   $feathers.authenticate().then(function(res){
+                console.log('auth success', res)
+                return res.data
+              }).catch(function(err){
+                console.log('non user', err)
+                return false
+
+              })
+
+          }
+        },
+
     })
     .state('sector', {
         url: '/sector',
@@ -57,6 +105,20 @@ angular.module('app', [
     })
     .state('ratings', {
         url: '/ratings',
+        resolve:{
+          user: function($q,$feathers,$state,LocalService){
+              //  authManagement  :
+            //  var token = LocalService.get('feathers-jwt')
+            return   $feathers.authenticate().then(function(res){
+                console.log('auth success', res)
+                return res.data
+              }).catch(function(err){
+                return null
+
+              })
+
+          }
+        },
         templateUrl: 'modules/ratings.html',
         controller: 'ratingsCtrl'
     })
@@ -80,16 +142,45 @@ angular.module('app', [
           templateUrl: 'modules/login.html',
           controller: 'loginCtrl'
       })
+      .state('logout', {
+          url: '/logout',
+          templateUrl: 'modules/login.html',
+          resolve:{
+            user:function($q, $feathers){
+              return $feathers.logout().then(function(res){
+                console.log('--logging out user----')
+                return null
+              })
+            }
+          },
+          controller: 'loginCtrl'
+      })
+
+      .state('verify-user', {
+          url: '/verify?token',
+          templateUrl: 'modules/login.html',
+          controller: 'loginCtrl' ,
+          resolve:{
+            verifyStatus: function($stateParams , $feathers){
+                var authManagementService = $feathers.service('authManagement')
+                  return authManagementService.create({
+                    action:'verifySignupLong',
+                    value: $stateParams.token
+                  }).then(function(verified){
+                    console.log('showing verified status', verified)
+                    return  verified
+                  })
+
+            }
+          }
+      })
+
       .state('register', {
           url: '/register',
           templateUrl: 'modules/register.html',
           controller: 'registerCtrl'
       })
-      .state('verify', {
-          url: '/verify',
-          templateUrl: 'modules/verify.html',
-          controller: 'verifyCtrl' // verify email domain
-      })
+
 
       $urlRouterProvider.otherwise('/404')
   }])

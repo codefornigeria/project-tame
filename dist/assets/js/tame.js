@@ -15,9 +15,41 @@ angular.module('app', [
     'chart.js',
     'angularUtils.directives.dirDisqus',
     'angular.filter',
-  
-    ])
 
+    ])
+    .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
+              $rootScope.currentUser = {
+                  isLoggedIn: LocalService.get('feathers-jwt')
+              }
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+          //         $("#ui-view").html("");
+          //         $(".page-preloading").removeClass('hidden');
+          // //code state routing
+          //   // If it's a parent state, redirect to it's child
+          //         if (toState.redirectTo) {
+          //             event.preventDefault();
+          //             var params = toParams;
+          //             if (!_.isEmpty(fromParams)) _.extend(toParams, $location.search());
+          //             $state.go(toState.redirectTo, params);
+          //             return;
+          //         }
+        })
+        $rootScope.$on('$stateChangeSuccess', function() {
+        //  $(".page-preloading").addClass('hidden');
+        });
+          $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
+              event.preventDefault();
+              // console.log(event);
+              // console.log(toState);
+              // console.log(toParams);
+              // console.log(fromState);
+              // console.log(fromParams);
+
+              // $(".page-preloading").addClass('hidden');
+          });
+    })
 .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config',
   function($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider,$feathersProvider,Config) {
     $feathersProvider.setEndpoint(Config.api)
@@ -46,7 +78,23 @@ angular.module('app', [
       .state('home', {
         url: '',
         templateUrl: 'modules/home.html',
-        controller: 'appCtrl'
+        controller: 'appCtrl',
+        resolve:{
+          user: function($q,$feathers,$state,LocalService){
+              //  authManagement  :
+            //  var token = LocalService.get('feathers-jwt')
+            return   $feathers.authenticate().then(function(res){
+                console.log('auth success', res)
+                return res.data
+              }).catch(function(err){
+                console.log('non user', err)
+                return false
+
+              })
+
+          }
+        },
+
     })
     .state('sector', {
         url: '/sector',
@@ -60,6 +108,20 @@ angular.module('app', [
     })
     .state('ratings', {
         url: '/ratings',
+        resolve:{
+          user: function($q,$feathers,$state,LocalService){
+              //  authManagement  :
+            //  var token = LocalService.get('feathers-jwt')
+            return   $feathers.authenticate().then(function(res){
+                console.log('auth success', res)
+                return res.data
+              }).catch(function(err){
+                return null
+
+              })
+
+          }
+        },
         templateUrl: 'modules/ratings.html',
         controller: 'ratingsCtrl'
     })
@@ -83,503 +145,681 @@ angular.module('app', [
           templateUrl: 'modules/login.html',
           controller: 'loginCtrl'
       })
+      .state('logout', {
+          url: '/logout',
+          templateUrl: 'modules/login.html',
+          resolve:{
+            user:function($q, $feathers){
+              return $feathers.logout().then(function(res){
+                console.log('--logging out user----')
+                return null
+              })
+            }
+          },
+          controller: 'loginCtrl'
+      })
+
+      .state('verify-user', {
+          url: '/verify?token',
+          templateUrl: 'modules/login.html',
+          controller: 'loginCtrl' ,
+          resolve:{
+            verifyStatus: function($stateParams , $feathers){
+                var authManagementService = $feathers.service('authManagement')
+                  return authManagementService.create({
+                    action:'verifySignupLong',
+                    value: $stateParams.token
+                  }).then(function(verified){
+                    console.log('showing verified status', verified)
+                    return  verified
+                  })
+
+            }
+          }
+      })
+
       .state('register', {
           url: '/register',
           templateUrl: 'modules/register.html',
           controller: 'registerCtrl'
       })
-      .state('verify', {
-          url: '/verify',
-          templateUrl: 'modules/verify.html',
-          controller: 'verifyCtrl' // verify email domain
-      })
+
 
       $urlRouterProvider.otherwise('/404')
   }])
 
   angular.module('app.controllers', [])
 
-.factory('API', ['Restangular', function(Restangular) {
-    return Restangular.withConfig(function(RestangularConfigurer) {
-         RestangularConfigurer.setBaseUrl('https://sahara-datakit-api.herokuapp.com/');
-    });
- }])
-.controller('appCtrl', function($scope, Restangular, $state, $stateParams,$feathers) {
+      .factory('API', ['Restangular', function(Restangular) {
+          return Restangular.withConfig(function(RestangularConfigurer) {
+              RestangularConfigurer.setBaseUrl('https://sahara-datakit-api.herokuapp.com/');
+          });
+      }])
+      .controller('appCtrl', function(user, $scope, Restangular, $state, $stateParams, $feathers) {
+          $scope.user = user
+          console.log('user', $scope.user)
+          $scope.sectorSplit = function(val) {
+              console.log(val)
+              return val.name
 
-      $scope.sectorSplit= function(val){
-        console.log(val)
-        return val.name
-      }
-      var testQ = function(){
-           var schemeService = $feathers.service('schemes')
-           schemeService.find({
-             query:{
-               $populate:{
-                           path: 'sectors',
-                           select: 'name -_id',
-                           options: { limit: 5 }
-                         },
-               'sectors':'58b7eb8aba090a00118dfc6e'
-             }
-           }).then(function(schemes){
-             console.log('testq schemes',schemes)
-           }).catch(function(err){
-             console.log(err)
-           })
-      }
-      testQ()
-     var schemeService = $feathers.service('schemes')
-      schemeService.find({
-        query:{
-            $populate:{
-                        path: 'sectors',
-                        select: 'name -_id',
-                        options: { limit: 5 }
-                      }
-        }
-      }).then(function(schemes){
-        if(schemes.data.length){
-          console.log(schemes.data)
-          $scope.$apply(function(){
-            $scope.persons  =schemes.data
-          })
-        }
-      }).catch(function(err){
-        console.log(err)
-      })
-    // Restangular.all('project').getList().then(function(response){
-    //
-    //     $scope.projects = response;
-    // })
-    //
-    // Restangular.all('person').getList().then(function(response){
-    //     $scope.persons = response;
-    //     console.log(response.plain())
-    // })
-    $scope.options = {
-        tooltipEvents: [],
-        showTooltips: true,
-        tooltipCaretSize: 0,
-        onAnimationComplete: function () {
-            this.showTooltip(this.segments, true);
-        },
-    };
+          }
 
-    $scope.quantity = 3;
+          $scope.checkUser = function() {
+              console.log('checking if user is logged in')
+          }
+          $scope.logout = function() {
+              console.log('logout clicked')
+              $feathers.logout().then(function(params) {
+                  console.log(params);
+                  console.log("Logged out!!")
+                  $scope.user = null
+                  //$state.reload()
 
-	$scope.search = function() {
-        if ($scope.searchKeyword){
+              });
+          }
+          var testQ = function() {
+              var schemeService = $feathers.service('schemes')
+              schemeService.find({
+                  query: {
+                      $populate: {
+                          path: 'sectors',
+                          select: 'name -_id',
+                          options: {
+                              limit: 5
+                          }
+                      },
+                      'sectors': '58b7eb8aba090a00118dfc6e'
+                  }
+              }).then(function(schemes) {
+                  console.log('testq schemes', schemes)
+              }).catch(function(err) {
+                  console.log(err)
+              })
+          }
+          testQ()
           var schemeService = $feathers.service('schemes')
-           schemeService.find({
-             query:{
-                $text: { $search: $scope.searchKeyword },
-                $populate:{
-                            path: 'sectors',
-                            select: 'name -_id',
-                            options: { limit: 5 }
-                          } }
-           }).then(function(schemes){
-          //   console.log('showing search schemes',schemes)
-               $scope.total = schemes.total
-               $scope.schemes  =schemes.data
-               $scope.notFound = false
-
-           }).catch(function(err){
-             $scope.error = err
-           })
-
-
-
-            $state.go('results', {query: $scope.searchKeyword})
-        }
-    }
-
-    $scope.showResult = function(person) {
-        $state.go('entity', {query: person._id})
-    }
-
-    $scope.showProject = function(project) {
-        Restangular.one('project', project.id).get().then(function(response){
-            $scope.entity = response;
-            console.log($scope.entity.plain());
-        })
-        $scope.projectNode = true;
-    }
-
-    $scope.close = function() {
-        $scope.personNode = false;
-        $scope.projectNode = false;
-    }
-})
-.controller('schemeCtrl',function($scope,$state,$stateParams,$feathers){
-  console.log($stateParams.sector)
-  var schemeService = $feathers.service('schemes')
-   schemeService.find({
-     query:{
-         $populate:{
-                     path: 'sectors',
-                     select: 'name -_id',
-                     options: { limit: 5 }
-                   },
-                   sectors:$stateParams.sector
-     }
-   }).then(function(schemes){
-     if(schemes.data.length){
-       console.log(schemes.data)
-       $scope.$apply(function(){
-         $scope.persons  =schemes.data
-       })
-     }
-   }).catch(function(err){
-     console.log(err)
-   })
-       $scope.quantity = 6;
-   $scope.showResult = function(person) {
-       $state.go('entity', {query: person._id})
-   }
-
-})
-.controller('ratingsCtrl',function($scope,$state,$stateParams,$feathers){
-
-$scope.showEffect = false
-   $scope.showResult = function(person) {
-       $state.go('entity', {query: person._id})
-   }
-   $scope.search = function() {
-       var address = $scope.rating.name;
-       var inputMin = 1;
-
-       if ($scope.rating.sector && $scope.rating.sector.length >= inputMin) {
-         var sectorService = $feathers.service('sectors')
-         sectorService.find({
-
-         }).then(function(sectors){
-
-           if(sectors.data.length){
-             console.log('showing sectors',sectors.data)
-             $scope.$apply(function(){
-               $scope.searching = true;
-               $scope.results = sectors.data
-
-             })
-           }
-         }).catch(function(err){
-           console.log(err)
-              $scope.searching = false;
-         })
-
-       } else {
-           $scope.searching = false;
-         }
-       }
-
-           $scope.addSector = function(result) {
-               $scope.rating.sectorId = result._id;
-
-               $scope.rating.sector = result.name;
-               $scope.searching = false;
-                $scope.showScheme()
-             }
-
-           $scope.showScheme = function(){
-             var groupService = $feathers.service('groups')
-             groupService.find({
-
-             }).then(function(groups){
-
-               if(groups.data.length){
-                 console.log('showing groups',groups.data)
-                 $scope.$apply(function(){
-                    $scope.schemeTypes = groups.data
-
-                 })
-               }
-             }).catch(function(err){
-               console.log(err)
-                  $scope.searching = false;
-             })
-           }
-           $scope.loadEffect = function(){
-             $scope.showEffect = true
-             var storyService = $feathers.service('stories')
-             storyService.find({
-             }).then(function(stories){
-
-               if(stories.data.length){
-                 console.log('showing stories',stories.data)
-                 $scope.$apply(function(){
-                    $scope.schemeEffects = stories.data
-
-                 })
-               }
-             }).catch(function(err){
-               console.log(err)
-                  $scope.searching = false;
-             })
-           }
-           $scope.rating = 0;
-           $scope.ratings = [{
-               current: 1,
-               max: 5
-           }];
-
-           $scope.getSelectedRating = function (rating) {
-               $scope.rating.rate = rating;
-           }
-           $scope.addRating = function(){
-             console.log('final rating', $scope.rating)
-             $state.go('scheme')
-           }
-})
-.controller('sectorCtrl',function($scope,$state,$stateParams,$feathers){
-  $scope.sectorFnc= function(){
-     $scope.searching = true;
-    var sectorService = $feathers.service('sectors')
-    sectorService.find({ query: {active: true}}).then(function(sectors){
-      console.log('show sectos', sectors)
-      $scope.$apply(function(){
-        $scope.searching =false
-        $scope.total = sectors.total
-        $scope.sectors  = sectors.data,
-         $scope.notFound = false
-      })
-    }).catch(function(err){
-         $scope.error = err
-    })
-  }
-  $scope.sectorFnc()
-  $scope.showResult = function(sector) {
-    console.log('scheme result called',sector)
-      $state.go('scheme', { sector: sector._id})
-  }
-})
-.controller('resultCtrl', function($scope, Restangular, $state, $stateParams,$feathers) {
-	$scope.searchKeyword = $stateParams.query;
-  console.log($scope)
-    $scope.search = function() {
-
-    	if ($scope.searchKeyword){
-          //  $state.go('results', {query: $scope.searchKeyword})
-             $scope.searching = true;
-            var schemeService = $feathers.service('schemes')
-             schemeService.find({
-               query:{
-                  $text: { $search: $scope.searchKeyword },
+          schemeService.find({
+              query: {
                   $populate: {
+                      path: 'sectors antidotes',
+                      select: 'name description _id',
+                      options: {
+                          limit: 5
+                      }
+                  }
+              }
+          }).then(function(schemes) {
+              if (schemes.data.length) {
+                  console.log('test schemes',schemes.data)
+                  $scope.$apply(function() {
+                      $scope.persons = schemes.data
+                  })
+              }
+          }).catch(function(err) {
+              console.log(err)
+          })
+          // Restangular.all('project').getList().then(function(response){
+          //
+          //     $scope.projects = response;
+          // })
+          //
+          // Restangular.all('person').getList().then(function(response){
+          //     $scope.persons = response;
+          //     console.log(response.plain())
+          // })
+          $scope.options = {
+              tooltipEvents: [],
+              showTooltips: true,
+              tooltipCaretSize: 0,
+              onAnimationComplete: function() {
+                  this.showTooltip(this.segments, true);
+              },
+          };
+
+          $scope.quantity = 3;
+
+          $scope.search = function() {
+              if ($scope.searchKeyword) {
+                  var schemeService = $feathers.service('schemes')
+                  schemeService.find({
+                      query: {
+                          $text: {
+                              $search: $scope.searchKeyword
+                          },
+                          $populate: {
                               path: 'sectors',
                               select: 'name -_id',
-                              options: { limit: 5 }
-                            }
-                           }
-             }).then(function(schemes){
-               console.log('showing search schemes',schemes)
-
-                 $scope.$apply(function () {
-                   $scope.searching = false;
-
-                   $scope.total = schemes.total
-                   $scope.schemes  =schemes.data
-                   $scope.notFound = false
-             });
-
-             }).catch(function(err){
-               $scope.error = err
-             })
-
-
-    	}
-    }
-
-    $scope.search();
-
-    $scope.showResult = function(person) {
-        $state.go('entity', {query: person._id})
-    }
-
-    $scope.showProject = function(project) {
-        Restangular.one('project', project._id).get().then(function(response){
-            $scope.entity = response;
-            console.log($scope.entity.plain());
-        })
-        $scope.projectNode = true;
-    }
-
-    $scope.close = function() {
-        $scope.personNode = false;
-        $scope.projectNode = false;
-    }
-})
-
-.controller('entityCtrl', function($scope, Restangular, $state, $stateParams,$feathers) {
-    $scope.searchedEntity = $stateParams.query;
-
-    $scope.search = function() {
-        if ($scope.searchKeyword){
-            $state.go('results', {query: $scope.searchKeyword})
-            $scope.searching = true;
-            Restangular.one('search').get({query: $scope.searchKeyword}).then(function(response){
-                $scope.searching = false;
-                if (response.person == '' && response.project == '') {
-                    $scope.notFound = true;
-                } else {
-                    $scope.results = response;
-                    $scope.persons = $scope.results.person;
-                    $scope.projects = $scope.results.project;
-                    $scope.total =  parseInt($scope.results.person.length) +  parseInt($scope.results.project.length);
-                }
-             }, function(error){
-                $scope.searching = false;
-                $scope.error = error;
-            });
-        }
-    }
-
-    $scope.viewEntity = function() {
-        if ($scope.searchedEntity){
-            $scope.searching = true;
-            var schemeService = $feathers.service('schemes')
-            schemeService.get($scope.searchedEntity , { query:
-            { $populate: {
-                        path: 'sectors',
-                        select: 'name -_id',
-                        options: { limit: 5 }
+                              options: {
+                                  limit: 5
+                              }
+                          }
                       }
-            }}).then(function(scheme){
-              console.log('showing scheme data',scheme)
-              $scope.$apply(function(){
-                $scope.searching = false;
-                $scope.entity = scheme;
-                $scope.searchKeyword = scheme.name;
-                $scope.sectors = scheme.sectors;
+                  }).then(function(schemes) {
+                      //   console.log('showing search schemes',schemes)
+                      $scope.total = schemes.total
+                      $scope.schemes = schemes.data
+                      $scope.notFound = false
 
+                  }).catch(function(err) {
+                      $scope.error = err
+                  })
+
+
+
+                  $state.go('results', {
+                      query: $scope.searchKeyword
+                  })
+              }
+          }
+
+          $scope.showResult = function(person) {
+              $state.go('entity', {
+                  query: person._id
               })
-            }).catch(function(err){
-              $scope.$apply(function(){
-                $scope.searching = false;
+          }
 
+          $scope.showProject = function(project) {
+              Restangular.one('project', project.id).get().then(function(response) {
+                  $scope.entity = response;
+                  console.log($scope.entity.plain());
               })
-                })
-            // Restangular.one('person', $scope.searchedEntity).get().then(function(response){
-            //     $scope.searching = false;
-            //     $scope.entity = response;
-            //     $scope.searchKeyword = response.name;
-            //     $scope.contracts = response.projects;
-            //     $scope.total =  $scope.contracts.length;
-            //  }, function(error){
-            //     $scope.searching = false;
-            //     $scope.error = error;
-            //     console.log(error)
-            // });
-        }
-    }
+              $scope.projectNode = true;
+          }
 
-    $scope.viewEntity();
-
-
-    $scope.compare = function (contract) {
-        $scope.compareProjects = true;
-        $scope.contract = contract;
-    }
-
-    $scope.compareProject = function () {
-        $scope.closeModal();
-        $scope.searching = true;
-        console.log($scope.contract);
-        Restangular.one('project', $scope.contract.id).get({category: $scope.category})
-            .then(function (response) {
-                $scope.searching = false;
-                $scope.showComparison = true;
-                $scope.similarProjects = response.relatedProjects;
-        })
-    }
-
-    $scope.closeComparison = function () {
-        $scope.showComparison = false;
-    }
-    $scope.closeModal = function () {
-        $scope.compareProjects = false;
-    }
-})
-
-.controller('compareCtrl', function ($scope, Restangular, $state, $stateParams) {
-    Restangular.one('project').get({matched: false}).then(function(response) {
-        $scope.projects = response;
-    })
-
-    $scope.selectProject = function () {
-        $scope.project = $scope.match.project.district.state.id;
-        Restangular.one('person').get({state: $scope.project}).then(function (response) {
-            $scope.persons = response;
-        }, function(error){
-        })
-    }
-
-    $scope.matchProject = function () {
-        $scope.match.project = $scope.match.project.id;
-        $scope.match.person = $scope.match.person.id;
-        // console.log($scope.match)
-        Restangular.all('match-project').post($scope.match).then(function (response) {
-            console.log('matched')
-            $state.reload();
-        })
-    }
-})
-.controller('registerCtrl', function($scope, $state , $stateParams,$feathers, AuthService ,LocalService){
-  $scope.register = function(){
-  //  console.log ($scope.signup_data)
-      AuthService.signUp($scope.signup_data).then(function(res){
-          console.log(res);
-
-      }).catch(function(err){
-
-          console.log(err);
+          $scope.close = function() {
+              $scope.personNode = false;
+              $scope.projectNode = false;
+          }
       })
-  }
-})
-
-.controller('loginCtrl',function($scope,$state,$stateParams,$feathers){
-      $scope.login = function(loginData){
-
-      }
-      $scope.logout = function(){
-          $feathers.logout().then(function (params) {
-              console.log(params);
-              console.log("Logged out!!")
-          });
-      }
-      $scope.login = function(){
-        $scope.alert = false;
-            $feathers.authenticate($scope.user).then(function(res){
-              console.log(res);
-              $scope.$apply(function(){
-                $scope.alert = {
-                    type: 'success',
-                    message: 'Login successful'
-                };
+      .controller('schemeCtrl', function($scope, $state, $stateParams, $feathers) {
+          console.log($stateParams.sector)
+          var schemeService = $feathers.service('schemes')
+          schemeService.find({
+              query: {
+                  $populate: {
+                      path: 'sectors',
+                      select: 'name -_id',
+                      options: {
+                          limit: 5
+                      }
+                  },
+                  sectors: $stateParams.sector
+              }
+          }).then(function(schemes) {
+              if (schemes.data.length) {
+                  console.log(schemes.data)
+                  $scope.$apply(function() {
+                      $scope.persons = schemes.data
+                  })
+              }
+          }).catch(function(err) {
+              console.log(err)
+          })
+          $scope.quantity = 6;
+          $scope.showResult = function(person) {
+              $state.go('entity', {
+                  query: person._id
               })
-            }).catch(function(err){
-              console.log(err);
-                $scope.$apply(function(){
-                  $scope.alert = {
-                    type: 'danger',
-                    message: err.message || 'Invalid login parameters'
-                }})
+          }
+
+      })
+      .controller('ratingsCtrl', function(user, $scope, $state, $stateParams, $feathers) {
+
+          $scope.showEffect = false
+          $scope.showAssessment = false
+          $scope.ratingCompleted=false
+          if (!user) {
+              $state.go('login')
+              return
+          }
+
+          $scope.showResult = function(person) {
+              $state.go('entity', {
+                  query: person._id
+              })
+          }
+          $scope.searchOrganization = function() {
+              var inputMin = 1;
+              $scope.ratin.organizationSelected = false
+
+              if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
+                  var entityService = $feathers.service('entities')
+                  entityService.find({
+
+                  }).then(function(entities) {
+
+                      if (entities.data.length) {
+                          console.log('showing entities', entities.data)
+                          $scope.$apply(function() {
+                              $scope.searching = true;
+                              $scope.results = entities.data
+
+                          })
+                      }
+                  }).catch(function(err) {
+                      console.log(err)
+                      $scope.searching = false;
+                  })
+
+              } else {
+                  $scope.searching = false;
+              }
+          }
+
+          $scope.searchSector = function() {
+              var inputMin = 1;
+              console.log('search sector called')
+              if ($scope.ratin.sector && $scope.ratin.sector.length >= inputMin) {
+                  $scope.ratin.sectorSelected = false
+
+                  var sectorService = $feathers.service('sectors')
+                  sectorService.find({
+
+                  }).then(function(sectors) {
+
+                      if (sectors.data.length) {
+                          console.log('showing sectors', sectors.data)
+                          $scope.$apply(function() {
+                              $scope.searching = true;
+                              $scope.results = sectors.data
+
+                          })
+                      }
+                  }).catch(function(err) {
+                      console.log(err)
+                      $scope.searching = false;
+                  })
+
+              } else {
+                  $scope.searching = false;
+              }
+          }
+          $scope.addSector = function(result) {
+              $scope.ratin.sectorId = result._id;
+
+              $scope.ratin.sector = result.name;
+              $scope.ratin.sectorSelected = true
+              //  $scope.results = []
+              $scope.searching = false;
+
+          }
+          $scope.addOrganization = function(result) {
+              $scope.ratin.organizationId = result._id;
+
+              $scope.ratin.organization = result.name;
+              $scope.searching = false;
+              $scope.ratin.organizationSelected = true
+
+          }
+          $scope.loadSchemes = function(assessmentData){
+            // load schemes based on assessment data
+
+            $scope.showAssessment = true
+                var schemeService = $feathers.service('schemes')
+                schemeService.find({
+                    query: {
+                        $populate: {
+                            path: 'sectors antidotes',
+                            select: 'name description _id',
+                            options: {
+                                limit: 10
+                            }
+                        },
+                        'sectors': assessmentData.sectorId,
+
+                    }
+                }).then(function(schemes) {
+                    console.log('testq schemes', schemes)
+                    $scope.$apply(function(){
+                      $scope.ratin.schemes = schemes.data
+                    })
+                }).catch(function(err) {
+                    console.log(err)
+                })
+
+          }
+          $scope.rateScheme = function(scheme,antidote,type){
+            console.log('und',_.first)
+            _.map(scheme.antidotes,  function(item){
+              if(item== antidote){
+                (type)? item.score=3 : item.score=0
+              }
             })
-        };
 
-        $scope.register = function(){
-            AuthService.signUp($scope.signup_data).then(function(res){
-                console.log(res);
-
-            }).catch(function(err){
-
-                console.log(err);
-            })
+          }
+          $scope.completeRating = function(ratin){
+            $scope.ratingCompleted=true
+          $scope.showAssessment = false
         }
-})
-.controller('verifyCtrl',function($scope,$state,$stateParams,$feathers){
+          $scope.showScheme = function() {
+              var groupService = $feathers.service('groups')
+              groupService.find({
 
-})
+              }).then(function(groups) {
+
+                  if (groups.data.length) {
+                      console.log('showing groups', groups.data)
+                      $scope.$apply(function() {
+                          $scope.schemeTypes = groups.data
+
+                      })
+                  }
+              }).catch(function(err) {
+                  console.log(err)
+                  $scope.searching = false;
+              })
+          }
+          $scope.loadEffect = function() {
+              $scope.showEffect = true
+              var storyService = $feathers.service('stories')
+              storyService.find({}).then(function(stories) {
+
+                  if (stories.data.length) {
+                      console.log('showing stories', stories.data)
+                      $scope.$apply(function() {
+                          $scope.schemeEffects = stories.data
+
+                      })
+                  }
+              }).catch(function(err) {
+                  console.log(err)
+                  $scope.searching = false;
+              })
+          }
+          $scope.rating = 0;
+          $scope.ratings = [{
+              current: 1,
+              max: 5
+          }];
+
+          $scope.getSelectedRating = function(rating) {
+              $scope.rating.rate = rating;
+          }
+          $scope.addRating = function() {
+              console.log('final rating', $scope.rating)
+              $state.go('scheme')
+          }
+      })
+      .controller('sectorCtrl', function($scope, $state, $stateParams, $feathers) {
+          $scope.sectorFnc = function() {
+              $scope.searching = true;
+              var sectorService = $feathers.service('sectors')
+              sectorService.find({
+                  query: {
+                      active: true
+                  }
+              }).then(function(sectors) {
+                  console.log('show sectos', sectors)
+                  $scope.$apply(function() {
+                      $scope.searching = false
+                      $scope.total = sectors.total
+                      $scope.sectors = sectors.data,
+                          $scope.notFound = false
+                  })
+              }).catch(function(err) {
+                  $scope.error = err
+              })
+          }
+          $scope.sectorFnc()
+          $scope.showResult = function(sector) {
+              console.log('scheme result called', sector)
+              $state.go('scheme', {
+                  sector: sector._id
+              })
+          }
+      })
+      .controller('resultCtrl', function($scope, Restangular, $state, $stateParams, $feathers) {
+          $scope.searchKeyword = $stateParams.query;
+          console.log($scope)
+          $scope.search = function() {
+
+              if ($scope.searchKeyword) {
+                  //  $state.go('results', {query: $scope.searchKeyword})
+                  $scope.searching = true;
+                  var schemeService = $feathers.service('schemes')
+                  schemeService.find({
+                      query: {
+                          $text: {
+                              $search: $scope.searchKeyword
+                          },
+                          $populate: {
+                              path: 'sectors',
+                              select: 'name -_id',
+                              options: {
+                                  limit: 5
+                              }
+                          }
+                      }
+                  }).then(function(schemes) {
+                      console.log('showing search schemes', schemes)
+
+                      $scope.$apply(function() {
+                          $scope.searching = false;
+
+                          $scope.total = schemes.total
+                          $scope.schemes = schemes.data
+                          $scope.notFound = false
+                      });
+
+                  }).catch(function(err) {
+                      $scope.error = err
+                  })
+
+
+              }
+          }
+
+          $scope.search();
+
+          $scope.showResult = function(person) {
+              $state.go('entity', {
+                  query: person._id
+              })
+          }
+
+          $scope.showProject = function(project) {
+              Restangular.one('project', project._id).get().then(function(response) {
+                  $scope.entity = response;
+                  console.log($scope.entity.plain());
+              })
+              $scope.projectNode = true;
+          }
+
+          $scope.close = function() {
+              $scope.personNode = false;
+              $scope.projectNode = false;
+          }
+      })
+
+      .controller('entityCtrl', function($scope, Restangular, $state, $stateParams, $feathers) {
+          $scope.searchedEntity = $stateParams.query;
+
+          $scope.search = function() {
+              if ($scope.searchKeyword) {
+                  $state.go('results', {
+                      query: $scope.searchKeyword
+                  })
+                  $scope.searching = true;
+                  Restangular.one('search').get({
+                      query: $scope.searchKeyword
+                  }).then(function(response) {
+                      $scope.searching = false;
+                      if (response.person == '' && response.project == '') {
+                          $scope.notFound = true;
+                      } else {
+                          $scope.results = response;
+                          $scope.persons = $scope.results.person;
+                          $scope.projects = $scope.results.project;
+                          $scope.total = parseInt($scope.results.person.length) + parseInt($scope.results.project.length);
+                      }
+                  }, function(error) {
+                      $scope.searching = false;
+                      $scope.error = error;
+                  });
+              }
+          }
+
+          $scope.viewEntity = function() {
+              if ($scope.searchedEntity) {
+                  $scope.searching = true;
+                  var schemeService = $feathers.service('schemes')
+                  schemeService.get($scope.searchedEntity, {
+                      query: {
+                          $populate: {
+                              path: 'sectors',
+                              select: 'name -_id',
+                              options: {
+                                  limit: 5
+                              }
+                          }
+                      }
+                  }).then(function(scheme) {
+                      console.log('showing scheme data', scheme)
+                      $scope.$apply(function() {
+                          $scope.searching = false;
+                          $scope.entity = scheme;
+                          $scope.searchKeyword = scheme.name;
+                          $scope.sectors = scheme.sectors;
+
+                      })
+                  }).catch(function(err) {
+                      $scope.$apply(function() {
+                          $scope.searching = false;
+
+                      })
+                  })
+                  // Restangular.one('person', $scope.searchedEntity).get().then(function(response){
+                  //     $scope.searching = false;
+                  //     $scope.entity = response;
+                  //     $scope.searchKeyword = response.name;
+                  //     $scope.contracts = response.projects;
+                  //     $scope.total =  $scope.contracts.length;
+                  //  }, function(error){
+                  //     $scope.searching = false;
+                  //     $scope.error = error;
+                  //     console.log(error)
+                  // });
+              }
+          }
+
+          $scope.viewEntity();
+
+
+          $scope.compare = function(contract) {
+              $scope.compareProjects = true;
+              $scope.contract = contract;
+          }
+
+          $scope.compareProject = function() {
+              $scope.closeModal();
+              $scope.searching = true;
+              console.log($scope.contract);
+              Restangular.one('project', $scope.contract.id).get({
+                      category: $scope.category
+                  })
+                  .then(function(response) {
+                      $scope.searching = false;
+                      $scope.showComparison = true;
+                      $scope.similarProjects = response.relatedProjects;
+                  })
+          }
+
+          $scope.closeComparison = function() {
+              $scope.showComparison = false;
+          }
+          $scope.closeModal = function() {
+              $scope.compareProjects = false;
+          }
+      })
+
+      .controller('compareCtrl', function($scope, Restangular, $state, $stateParams) {
+          Restangular.one('project').get({
+              matched: false
+          }).then(function(response) {
+              $scope.projects = response;
+          })
+
+          $scope.selectProject = function() {
+              $scope.project = $scope.match.project.district.state.id;
+              Restangular.one('person').get({
+                  state: $scope.project
+              }).then(function(response) {
+                  $scope.persons = response;
+              }, function(error) {})
+          }
+
+          $scope.matchProject = function() {
+              $scope.match.project = $scope.match.project.id;
+              $scope.match.person = $scope.match.person.id;
+              // console.log($scope.match)
+              Restangular.all('match-project').post($scope.match).then(function(response) {
+                  console.log('matched')
+                  $state.reload();
+              })
+          }
+      })
+      .controller('registerCtrl', function($scope, $state, $stateParams, $feathers, AuthService, LocalService) {
+          $scope.register = function() {
+              //  console.log ($scope.signup_data)
+              AuthService.signUp($scope.signup_data).then(function(res) {
+                  console.log(res);
+
+              }).catch(function(err) {
+
+                  console.log(err);
+              })
+          }
+      })
+
+      .controller('loginCtrl', function($scope, $state, $stateParams, $feathers) {
+
+          $scope.logout = function() {
+              $feathers.logout().then(function(params) {
+                  console.log(params);
+                  console.log("Logged out!!")
+                  $state.go('home')
+              });
+          }
+          $scope.login = function() {
+              $scope.alert = false;
+              $scope.user.type = 'local'
+              $feathers.authenticate($scope.user).then(function(res) {
+                  console.log(res);
+                  $scope.$apply(function() {
+                      $scope.alert = {
+                          type: 'success',
+                          message: 'Login successful'
+                      };
+                  })
+                  if (res && res.data.isVerified) {
+                      // user logged in and user is verified
+                      console.log('user is verified')
+                      $state.go('ratings')
+                  }
+              }).catch(function(err) {
+                  console.log(err);
+                  $scope.$apply(function() {
+                      $scope.alert = {
+                          type: 'danger',
+                          message: err.message || 'Invalid login parameters'
+                      }
+                  })
+              })
+          };
+
+          $scope.register = function() {
+              AuthService.signUp($scope.signup_data).then(function(res) {
+                  console.log(res);
+
+              }).catch(function(err) {
+
+                  console.log(err);
+              })
+          }
+      })
+      .controller('verifyCtrl', function($scope, $state, $stateParams, $feathers) {
+
+      })
 
 angular.module('app.directives', [])
 

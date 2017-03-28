@@ -39,12 +39,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 tool-bar no-padder">
-                        <a ui-sref="home" href=""><img src="assets/img/cfnigeria.png" class="logo"></a>
+                        <a ui-sref="home"><img src="assets/img/cfnigeria.png" class="logo"></a>
                         <a href="http://twitter.com/codefornigeria" target="_blank"><li class="fa fa-twitter"></li></a>
                         <a href="http://facebook.com/codefornigeria" target="_blank"><li class="fa fa-facebook"></li></a>
                         <li class="b-r divider"></li>
-                          <li>Login</li>
-                          <a <a ui-sref="ratings"><li>Rate An Organization</li></a>
+                          <li ng-show="user== false">  <a ui-sref="login">Login</a></li>
+                            <li ng-show="user" ><a ui-sref="logout">Logout</a></li>
+                          <a ui-sref="ratings"><li>Rate An Organization</li></a>
                           <li>  <a ui-sref="sector">Search By Sector</a></li>
                           <li><a ui-sref="home">Search By Scheme</a></li>
 

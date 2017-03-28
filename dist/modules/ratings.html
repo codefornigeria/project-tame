@@ -11,7 +11,7 @@
 	</div>
 </div>
 <div class="container min500">
-<!--	<div class="spinner" ng-if="!persons">
+	<!--	<div class="spinner" ng-if="!persons">
 		<div class="spinner__item1"></div>
 		<div class="spinner__item2"></div>
 		<div class="spinner__item3"></div>
@@ -24,92 +24,79 @@
 	<div class="row padder-sm">
 		<div class="col-md-offset-2 col-md-10 survey">
 			<form novalidate>
-				<div class="form-group col-md-12">
+				<div class="form-group col-md-12 animated  fadeIn" ng-show="!showAssessment && !ratingCompleted">
 					<label for="location">What sector is this organization?</label>
-	               	<input class="form-control capitalize" type="text" placeholder="Enter sector name" id="sector" ng-model="rating.sector" ng-change="search()" >
-	               	<div class="col-md-12 result m-t no-padder" ng-show="searching">
+					<input class="form-control capitalize" type="text" placeholder="Enter sector name" id="sector" ng-model="ratin.sector" ng-change="searchSector()">
+					<div class="col-md-10 result m-t no-padder" ng-show="searching">
 						<li ng-repeat="result in results" ng-click="addSector(result)">
 							{{result.name}}
 						</li>
 					</div>
-	           	</div>
-							<div class="form-group  animated animate-slow fadeIn col-md-12" ng-show="rating.sectorId">
-								<label for="location">Name of organization</label>
-				               	<input class="form-control capitalize" type="text" placeholder="Enter organization name" id="organization" ng-model="rating.organization" >
-				           	</div>
-				<div class="form-group   col-md-12 animated animate-slow fadeIn" ng-show="rating.organization">
-							 <label for="">General impression of the organization</label>
-							 <textarea class="form-control" ng-model="rating.comment" rows="5"></textarea>
-									 </div>
-
-	           	<div class="form-group animated animate-slow fadeIn relative col-md-6 no-padder-left" ng-show="rating.organization"> <!--ng-show="track.name"-->
-					<label for="hospital">Type of Scheme</label>
-					<select class="form-control capitalize" id="schemeType" ng-model="rating.schemeType" ng-change="loadEffect()">
-						<option value="">Choose the scheme types you have encountered </option>
-						<option ng-repeat="st in schemeTypes" class="capitalize" value="{{st._id}}">{{st.name}}</option>
-					</select>
-				      	</div>
-							<div class="form-group animated animate-slow fadeIn relative col-md-6 no-padder-left" ng-show="rating.organization"> <!--ng-show="track.name"-->
-				<label for="hospital">Scheme Effects</label>
-				<select class="form-control capitalize" id="schemeEffect" ng-model="rating.schemeEffect" >
-					<option value="">Effects of the Scheme</option>
-					<option ng-repeat="se in schemeEffects" class="capitalize" value="{{se._id}}">{{se.name}}</option>
-				</select>
+				</div>
+				<div class="form-group col-md-12 animated  fadeIn " ng-show="ratin.sectorSelected && !showAssessment && !ratingCompleted">
+					<label for="location">Enter Organization Name?</label>
+					<input class="form-control capitalize" type="text" placeholder="Enter sector name" id="organization" ng-model="ratin.organization" ng-change="searchOrganization()">
+					<div class="col-md-12 result m-t no-padder" ng-show="searching">
+						<li ng-repeat="result in results" ng-click="addOrganization(result)">
+							{{result.name}}
+						</li>
+					</div>
 				</div>
 
 
-	           	<div class="form-group animated animate-slow fadeIn col-md-6 no-padder-right" ng-show="track.hospital"> <!--ng-show="track.hospital"-->
-					<label for="hospital">What service are you reporting on? </label>
-					<select class="form-control" id="hospital" ng-model="track.service">
-						<option value="">Choose a service</option>
-						<option value="{{service.name}}" ng-repeat="service in services">{{service.name}}</option>
-						<option value="none">Add new service</option>
-					</select>
-	           	</div>
+				<div class="form-group container animated  fadeIn " ng-show="showAssessment">
+					<div class="row antidotes" ng-repeat="scheme in ratin.schemes">
+						<h3>{{scheme.name}}</h3>
+						<div class="col-sm-2 col-md-2 naming">
+						Antidotes
+					</div>
+						<div class="antidotes col-md-9" ng-repeat="antidote in scheme.antidotes">
+							<div class="col-sm-8 col-md-8">
+									<p>{{antidote.name}}</p>
+									<p>{{antidote.description}}</p>
+							</div>
+							<div class="col-sm-4">
+								<label class="radio-inline">
+  <input type="radio"  name="{{antidote._id}}" id="{{antidote._id}}Yes" value="option1" ng-click="rateScheme(scheme, antidote , true)"> Yes
+</label>
+<label class="radio-inline">
+  <input type="radio"  name="{{antidote._id}}" id="{{antidote._id}}No" value="option2" ng-click="rateScheme(scheme,antidote , false)"> No
+</label>
+							</div>
+							</div>
+					</div>
+							<div class="col-md-12 result m-t no-padder" ng-show="searching">
+						<li ng-repeat="result in results" ng-click="addOrganization(result)">
+							{{result.name}}
+						</li>
+					</div>
+				</div>
 
-	           	<div class="form-group animated animate-slow fadeIn col-md-6" ng-show="track.service == 'none'"> <!--ng-show="track.service == 'none'"-->
-	           		<input class="form-control" type="text" placeholder="Enter name of service" ng-model="track.newService">
-	           		<button class="btn btn-primary form-control m-t-sm" ng-click="addNewService()">Add service</button>
-	           	</div>
 
-	           	<div class="form-group col-md-12  animated animate-slow fadeIn rating_service" ng-show="rating.organization"> <!--ng-show="track.service"-->
-	           		<h1 class="rating-title">Rate the organization</h1>
-	           		<span ng-repeat="rating in ratings">
-				        <div star-rating rating-value="rating.current" max="rating.max" on-rating-selected="getSelectedRating(rating)"></div>
-				    </span>
-	           	</div>
 
-	           	<div class="col-md-12 no-padder animated animate-slow fadeIn service-cards" ng-show="track.rating">
-	           		<h1 class="rating-title" ng-show="track.rating > '3'">What went well?</h1>
-	           		<h1 class="rating-title" ng-show="track.rating < '4'">What went wrong?</h1>
-	           		<span class="service-card" ng-class="{selected: cleanliness}" ng-click="clean()">cleanliness</span>
-	           		<span class="service-card" ng-class="{selected: power}" ng-click="powerSupply()">Power Supply</span>
-	           		<span class="service-card" ng-class="{selected: response}" ng-click="ambulance()">Ambulance Response</span>
-	           		<span class="service-card" ng-class="{selected: blood}" ng-click="bloodBank()">Blood Availability</span>
-	           	</div>
 
-	           	<div class="form-group  col-md-12" ng-show="rating.organization">
+
+
+				<div class="form-group  col-md-12" ng-show="ratingCompleted">
+					<p>You have successfully rated the organization. Thank you</p>
+				</div>
+
+
+				<div class="form-group  col-md-12" ng-show="ratingCompleted">
 					<label for="">Any feedback?</label>
 					<textarea class="form-control" ng-model="rating.generalComment" rows="5"></textarea>
-	           	</div>
+				</div>
 
-	           	<div class="form-group animated animate-slow fadeIn" ng-show="track.comment">
-	           		<label for="photo">Attach a photo</label>
-	           		<div class="custom-file-upload">
-	           			<input type="file" id="photo" ngf-select="uploadFiles($file, $invalidFiles)" accept="image/*" ngf-max-size="2MB" required fileread="file">
-	           		</div>
-	           		<img ngf-thumbnail="picFile" class="thumb">
-	           		<button ng-click="picFile = null" ng-show="picFile">Remove</button>
-	           		<span class="progress" ng-show="f.progress >= 0">
-				        <div style="width:{{f.progress}}%" ng-bind="f.progress + '%'">
-
-				        </div>
-				     </span>
-	           	</div>
-              <div class="col-md-10 ">
-                <button class="btn btn-primary animated fadeIn" ng-show="rating.organization" ng-click="addRating()">Submit</button>
-</div>
-				</form>
+	<div class="col-md-10 " ng-show="ratin.organizationSelected && !showAssessment && !ratingCompleted">
+					<button class="btn btn-primary animated fadeIn" ng-click="loadSchemes(ratin)">Rate organization</button>
+				</div>
+				<div class="col-md-10 " ng-show="showAssessment && !ratingCompleted">
+								<button class="btn btn-primary animated fadeIn"  ng-click="completeRating(ratin)">Submit</button>
+							</div>
+							<div class="col-md-10 " ng-show="ratingCompleted">
+											<button class="btn btn-primary animated fadeIn" ng-click="feedback(ratin.comment)">Send Feedback</button>
+										</div>
+			</form>
 		</div>
 	</div>
 	<!--End of projects-->
@@ -118,10 +105,9 @@
 
 <div class="footer">
 	<div class="container">
-			<div class="col-md-8">
+		<div class="col-md-8">
 			<p class="footer-header">About</p>
-			<hr>
-			Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
+			<hr> Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
 		</div>
 		<div class="col-md-4 p-t">
 			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>

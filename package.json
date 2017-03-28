@@ -1,7 +1,7 @@
 {
   "name": "TAME",
   "version": "1.0.0",
-   "engines": {
+  "engines": {
     "node": "0.12.7"
   },
   "description": "front end implementation for Datakit UI",
@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/codefornigeria/data-kit-ui#readme",
   "dependencies": {
+    "feathers-mongoose": "^5.0.3",
     "node-static": "^0.7.7"
   },
   "devDependencies": {
