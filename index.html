@@ -43,7 +43,7 @@
                         <a href="http://twitter.com/codefornigeria" target="_blank"><li class="fa fa-twitter"></li></a>
                         <a href="http://facebook.com/codefornigeria" target="_blank"><li class="fa fa-facebook"></li></a>
                         <li class="b-r divider"></li>
-                          <li ng-show="user== false">  <a ui-sref="login">Login</a></li>
+                          <li ng-show="!user">  <a ui-sref="login">Login</a></li>
                             <li ng-show="user" ><a ui-sref="logout">Logout</a></li>
                           <a ui-sref="ratings"><li>Rate An Organization</li></a>
                           <li>  <a ui-sref="sector">Search By Sector</a></li>
