@@ -143,6 +143,20 @@ angular.module('app', [
       .state('login', {
           url: '/login',
           templateUrl: 'modules/login.html',
+          resolve:{
+            user: function($q,$feathers,$state,LocalService){
+                //  authManagement  :
+              //  var token = LocalService.get('feathers-jwt')
+              return   $feathers.authenticate().then(function(res){
+                  console.log('auth success', res)
+                  return res.data
+                }).catch(function(err){
+                  return null
+
+                })
+
+            }
+          },
           controller: 'loginCtrl'
       })
       .state('logout', {
@@ -195,9 +209,8 @@ angular.module('app', [
               RestangularConfigurer.setBaseUrl('https://sahara-datakit-api.herokuapp.com/');
           });
       }])
-      .controller('appCtrl', function(user, $scope, Restangular, $state, $stateParams, $feathers) {
-          $scope.user = user
-          console.log('user', $scope.user)
+      .controller('appCtrl', function(user, $scope,$rootScope, Restangular, $state, $stateParams, $feathers) {
+
           $scope.sectorSplit = function(val) {
               console.log(val)
               return val.name
@@ -363,15 +376,19 @@ angular.module('app', [
           }
 
       })
-      .controller('ratingsCtrl', function(user, $scope, $state, $stateParams, $feathers) {
+      .controller('ratingsCtrl', function(user, $rootScope,$scope, $state, $stateParams, $feathers) {
 
-          $scope.showEffect = false
+        $rootScope.user = user
+        $scope.showEffect = false
           $scope.showAssessment = false
           $scope.ratingCompleted=false
+            $scope.orgSearch = false;
+
           if (!user) {
               $state.go('login')
               return
           }
+
 
           $scope.showResult = function(person) {
               $state.go('entity', {
@@ -391,14 +408,14 @@ angular.module('app', [
                       if (entities.data.length) {
                           console.log('showing entities', entities.data)
                           $scope.$apply(function() {
-                              $scope.searching = true;
+                              $scope.orgSearch = true;
                               $scope.results = entities.data
 
                           })
                       }
                   }).catch(function(err) {
                       console.log(err)
-                      $scope.searching = false;
+                      $scope.orgSearch = false;
                   })
 
               } else {
@@ -447,7 +464,7 @@ angular.module('app', [
               $scope.ratin.organizationId = result._id;
 
               $scope.ratin.organization = result.name;
-              $scope.searching = false;
+              $scope.orgSearch = false;
               $scope.ratin.organizationSelected = true
 
           }
@@ -771,9 +788,13 @@ angular.module('app', [
           }
       })
 
-      .controller('loginCtrl', function($scope, $state, $stateParams, $feathers) {
+      .controller('loginCtrl', function(user,$scope,$rootScope,$state, $stateParams, $feathers) {
+        if(user){
+          $state.go('ratings')
+        }
+            $rootScope.user = user
 
-          $scope.logout = function() {
+            $scope.logout = function() {
               $feathers.logout().then(function(params) {
                   console.log(params);
                   console.log("Logged out!!")

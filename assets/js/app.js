@@ -140,6 +140,20 @@ angular.module('app', [
       .state('login', {
           url: '/login',
           templateUrl: 'modules/login.html',
+          resolve:{
+            user: function($q,$feathers,$state,LocalService){
+                //  authManagement  :
+              //  var token = LocalService.get('feathers-jwt')
+              return   $feathers.authenticate().then(function(res){
+                  console.log('auth success', res)
+                  return res.data
+                }).catch(function(err){
+                  return null
+
+                })
+
+            }
+          },
           controller: 'loginCtrl'
       })
       .state('logout', {

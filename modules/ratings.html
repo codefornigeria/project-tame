@@ -36,21 +36,23 @@
 				<div class="form-group col-md-12 animated  fadeIn " ng-show="ratin.sectorSelected && !showAssessment && !ratingCompleted">
 					<label for="location">Enter Organization Name?</label>
 					<input class="form-control capitalize" type="text" placeholder="Enter sector name" id="organization" ng-model="ratin.organization" ng-change="searchOrganization()">
-					<div class="col-md-12 result m-t no-padder" ng-show="searching">
-						<li ng-repeat="result in results" ng-click="addOrganization(result)">
+					<div class="col-md-12 result m-t no-padder" ng-show="orgSearch">
+
+							<li ng-repeat="result in results" ng-click="addOrganization(result)">
 							{{result.name}}
 						</li>
+
 					</div>
 				</div>
 
 
 				<div class="form-group container animated  fadeIn " ng-show="showAssessment">
 					<div class="row antidotes" ng-repeat="scheme in ratin.schemes">
-						<h3>{{scheme.name}}</h3>
+						<div class="padder-sm"><h3 >{{scheme.name}}</h3></div>
 						<div class="col-sm-2 col-md-2 naming">
 						Antidotes
 					</div>
-						<div class="antidotes col-md-9" ng-repeat="antidote in scheme.antidotes">
+						<div class="antidotes col-md-9 padder-sm " ng-repeat="antidote in scheme.antidotes">
 							<div class="col-sm-8 col-md-8">
 									<p>{{antidote.name}}</p>
 									<p>{{antidote.description}}</p>
