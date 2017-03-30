@@ -584,13 +584,18 @@
           }
       })
       .controller('registerCtrl', function($scope, $state, $stateParams, $feathers, AuthService, LocalService) {
+        $scope.userRegistered  = false
           $scope.register = function() {
               //  console.log ($scope.signup_data)
               AuthService.signUp($scope.signup_data).then(function(res) {
                   console.log(res);
+                  $scope.$apply(function(){
+                  $scope.registerData = res
+                    $scope.userRegistered=true
+                  })
 
               }).catch(function(err) {
-
+                          $scope.userRegistered  = false
                   console.log(err);
               })
           }
