@@ -55,9 +55,9 @@ angular.module('app', [
     $feathersProvider.setEndpoint(Config.api)
 
    // You can optionally provide additional opts for socket.io-client
-  //  $feathersProvider.setSocketOpts({
-  //    path: '/ws/'
-  //  })
+   $feathersProvider.setSocketOpts({
+     transports: ['websocket']
+   })
 
    // true is default; set to false if you like to use REST
    $feathersProvider.useSocket(true)
@@ -209,7 +209,7 @@ angular.module('app', [
               RestangularConfigurer.setBaseUrl('https://sahara-datakit-api.herokuapp.com/');
           });
       }])
-      .controller('appCtrl', function(user, $scope,$rootScope, Restangular, $state, $stateParams, $feathers) {
+      .controller('appCtrl', function(user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
 
           $scope.sectorSplit = function(val) {
               console.log(val)
@@ -263,7 +263,7 @@ angular.module('app', [
               }
           }).then(function(schemes) {
               if (schemes.data.length) {
-                  console.log('test schemes',schemes.data)
+                  console.log('test schemes', schemes.data)
                   $scope.$apply(function() {
                       $scope.persons = schemes.data
                   })
@@ -376,13 +376,14 @@ angular.module('app', [
           }
 
       })
-      .controller('ratingsCtrl', function(user, $rootScope,$scope, $state, $stateParams, $feathers) {
+      .controller('ratingsCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
 
-        $rootScope.user = user
-        $scope.showEffect = false
+          $rootScope.user = user
+          console.log('show user', user)
+          $scope.showEffect = false
           $scope.showAssessment = false
-          $scope.ratingCompleted=false
-            $scope.orgSearch = false;
+          $scope.ratingCompleted = false
+          $scope.orgSearch = false;
 
           if (!user) {
               $state.go('login')
@@ -401,8 +402,12 @@ angular.module('app', [
 
               if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
                   var entityService = $feathers.service('entities')
+                  console.log('show entity', entityService)
                   entityService.find({
+                      query: {
+                          domains: "gmail.com"
 
+                      }
                   }).then(function(entities) {
 
                       if (entities.data.length) {
@@ -468,46 +473,52 @@ angular.module('app', [
               $scope.ratin.organizationSelected = true
 
           }
-          $scope.loadSchemes = function(assessmentData){
-            // load schemes based on assessment data
+          $scope.loadSchemes = function(assessmentData) {
+              // load schemes based on assessment data
 
-            $scope.showAssessment = true
-                var schemeService = $feathers.service('schemes')
-                schemeService.find({
-                    query: {
-                        $populate: {
-                            path: 'sectors antidotes',
-                            select: 'name description _id',
-                            options: {
-                                limit: 10
-                            }
-                        },
-                        'sectors': assessmentData.sectorId,
+              $scope.showAssessment = true
+              var schemeService = $feathers.service('schemes')
+              schemeService.find({
+                  query: {
+                      $populate: {
+                          path: 'sectors antidotes',
+                          select: 'name description _id',
+                          options: {
+                              limit: 10
+                          }
+                      },
+                      'sectors': assessmentData.sectorId,
 
-                    }
-                }).then(function(schemes) {
-                    console.log('testq schemes', schemes)
-                    $scope.$apply(function(){
+                  }
+              }).then(function(schemes) {
+                  console.log('testq schemes', schemes)
+                  $scope.$apply(function() {
                       $scope.ratin.schemes = schemes.data
-                    })
-                }).catch(function(err) {
-                    console.log(err)
-                })
+                  })
+              }).catch(function(err) {
+                  console.log(err)
+              })
 
           }
-          $scope.rateScheme = function(scheme,antidote,type){
-            console.log('und',_.first)
-            _.map(scheme.antidotes,  function(item){
-              if(item== antidote){
-                (type)? item.score=3 : item.score=0
-              }
-            })
+          $scope.rateScheme = function(scheme, antidote, type) {
+                _.map(scheme.antidotes, function(item) {
+                  if (item == antidote) {
+                      (type) ? item.score = 3: item.score = 0
+                  }
+              })
 
           }
-          $scope.completeRating = function(ratin){
-            $scope.ratingCompleted=true
-          $scope.showAssessment = false
-        }
+          $scope.completeRating = function(ratin) {
+
+            // var ratingService = $feathers.service('ratings')
+            // ratingService.create(ratin).then(function(storedRating){
+            //   //
+            // })
+
+            console.log('rating data',ratin)
+              $scope.ratingCompleted = true
+              $scope.showAssessment = false
+          }
           $scope.showScheme = function() {
               var groupService = $feathers.service('groups')
               groupService.find({
@@ -788,13 +799,13 @@ angular.module('app', [
           }
       })
 
-      .controller('loginCtrl', function(user,$scope,$rootScope,$state, $stateParams, $feathers) {
-        if(user){
-          $state.go('ratings')
-        }
-            $rootScope.user = user
+      .controller('loginCtrl', function(user, $scope, $rootScope, $state, $stateParams, $feathers) {
+          if (user) {
+              $state.go('ratings')
+          }
+          $rootScope.user = user
 
-            $scope.logout = function() {
+          $scope.logout = function() {
               $feathers.logout().then(function(params) {
                   console.log(params);
                   console.log("Logged out!!")

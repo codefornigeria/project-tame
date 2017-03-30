@@ -52,9 +52,9 @@ angular.module('app', [
     $feathersProvider.setEndpoint(Config.api)
 
    // You can optionally provide additional opts for socket.io-client
-  //  $feathersProvider.setSocketOpts({
-  //    path: '/ws/'
-  //  })
+   $feathersProvider.setSocketOpts({
+     transports: ['websocket']
+   })
 
    // true is default; set to false if you like to use REST
    $feathersProvider.useSocket(true)
