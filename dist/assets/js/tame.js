@@ -402,14 +402,13 @@ angular.module('app', [
 
               if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
                   var entityService = $feathers.service('entities')
-                  console.log('show entity', entityService)
                   entityService.find({
                       query: {
-                          domains: "gmail.com"
+                          domains: user.email
 
                       }
                   }).then(function(entities) {
-
+                      console.log('returnd entit')
                       if (entities.data.length) {
                           console.log('showing entities', entities.data)
                           $scope.$apply(function() {
@@ -512,7 +511,9 @@ angular.module('app', [
 
             // var ratingService = $feathers.service('ratings')
             // ratingService.create(ratin).then(function(storedRating){
-            //   //
+            //   $scope.$apply(function(){
+            //     $scope.ratingResult = storedRating
+            //   })
             // })
 
             console.log('rating data',ratin)
