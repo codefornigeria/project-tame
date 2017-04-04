@@ -71,6 +71,7 @@ gulp.task('vendorjs', ['clean'], function(){
     'assets/vendor/angular/ObjectPath.js',
     'assets/vendor/angular/schema-form.min.js',
     'assets/vendor/angular/dist/bootstrap-decorator.min.js',
+    'assets/vendor/angular/angular-carousel/dist/angular-carousel.js',
 		'assets/vendor/*.js'
 		])
         .pipe(concat('vendor.js'))
@@ -84,6 +85,7 @@ gulp.task('vendorcss', ['clean'], function(){
         'assets/vendor/animate/animate.css',
         'assets/vendor/bootstraps/bootstraps.css',
         'assets/vendor/font-awesome/font-awesome.css',
+        'assets/vendor/angular-carousel/dist/angular-carousel.css',
 				'assets/vendor/**/*.css'
 			])
 		    .pipe(concat('vendor.css'))

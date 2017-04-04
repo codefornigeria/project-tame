@@ -12,6 +12,7 @@ angular.module('app', [
     'chart.js',
     'angularUtils.directives.dirDisqus',
     'angular.filter',
+    'angular-carousel'
 
     ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {

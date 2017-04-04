@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"http://tame-api.herokuapp.com/","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030/","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 
 angular.module('app', [
@@ -15,6 +15,7 @@ angular.module('app', [
     'chart.js',
     'angularUtils.directives.dirDisqus',
     'angular.filter',
+    'angular-carousel'
 
     ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
@@ -384,7 +385,27 @@ angular.module('app', [
           $scope.showAssessment = false
           $scope.ratingCompleted = false
           $scope.orgSearch = false;
+          $scope.ratin={
+            schemes:[]
+          }
+          $scope.nextSlideU = function(scheme ,slide){
+            var errorState = false
+            scheme.antidotes.map(function(antidote){
+              if(antidote.score >=0){
+                antidote.error=false
 
+              }else{
+                antidote.error=true,
+                errorState=true
+              }
+              return antidote
+            })
+          if(!errorState){slide()}
+          }
+          $scope.canSubmit = true
+          $scope.prevSlideU = function (slide){
+            slide()
+          }
           if (!user) {
               $state.go('login')
               return
@@ -414,6 +435,9 @@ angular.module('app', [
                           $scope.$apply(function() {
                               $scope.orgSearch = true;
                               $scope.results = entities.data
+                              $scope.orgs = entities.data
+
+
 
                           })
                       }
@@ -444,6 +468,7 @@ angular.module('app', [
                               $scope.searching = true;
                               $scope.results = sectors.data
 
+
                           })
                       }
                   }).catch(function(err) {
@@ -462,6 +487,7 @@ angular.module('app', [
               $scope.ratin.sectorSelected = true
               //  $scope.results = []
               $scope.searching = false;
+              $scope.searchOrganization()
 
           }
           $scope.addOrganization = function(result) {
@@ -506,6 +532,19 @@ angular.module('app', [
                   }
               })
 
+          }
+          $scope.submitRating = function(){
+            var ratingService  = $feathers.service('ratings')
+            ratingService.create($scope.ratin).then(function(ratinResult){
+              $scope.$apply(function(){
+                console.log('result from rating', ratinResult)
+                $scope.ratinResult = ratinResult
+                
+                $scope.ratingCompleted=true
+              })
+            }).catch(function(err){
+              console.log('ratin error', err)
+            })
           }
           $scope.completeRating = function(ratin) {
 
