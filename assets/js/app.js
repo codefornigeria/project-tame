@@ -58,7 +58,7 @@ angular.module('app', [
    })
 
    // true is default; set to false if you like to use REST
-   $feathersProvider.useSocket(true)
+   $feathersProvider.useSocket(false)
       $locationProvider.hashPrefix('!');
       ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
       RestangularProvider.setBaseUrl('https://budget-datakit-api.herokuapp.com/');

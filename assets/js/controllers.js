@@ -334,7 +334,7 @@
               $scope.$apply(function(){
                 console.log('result from rating', ratinResult)
                 $scope.ratinResult = ratinResult
-                
+
                 $scope.ratingCompleted=true
               })
             }).catch(function(err){
@@ -657,7 +657,9 @@
               $scope.user.type = 'local'
               $feathers.authenticate($scope.user).then(function(res) {
                   console.log(res);
+
                   $scope.$apply(function() {
+                      $scope.error=false
                       $scope.alert = {
                           type: 'success',
                           message: 'Login successful'
@@ -671,7 +673,7 @@
               }).catch(function(err) {
                   console.log(err);
                   $scope.$apply(function() {
-                      $scope.alert = {
+                      $scope.error = {
                           type: 'danger',
                           message: err.message || 'Invalid login parameters'
                       }

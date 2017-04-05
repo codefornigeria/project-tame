@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"http://localhost:3030/","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 
 angular.module('app', [
@@ -61,7 +61,7 @@ angular.module('app', [
    })
 
    // true is default; set to false if you like to use REST
-   $feathersProvider.useSocket(true)
+   $feathersProvider.useSocket(false)
       $locationProvider.hashPrefix('!');
       ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
       RestangularProvider.setBaseUrl('https://budget-datakit-api.herokuapp.com/');
@@ -539,7 +539,7 @@ angular.module('app', [
               $scope.$apply(function(){
                 console.log('result from rating', ratinResult)
                 $scope.ratinResult = ratinResult
-                
+
                 $scope.ratingCompleted=true
               })
             }).catch(function(err){
@@ -862,7 +862,9 @@ angular.module('app', [
               $scope.user.type = 'local'
               $feathers.authenticate($scope.user).then(function(res) {
                   console.log(res);
+
                   $scope.$apply(function() {
+                      $scope.error=false
                       $scope.alert = {
                           type: 'success',
                           message: 'Login successful'
@@ -876,7 +878,7 @@ angular.module('app', [
               }).catch(function(err) {
                   console.log(err);
                   $scope.$apply(function() {
-                      $scope.alert = {
+                      $scope.error = {
                           type: 'danger',
                           message: err.message || 'Invalid login parameters'
                       }
