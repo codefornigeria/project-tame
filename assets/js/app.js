@@ -123,6 +123,11 @@ angular.module('app', [
         templateUrl: 'modules/ratings.html',
         controller: 'ratingsCtrl'
     })
+    .state('public-ratings', {
+        url: '/public-ratings',
+        templateUrl: 'modules/public-ratings.html',
+        controller: 'publicRatingsCtrl'
+    })
       .state('results', {
           url: '/search?query',
           templateUrl: 'modules/search-result.html',
