@@ -17,7 +17,7 @@
     <meta name="dcterms.description" content="" />
     <meta property="og:description" content="" />
     <meta property="og:title" content="" />
-    <link rel="canonical" href=" />
+    <link rel="canonical" href="" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="cleartype" content="on">
 
@@ -34,26 +34,48 @@
     <!-- endinject -->
 
 </head>
-    <body ng-app="app">
-        <nav class="navigation">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 tool-bar no-padder">
-                        <a ui-sref="home"><img src="assets/img/cfnigeria.png" class="logo"></a>
-                        <a href="http://twitter.com/codefornigeria" target="_blank"><li class="fa fa-twitter"></li></a>
-                        <a href="http://facebook.com/codefornigeria" target="_blank"><li class="fa fa-facebook"></li></a>
-                        <li class="b-r divider"></li>
-                          <li ng-show="!user">  <a ui-sref="login">Login</a></li>
-                            <li ng-show="user" ><a ui-sref="logout">Logout</a></li>
-                          <a ui-sref="ratings"><li>Rate An Organization</li></a>
-                          <li>  <a ui-sref="sector">Search By Sector</a></li>
-                          <li><a ui-sref="home">Search By Scheme</a></li>
+<body ng-app="app">
+    <nav class="header navbar">
+        <div class="container-fluid">
+            <!-- <div class="row"> -->
+                <div class="no-padder">
+                  <div class="navbar-header">
+                    <a ui-sref="home" class="navbar-brand"><img src="assets/img/cfnigeria.png" class="logo"></a>
+                    <button type="button" class="navbar-toggle collapsed fa fa-bars fa-2x navigation-toogle" data-toggle="collapse" data-target="btn-navbar-collapse" aria-expanded="false">
+                   </button>
+                  </div>
 
-                    </div>
+
+                  <div class="collapse navbar-collapse" id="btn-navbar-collapse">
+                    <ul class="nav navbar-nav navigation">
+
+                        <li class="navigation-list"><a ui-sref="home">Search By Scheme</a></li>
+                        <li class="navigation-list"> <a ui-sref="sector">Search By Sector</a></li>
+                        <li class="navigation-list"><a ui-sref="ratings">Rate An Organization</a></li>
+                        <li class="navigation-list" ng-show="!user">  <a ui-sref="login">Login</a></li>
+                        <li class="navigation-list" ng-show="user" ><a ui-sref="logout">Logout</a></li>
+
+
+
+
+
+
+                      <li class="b-r divider navigation-list navigation-divider "></li>
+                      <li class="fa fa-twitter navigation-list navigation-icon ">
+                        <a  href="http://twitter.com/codefornigeria" target="_blank" ></a>
+                      </li>
+                      <li class="fa fa-facebook navigation-list navigation-icon">
+                        <a  href="http://facebook.com/codefornigeria" target="_blank" ></a>
+                      </li>
+                    </ul>
+                  </div>
+
+
                 </div>
-            </div>
-        </nav>
+            <!-- </div> -->
+        </div>
+    </nav>
 
-        <div  ui-view></div>
-    </body>
+    <div  ui-view></div>
+</body>
 </html>

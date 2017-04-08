@@ -7,11 +7,17 @@
 		</div>
 		<p>{{entity.graphData.detailedDescription.articleBody}}</p>
 	</div>
-	<div class="col-md-12 b-b p-t-sm">
-		<b>Decision independent of people hiring</b>
-		<p ng-if="entity.party">{{entity.party}}</p>
-		<p ng-if="!entity.party">Bla Bla blaaaah....</p>
+	<div class="row">
+		<div class="col-md-12 b-b p-t-sm">
+			<div class="container">
+				<b>Decision independent of people hiring</b>
+				<p ng-if="entity.party">{{entity.party}}</p>
+				<p ng-if="!entity.party">Bla Bla blaaaah....</p>
+			</div>
+			</div>
+
 	</div>
+
 	<div class="col-md-12 b-b p-t-sm">
 		<b>Multiple stakeholders hiring</b>
 		<p ng-if="entity.state.name">{{entity.state.name}}</p>

@@ -1,5 +1,5 @@
 <div class="container min500">
-<!--	<div class="spinner" ng-if="!persons">
+	<!--	<div class="spinner" ng-if="!persons">
 		<div class="spinner__item1"></div>
 		<div class="spinner__item2"></div>
 		<div class="spinner__item3"></div>
@@ -10,51 +10,47 @@
 
 	<!--Senators-->
 	<div class="row padder-sm">
-		<div class="col-md-offset-2 col-md-10 " ng-show="!userRegistered">
+		<div class="col-md-offset-2 col-md-7 " ng-show="!userRegistered">
 			<form novalidate class="form-horizontal">
-				<div class="form-group col-md-12">
-					<label for="Email" class="col-sm-2 control-label">Full Name</label>
-	             <div class="col-sm-10">
-                     	<input class="form-control" type="text" placeholder="Enter Full Name" id="fullname" ng-model="signup_data.fullname"  >
-            </div>
-	     	</div>
-        <div class="form-group col-md-12">
-          <label for="Email" class="col-sm-2 control-label">Email</label>
-               <div class="col-sm-10">
-                      <input class="form-control" type="text" placeholder="Enter email" id="email" ng-model="signup_data.email"  >
-            </div>
-        </div>
-        <div class="form-group col-md-12">
-          <label for="Email" class="col-sm-2 control-label">password</label>
-               <div class="col-sm-10">
-                      <input class="form-control" type="password" placeholder="Enter password" id="sector" ng-model="signup_data.password"  >
-            </div>
-        </div>
-        <div class="form-group col-md-12">
-          <label for="Email" class="col-sm-2 control-label">Confirm password</label>
-               <div class="col-sm-10">
-                      <input class="form-control" type="password"  id="sector" ng-model="signup_data.cpassword"  >
-            </div>
-        </div>
-        <div class="form-group col-md-12">
-          <label for="Email" class="col-sm-2 control-label">Phone Number</label>
-               <div class="col-sm-10">
-                      <input class="form-control" type="text" placeholder="Enter Phone Number" id="sector" ng-model="signup_data.phone"  >
-            </div>
-        </div>
 
-              <div class=" col-sm-offset-2 col-md-offset-2  col-sm-10 col-md-10  ">
-                <button class="btn btn-primary animated fadeIn"  ng-click="register()">Submit</button>
-								<a ui-sref="login"> Do you have an account? Login here </a>
-</div>
-				</form>
+				<div class="form-group">
+					<label for="fullname" class="label">Full Name</label>
+					<input class="form-control input-lg" type="text" placeholder="Enter Full Name" id="fullname" ng-model="signup_data.fullname">
+				</div>
+
+				<div class="form-group">
+					<label for="Email" class="label">Email</label>
+					<input class="form-control input-lg" type="text" placeholder="Enter email" id="Email" ng-model="signup_data.email">
+
+				</div>
+
+				<div class="form-group">
+					<label for="password" class="label">password</label>
+					<input class="form-control input-lg" type="password" placeholder="Enter password" id="password" ng-model="signup_data.password">
+				</div>
+				<div class="form-group">
+					<label for="confirm_password" class="label">Confirm password</label>
+					<input class="form-control input-lg" type="password" id="confirm_password" ng-model="signup_data.cpassword">
+				</div>
+				<div class="form-group">
+					<label for="tel" class="label">Phone Number</label>
+					<input class="form-control input-lg" type="text" placeholder="Enter Phone Number" id="tel" ng-model="signup_data.phone">
+
+				</div>
+
+				<button class="btn btn-primary animated fadeIn btn-lg" ng-click="register()">
+						register
+					</button>
+				<a ui-sref="login" class="pull-right"> Do you have an account? Login here </a>
+
+			</form>
 		</div>
 		<div class="container">
-      <div   ng-show="userRegistered">
-  			<p> Congratulations</p>
-  			<p> Please check your  email ({{registerData.email}}) to verify your account as an assessor</p>
-  		</div>
-    </div>
+			<div ng-show="userRegistered">
+				<p> Congratulations</p>
+				<p> Please check your email ({{registerData.email}}) to verify your account as an assessor</p>
+			</div>
+		</div>
 
 	</div>
 	<!--End of projects-->
@@ -63,10 +59,9 @@
 
 <div class="footer">
 	<div class="container">
-			<div class="col-md-8">
+		<div class="col-md-8">
 			<p class="footer-header">About</p>
-			<hr>
-			Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
+			<hr> Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
 		</div>
 		<div class="col-md-4 p-t">
 			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>

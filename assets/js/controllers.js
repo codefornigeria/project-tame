@@ -1134,7 +1134,7 @@
                   $scope.$apply(function() {
                       $scope.error = {
                           type: 'danger',
-                          message: err.message || 'Invalid login parameters'
+                          message: err.message || 'Email or password is not correct'
                       }
                   })
               })

@@ -13,33 +13,26 @@ body {
 a {
   color: inherit;
 }
-.tool-bar {
-  height: 100px;
-  background: transparent;
+
+.navbar-brand {
   position: relative;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  line-height: 100px;
+  top: -1em;
 }
-.tool-bar li {
-  list-style: none;
-  float: right;
-  color: grey;
-  text-transform: uppercase;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 100px;
-  margin-left: 2%;
+.navbar-toggle {
+  position: relative;
+  top: 0.3em;
+  }
+.header {
+  overflow-x: hidden;
 }
-.tool-bar li:hover {
-  color: #000;
+.btn {
+  text-transform: capitalize;
 }
-.tool-bar .divider {
-  height: 40px;
-  width: 1%;
-  margin-top: 30px;
+.label {
+  text-transform: capitalize;
+  font-size: 15px;
+  color: black;
+  font-weight: 300;
 }
 .hero {
   width: 100%;
@@ -47,7 +40,7 @@ a {
   position: relative;
   text-align: center;
   z-index: 1;
-  background-image: linear-gradient(rgba(11, 89, 144, 0.9), rgba(11, 89, 144, 0.9)), url("http://tweet-senate.herokuapp.com/assets/senate-f3c5463087d1661a3938f422cfd2200edbf064d77306e1f8665f71e050a0ffcc.png");
+  background-image: linear-gradient(rgba(11, 89, 144, 0.9), rgba(11, 89, 144, 0.9)), url(http://tweet-senate.herokuapp.com/assets/senate-f3c5463087d1661a3938f422cfd2200edbf064d77306e1f8665f71e050a0ffcc.png);
   background-position: center;
 }
 .hero .header {
@@ -595,4 +588,60 @@ ul.rating {
   outline: none;
   box-shadow: none;
   border: 1px solid #dee5e7;
+}
+
+@media (min-width: 766px) {
+  .header {
+    margin-bottom: 0;
+  }
+
+  .navbar-brand {
+    position: relative;
+    top: 0.5em;
+  }
+
+  .navigation {
+    height: 100px;
+    background: transparent;
+    position: relative;
+    z-index: 100;
+    top: 0;
+    left: 16%;
+    width: 100%;
+    line-height: 100px;
+    overflow-x: hidden;
+  }
+  .navigation-list {
+    list-style: none;
+    float: right;
+    color: grey;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 100px;
+    margin-left: 1%;
+  }
+  .navigation-list:hover {
+    color: #000;
+  }
+   .divider {
+    height: 40px;
+    width: %;
+    margin-top: 30px;
+  }
+
+  .navigation-icon {
+    position: relative;
+    margin-left: 1em;
+    margin-top: -2em;
+  }
+  .navigation-divider {
+    margin-top: -0.03em;
+  }
+  .centralize {
+    position: relative;
+    top: 5em;
+    margin-bottom: 2em;
+  }
 }
