@@ -22,8 +22,9 @@
 				<button type="submit" class="btn btn-sm btn-success right" ng-disabled="category.$invalid" ng-click="compareProject(contract)">Compare</button>
 			</form>
 		</div>
-
 	</div>
+
+
 
 	<div class="container">
 		<div class="row">
@@ -34,19 +35,23 @@
 		</div>
 	</div>
 
+
+
 	<div class="container p-t-md min500 no-padder">
-		<div class="col-md-12 no-padder m-b-sm" ng-hide="showComparison">
-			<div class="col-md-2 search-num" ng-show="total">
+		<div class="col-md-12" ng-hide="showComparison">
+			<div class="col-md-2" ng-show="total">
 				{{total}} projects
 			</div>
 		</div>
-		<div class="row padder-top m-t-sm rel"   ng-if="entity">
+		<div  ng-if="entity">
+			<div class="col-md-12">
+				<scheme-entity-card></scheme-entity-card>
+				<scheme-antidote-card></scheme-antidote-card>
+				<scheme-effect-card></scheme-effect-card>
+			</div>
 
-			<scheme-entity-card></scheme-entity-card>
-			<scheme-antidote-card></scheme-antidote-card>
-			<scheme-effect-card></scheme-effect-card>
 			<!--See similar projects-->
-			<div class="comparison-container col-md-12 no-padder" ng-if="showComparison">
+			<div class="comparison-container col-md-12 " ng-if="showComparison">
 				<div class="col-md-12">
 					<h5 class="right clickable" ng-click="closeComparison()"><i class="fa fa-arrow-left"></i> Go back</h5>
 				</div>

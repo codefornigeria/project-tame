@@ -1,46 +1,39 @@
-<div class="col-md-4 b-l b-r b-b b-t m-r-sm panel" ng-hide="showComparison">
-	<div class="col-md-12 bio">
-		<div class="col-md-12 no-padder m-b-sm">
-			<div class="col-md-12 no-padder">
-				<h1 class="col-md-12 no-padder m-l-sm">Antidotes</h1>
-		</div>
-		</div>
-		<p>{{entity.graphData.detailedDescription.articleBody}}</p>
-	</div>
-	<div class="row">
-		<div class="col-md-12 b-b p-t-sm">
-			<div class="container">
+<div class="col-md-4 col-sm-4 card" ng-hide="showComparison">
+	<div class="">
+		<h1 class="card-title card-title_colored">Antidotes</h1>
+		<ul class="card-list">
+			<li class="list-item">
+				<p>{{entity.graphData.detailedDescri}}</p>
+			</li>
+			<li class="list-item">
 				<b>Decision independent of people hiring</b>
 				<p ng-if="entity.party">{{entity.party}}</p>
 				<p ng-if="!entity.party">Bla Bla blaaaah....</p>
-			</div>
-			</div>
-
+			</li>
+			<li class="list-item">
+				<b>Multiple stakeholders hiring</b>
+				<p ng-if="entity.state.name">{{entity.state.name}}</p>
+				<p ng-if="!entity.state.name">Bla Bla blaaaah....</p>
+			</li>
+			<li class="list-item">
+				<b>Proper Documentation</b>
+				<p ng-if="entity.district.name" class="capitalize">{{entity.district.name}}</p>
+				<p ng-if="!entity.district.name">Bla Bla blaaaah....</p>
+			</li>
+			<li class="list-item">
+				<b>Codes of Conduct</b>
+				<p>Nigeria</p>
+			</li>
+			<li class="list-item">
+				<b>External oversight function</b>
+				<p ng-if="entity.phone">(234) {{entity.phone}}</p>
+				<p ng-if="!entity.phone">Bla Bla blaaaah....</p>
+			</li>
+			<li class="list-item">
+				<b>Disciplinary committee</b>
+				<p ng-if="entity.email">{{entity.email}}</p>
+				<p ng-if="!entity.email">Bla Bla blaaaah....</p>
+			</li>
+		</ul>
 	</div>
-
-	<div class="col-md-12 b-b p-t-sm">
-		<b>Multiple stakeholders hiring</b>
-		<p ng-if="entity.state.name">{{entity.state.name}}</p>
-		<p ng-if="!entity.state.name">Bla Bla blaaaah....</p>
-	</div>
-	<div class="col-md-12 b-b p-t-sm">
-		<b>Proper Documentation</b>
-		<p ng-if="entity.district.name" class="capitalize">{{entity.district.name}}</p>
-		<p ng-if="!entity.district.name">Bla Bla blaaaah....</p>
-	</div>
-	<div class="col-md-12 b-b p-t-sm">
-		<b>Codes of Conduct</b>
-		<p>Nigeria</p>
-	</div>
-	<div class="col-md-12 b-b p-t-sm">
-		<b>External oversight function</b>
-		<p ng-if="entity.phone">(234) {{entity.phone}}</p>
-		<p ng-if="!entity.phone">Bla Bla blaaaah....</p>
-	</div>
-	<div class="col-md-12 b-b p-t-sm">
-		<b>Disciplinary committee</b>
-		<p ng-if="entity.email">{{entity.email}}</p>
-		<p ng-if="!entity.email">Bla Bla blaaaah....</p>
-	</div>
-
 </div>

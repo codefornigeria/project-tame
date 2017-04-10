@@ -21,54 +21,40 @@
 
 
 	<!--Senators-->
-	<div class="row padder-top">
-		<span class="col-md-12 text-md text-bold padder-bottom" ng-show="persons">Recent Schemes</span>
+	<div class="row padder-top pack">
+		<h3 class="text-md text-bold pack-title" ng-show="persons" >Recent Schemes</h3>
 		<div class="col-md-4 clickable" ng-repeat="person in persons | orderBy:orderProp | limitTo:quantity">
-			<div class="col-md-12 card-md" ng-click="showResult(person)">
-				<span class="col-md-12 no-padder">
-					<p>{{person.name}}</p>
 
+			<div class="card" ng-click="showResult(person)">
+				<div class="container card-content" >
+					<h5 class="card-title" style="color:#23699B;letter-spacing:1px;font-weight:600">{{person.name}}</h5>
 					<hr>
-				</span>
-
-
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Sector</b><br />
-					<span ng-repeat="sector in person.sectors | pick:sectorSplit">
+					<b class="card-tag">Sector</b><br />
+					<p ng-repeat="sector in person.sectors | pick:sectorSplit" class="">
 					 {{sector.name}},
-				</span>
+					</p>
+					<p>
+						<b class="card-tag">Antidotes</b>:
+						<span>5</span>
+					</p>
+					<p>
+						<b class="card-tag">Likelihood of Occurence</b>:
+						<span>Low</span>
+					</p>
+					<p>
+						<b class="card-tag">Frequency of Occurence</b>:
+						<span>Medium</span>
+					</p>
+					<p>
+						<b class="card-tag">Subsceptible Areas</b>:
+						<span>Admission, Registration, Examination/ Certification...</span>
+					</p>
 
-				</span>
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Antidotes</b>
-					<p>5</p>
-				</span>
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Likelihood of Occurence</b>
-					<p>Low</p>
-
-				</span>
-
-				<span class="col-md-6 col-xs-6 no-padder">
-					<b>Frequency of Occurence</b>
-					<p>Medium</p>
-				</span>
-
-				<span class="col-md-12 col-xs-6 no-padder">
-					<b>Subsceptible Areas</b>
-					<p> Admission, Registration, Examination/ Certification...</p>
-
-				</span>
-
-				<span class="col-md-12 col-xs-6 no-padder">
-					<b>Scheme Operators</b>
-					<p>Administrative Staff, Non-Academic Staff ...</p>
-
-				</span>
-
+					<p>
+					<b class="card-tag">Scheme Operators</b>
+					Administrative Staff, Non-Academic Staff ...
+					</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -80,7 +66,7 @@
 		<div class="col-md-12 bio padder">
 			<i class="fa fa-close clickable right" ng-click="close()"></i>
 			<div class="avatar"></div>
-			</div>
+		</div>
 		<div class="col-xs-6 col-md-4 text-center b-b b-r p-t-sm relative">
 			<b class="relative">Budget In Care <span class="help-badge clickable" ng-click="help = !help">?</span></b>
 			<p ng-if="entity.totalBudget">{{entity.totalBudget | number: fractionSize}}</p>
@@ -165,8 +151,7 @@
 
 		</div>
 		<div class="col-md-12 text-justify bio padder">
-			<i class="fa fa-close clickable right absolute-right" ng-click="close()"></i>
-			{{entity.description}}
+			<i class="fa fa-close clickable right absolute-right" ng-click="close()"></i> {{entity.description}}
 		</div>
 		<div class="col-xs-6 col-md-4 text-center b-b p-t-sm">
 			<b>Cost</b>
@@ -203,10 +188,9 @@
 
 <div class="footer">
 	<div class="container">
-			<div class="col-md-8">
+		<div class="col-md-8">
 			<p class="footer-header">About</p>
-			<hr>
-			Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
+			<hr> Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
 		</div>
 		<div class="col-md-4 p-t">
 			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>

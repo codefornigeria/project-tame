@@ -6,6 +6,7 @@
 }
 body {
   background: #FFF;
+  overflow-x: hidden;
 }
 .none {
   display: none;
@@ -62,16 +63,21 @@ a {
   border-radius: 6px;
   border: 0;
 }
-.card-md {
+.card {
   background: #FFFFFF;
   border: 1px solid #e8e8e8;
   height: auto;
-  min-height: 300px;
   padding-top: 15px;
   padding-bottom: 15px;
+  word-wrap: break-word;
+  margin-top: 5px;
 }
-.card-md-small {
-  min-height:100px
+
+.card-tag {
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  /*color: #23699B;*/
+
 }
 .result {
   position: absolute;
@@ -263,27 +269,53 @@ ul.rating {
   left: 2px;
 }
 
-.card-md:hover {
+.card:hover {
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.15);
   transition: box-shadow 0.15s ease-out;
 }
-@media all and (min-width: 320px) and (max-width: 640px) {
-  .card-md {
-    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.15);
-    margin-bottom: 20px;
-  }
-}
-.card-md b {
+
+.card .list-title {
   text-transform: uppercase;
   font-weight: normal;
   font-size: 10px;
 }
-.card-md h3 {
+.card-title {
   text-transform: capitalize;
+  word-wrap: break-word;
 }
-.card-md p {
-  text-transform: capitalize;
+.card-list {
+  list-style: none;
 }
+
+.card-list .list-item {
+  position: relative;
+  width: inherit;
+  background: inherit;
+  border: none;
+  padding-bottom: 0px;
+}
+
+.card-title_colored {
+  background: #f5f5f5;
+    position: relative;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 12px;
+    letter-spacing: 3px;
+}
+.card-content {
+  width: inherit;
+}
+
+.pack {
+
+}
+.pack-title {
+  text-align:center;
+  padding-bottom: 25px
+}
+
 .footer {
   width: 100%;
   height: auto;
@@ -433,11 +465,7 @@ ul.rating {
   background: #f5f5f5;
   padding-top: 15px;
 }
-@media all and (min-width: 320px) and (max-width: 640px) {
-  .panel .bio {
-    margin-top: 0;
-  }
-}
+
 .panel .bio h1 {
   text-transform: capitalize;
   padding-top: 20px;
@@ -526,12 +554,7 @@ ul.rating {
 .panel-top:hover {
   background: #f5f5f5;
 }
-.entity-card:nth-of-type(odd) {
-  padding-left: 0 !important;
-}
-.entity-card .card-md:hover {
-  box-shadow: none;
-}
+
 .min500 {
   min-height: 500px;
   /*height: auto;*/
@@ -588,6 +611,19 @@ ul.rating {
   outline: none;
   box-shadow: none;
   border: 1px solid #dee5e7;
+}
+
+@media all and (min-width: 320px) and (max-width: 640px) {
+  .panel .bio {
+    margin-top: 0;
+  }
+}
+
+@media all and (min-width: 320px) and (max-width: 640px) {
+  .card {
+    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+  }
 }
 
 @media (min-width: 766px) {
