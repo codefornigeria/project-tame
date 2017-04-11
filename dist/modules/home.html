@@ -18,7 +18,45 @@
 		<div class="spinner__item4"></div>
 	</div>
 
+	<!--Senators-->
+	<div class="row padder-top pack">
+		<h3 class="text-md text-bold pack-title" ng-show="persons" >Recent Ratings</h3>
+		<div class="col-md-4 clickable" ng-repeat="person in persons | orderBy:orderProp | limitTo:quantity">
 
+			<div class="card" ng-click="showResult(person)">
+				<div class="container card-content" >
+					<h5 class="card-title" style="color:#23699B;letter-spacing:1px;font-weight:600">{{person.name}}</h5>
+					<hr>
+					<b class="card-tag">Sector</b><br />
+					<p ng-repeat="sector in person.sectors | pick:sectorSplit" class="">
+					 {{sector.name}},
+					</p>
+					<p>
+						<b class="card-tag">Antidotes</b>:
+						<span>5</span>
+					</p>
+					<p>
+						<b class="card-tag">Likelihood of Occurence</b>:
+						<span>Low</span>
+					</p>
+					<p>
+						<b class="card-tag">Frequency of Occurence</b>:
+						<span>Medium</span>
+					</p>
+					<p>
+						<b class="card-tag">Subsceptible Areas</b>:
+						<span>Admission, Registration, Examination/ Certification...</span>
+					</p>
+
+					<p>
+					<b class="card-tag">Scheme Operators</b>
+					Administrative Staff, Non-Academic Staff ...
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--End of projects-->
 
 	<!--Senators-->
 	<div class="row padder-top pack">

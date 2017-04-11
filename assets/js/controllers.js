@@ -8,7 +8,7 @@
       .controller('appCtrl', function(user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
 
           $scope.sectorSplit = function(val) {
-              console.log(val)
+            //  console.log(val)
               return val.name
 
           }
@@ -26,26 +26,7 @@
 
               });
           }
-          var testQ = function() {
-              var schemeService = $feathers.service('schemes')
-              schemeService.find({
-                  query: {
-                      $populate: {
-                          path: 'sectors',
-                          select: 'name -_id',
-                          options: {
-                              limit: 5
-                          }
-                      },
-                      'sectors': '58b7eb8aba090a00118dfc6e'
-                  }
-              }).then(function(schemes) {
-                  console.log('testq schemes', schemes)
-              }).catch(function(err) {
-                  console.log(err)
-              })
-          }
-          testQ()
+
           var schemeService = $feathers.service('schemes')
           schemeService.find({
               query: {
@@ -67,15 +48,28 @@
           }).catch(function(err) {
               console.log(err)
           })
-          // Restangular.all('project').getList().then(function(response){
-          //
-          //     $scope.projects = response;
-          // })
-          //
-          // Restangular.all('person').getList().then(function(response){
-          //     $scope.persons = response;
-          //     console.log(response.plain())
-          // })
+          var ratingsService = $feathers.service('ratings')
+          ratingsService.find({
+              query: {
+                  $populate: {
+                      path: 'schemes entity',
+                      select: 'name  _id',
+                      options: {
+                          limit: 5
+                      }
+                  }
+              }
+          }).then(function(ratings) {
+              if (ratings.data.length) {
+                  console.log('test ratings', ratings.data)
+                  $scope.$apply(function() {
+                      $scope.ratings = ratings.data
+                  })
+              }
+          }).catch(function(err) {
+              console.log(err)
+          })
+
           $scope.options = {
               tooltipEvents: [],
               showTooltips: true,
