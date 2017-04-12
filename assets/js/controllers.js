@@ -218,7 +218,7 @@
                   entityService.find({
                       query: {
                           domains: user.email,
-                      
+
                       }
                   }).then(function(entities) {
                       console.log('returnd entit')
@@ -909,7 +909,14 @@
                     console.log('entities ids',entityIds)
                       ratingService.find({
                         query:{
-                          entity : entityIds
+                          entity : entityIds,
+                          $populate: {
+                              path: 'entity schemes',
+                              select: 'name -_id',
+                              options: {
+                                  limit: 5
+                              }
+                          }
 
                         }
                       }).then(function(ratings){

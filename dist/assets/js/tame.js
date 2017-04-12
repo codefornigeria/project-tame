@@ -428,7 +428,7 @@ angular.module('app', [
                   entityService.find({
                       query: {
                           domains: user.email,
-                      
+
                       }
                   }).then(function(entities) {
                       console.log('returnd entit')
@@ -1119,7 +1119,14 @@ angular.module('app', [
                     console.log('entities ids',entityIds)
                       ratingService.find({
                         query:{
-                          entity : entityIds
+                          entity : entityIds,
+                          $populate: {
+                              path: 'entity schemes',
+                              select: 'name -_id',
+                              options: {
+                                  limit: 5
+                              }
+                          }
 
                         }
                       }).then(function(ratings){
@@ -1407,6 +1414,32 @@ angular.module('app.directives', [])
         restrict: 'EA',
         templateUrl: "modules/scheme-card.html"
     }
+})
+.directive('ratingCard', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: "modules/rating-card.html"
+    }
+})
+.directive('ratingBadge' , function(){
+  return {
+    restrict: 'A',
+    template: '<span ng-class="badge"></span>',
+    scope:{
+      rating:'='
+    },
+    link:function(scope, elem, attrs){
+      if(scope.rating <= 2.5){
+        scope.badge = "label label-danger"
+      }
+      if(scope.rating > 2.5 && Scope.rating <=4){
+        scope.badge = "label label-warning"
+      }
+      if(scope.rating > 4){
+        scope.badge = "label label-success"
+      }
+    }
+  }
 })
 .directive('starRating', function () {
     return {
