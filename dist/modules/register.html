@@ -14,6 +14,30 @@
 			<form novalidate class="form-horizontal">
 
 				<div class="form-group">
+					<label for="" class="label row">choose Account type:</label>
+					<div class="row">
+						<div class="col-md-12">
+							<div class=" col-md-offset-2 col-md-4 col-sm-12">
+								<label class="label">
+									<input type="radio" name="assessorType" value="">
+									Self Assessor
+								</label>
+							</div>
+
+							<div class=" col-md-4 col-sm-12">
+								<label class="label">
+									<input type="radio" name="assessorType" value="">
+									independent Assessor
+								</label>
+							</div>
+
+
+						</div>
+						</div>
+				</div>
+
+
+				<div class="form-group">
 					<label for="fullname" class="label">Full Name</label>
 					<input class="form-control input-lg" type="text" placeholder="Enter Full Name" id="fullname" ng-model="signup_data.fullname">
 				</div>
@@ -38,22 +62,27 @@
 
 				</div>
 
+
 				<button class="btn btn-primary animated fadeIn btn-lg" ng-click="register()">
-						register
-					</button>
+								register
+							</button>
 				<a ui-sref="login" class="pull-right"> Do you have an account? Login here </a>
-
-			</form>
-		</div>
-		<div class="container">
-			<div ng-show="userRegistered">
-				<p> Congratulations</p>
-				<p> Please check your email ({{registerData.email}}) to verify your account as an assessor</p>
-			</div>
 		</div>
 
+
+
+
+		</form>
 	</div>
-	<!--End of projects-->
+	<div class="container">
+		<div ng-show="userRegistered">
+			<p> Congratulations</p>
+			<p> Please check your email ({{registerData.email}}) to verify your account as an assessor</p>
+		</div>
+	</div>
+
+</div>
+<!--End of projects-->
 </div>
 
 

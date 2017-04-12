@@ -16,93 +16,96 @@
 			<div class="row padder-sm">
 				<h2 class="row"> Rate an Organization </h2></div>
 			<div class="row padder-sm">
-			<form class="row" novalidate>
-				<div class="form-group row col-md-12 animated  fadeIn" ng-show="!showAssessment && !ratingCompleted">
-					<label for="location">What sector is this organization?</label>
-					<input class="form-control capitalize" type="text" placeholder="Enter sector name" id="sector" ng-model="ratin.sector" ng-change="searchSector()">
-					<div class="col-md-10 result m-t no-padder" ng-show="searching">
-						<li ng-repeat="result in results" ng-click="addSector(result)">
-							{{result.name}}
-						</li>
-					</div>
-				</div>
-				<div class="form-group row col-md-12 animated  fadeIn " ng-show="ratin.sectorSelected && !showAssessment && !ratingCompleted">
-					<label for="location">Enter Organization Name?</label>
-					<input class="form-control capitalize" type="text" placeholder="Enter sector name" id="organization" ng-model="ratin.organization" ng-change="searchOrganization()">
-					<div class="col-md-12 result m-t no-padder" ng-show="orgSearch">
-
-						<li ng-repeat="result in results" ng-click="addOrganization(result)">
-							{{result.name}}
-						</li>
-
-					</div>
-				</div>
-
-
-				<div class="form-group  animated  fadeIn " ng-show="showAssessment && !ratingCompleted">
-					<ul rn-carousel class="container" style="height:700px; overflow-y:scroll" >
-						<li class="row antidotes" ng-repeat="scheme in ratin.schemes">
-							<div class="padder-sm">
-								<h3>{{scheme.name}}</h3>
-
-								</div>
-							<div class="col-sm-2 col-md-2 naming">
-								Antidotes
+				<div class="col-md-8">
+					<form class="row" novalidate>
+						<div class="form-group animated fadeIn" ng-show="!showAssessment && !ratingCompleted">
+							<label for="location">What sector is this organization?</label>
+							<input class="form-control input-lg capitalize" type="text" placeholder="Enter sector name" id="sector" ng-model="ratin.sector" ng-change="searchSector()">
+							<div class="col-md-10 result m-t no-padder" ng-show="searching">
+								<li ng-repeat="result in results" ng-click="addSector(result)">
+									{{result.name}}
+								</li>
 							</div>
-							<div class="antidotes col-md-9 padder-sm " ng-repeat="antidote in scheme.antidotes">
-								<div class="col-sm-8 col-md-8">
-									<p>{{antidote.name}}</p>
-									<p>{{antidote.description}}</p>
-								</div>
-								<div class="col-sm-4">
-									<label class="radio-inline">
-						<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}Yes" value="option1" ng-click="rateScheme(scheme, antidote , true)"> Yes
-						</label>
-									<label class="radio-inline">
-						<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}No" value="option2" ng-click="rateScheme(scheme,antidote , false)"> No
-						</label>
-								</div>
+						</div>
+						<div class="form-group animated  fadeIn " ng-show="ratin.sectorSelected && !showAssessment && !ratingCompleted">
+							<label for="location">Enter Organization Name?</label>
+							<input class="form-control input-lg capitalize" type="text" placeholder="Enter sector name" id="organization" ng-model="ratin.organization" ng-change="searchOrganization()">
+							<div class="col-md-12 result m-t no-padder" ng-show="orgSearch">
+
+								<li ng-repeat="result in results" ng-click="addOrganization(result)">
+									{{result.name}}
+								</li>
 
 							</div>
-					<div class="antidotes col-md-offset-5 col-md-9 padder-sm  row">
-						<button class="btn btn-primary animated fadeIn" ng-click="prevSlideU(prevSlide)" ng-show="carouselIndex !=0 ">Previous</button>
-						<button  class="btn btn-primary animated fadeIn" ng-click="nextSlideU(scheme , nextSlide)"ng-hide="ratin.schemes.length-1 == carouselIndex ">Next</button>
-					</div>
-						</li>
+						</div>
 
-						</ul>
-					<div class="col-md-12 result m-t no-padder" ng-show="searching">
-						<li ng-repeat="result in results" ng-click="addOrganization(result)">
-							{{result.name}}
-						</li>
-					</div>
+
+						<div class="form-group  animated  fadeIn " ng-show="showAssessment && !ratingCompleted">
+							<ul rn-carousel class="container" style="height:700px; overflow-y:scroll" >
+								<li class="row antidotes" ng-repeat="scheme in ratin.schemes">
+									<div class="padder-sm">
+										<h3>{{scheme.name}}</h3>
+
+										</div>
+									<div class="col-sm-2 col-md-2 naming">
+										Antidotes
+									</div>
+									<div class="antidotes col-md-9 padder-sm " ng-repeat="antidote in scheme.antidotes">
+										<div class="col-sm-8 col-md-8">
+											<p>{{antidote.name}}</p>
+											<p>{{antidote.description}}</p>
+										</div>
+										<div class="col-sm-4">
+											<label class="radio-inline">
+								<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}Yes" value="option1" ng-click="rateScheme(scheme, antidote , true)"> Yes
+								</label>
+											<label class="radio-inline">
+								<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}No" value="option2" ng-click="rateScheme(scheme,antidote , false)"> No
+								</label>
+										</div>
+
+									</div>
+							<div class="antidotes col-md-offset-5 col-md-9 padder-sm  row">
+								<button class="btn btn-primary animated fadeIn" ng-click="prevSlideU(prevSlide)" ng-show="carouselIndex !=0 ">Previous</button>
+								<button  class="btn btn-primary animated fadeIn" ng-click="nextSlideU(scheme , nextSlide)"ng-hide="ratin.schemes.length-1 == carouselIndex ">Next</button>
+							</div>
+								</li>
+
+								</ul>
+							<div class="col-md-12 result m-t no-padder" ng-show="searching">
+								<li ng-repeat="result in results" ng-click="addOrganization(result)">
+									{{result.name}}
+								</li>
+							</div>
+						</div>
+
+
+
+
+
+
+						<div class="form-group  col-md-12" ng-show="ratingCompleted">
+							<h3>You have successfully assessed {{ratinResult.ratingData.organization}}</h3>
+							<div>
+								<p> Sector : {{ratinResult.ratingData.sector}}</p>
+								<p>organization :{{ratinResult.ratingData.organization}}</p>
+								<p>RAG Rating : {{ratinResult.score}} </p>
+
+
+							</div>
+						</div>
+
+
+						<div class=" " ng-show="ratin.organizationSelected && !showAssessment && !ratingCompleted">
+							<button class="btn btn-primary animated fadeIn btn-lg" ng-click="loadSchemes(ratin)">Rate organization</button>
+						</div>
+
+						<div class="col-md-10 " ng-show="showAssessment && !ratingCompleted">
+							<button  class="btn btn-primary animated fadeIn" ng-click="submitRating()">Submit</button>
+						</div>
+					</form>
 				</div>
 
-
-
-
-
-
-				<div class="form-group  col-md-12" ng-show="ratingCompleted">
-					<h3>You have successfully assessed {{ratinResult.ratingData.organization}}</h3>
-					<div>
-						<p> Sector : {{ratinResult.ratingData.sector}}</p>
-						<p>organization :{{ratinResult.ratingData.organization}}</p>
-						<p>RAG Rating : {{ratinResult.score}} </p>
-
-
-					</div>
-				</div>
-
-				
-				<div class="col-md-10 " ng-show="ratin.organizationSelected && !showAssessment && !ratingCompleted">
-					<button class="btn btn-primary animated fadeIn" ng-click="loadSchemes(ratin)">Rate organization</button>
-				</div>
-
-				<div class="col-md-10 " ng-show="showAssessment && !ratingCompleted">
-					<button  class="btn btn-primary animated fadeIn" ng-click="submitRating()">Submit</button>
-				</div>
-			</form>
 		</div>
 	</div>
 	<!--End of projects-->

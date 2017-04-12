@@ -25,6 +25,7 @@ a {
   }
 .header {
   overflow-x: hidden;
+  border-bottom: 1px solid #f3f3f3;
 }
 .btn {
   text-transform: capitalize;
@@ -62,6 +63,9 @@ a {
   font-size: 1.5rem;
   border-radius: 6px;
   border: 0;
+}
+.radio-inline {
+  display: inline-block;
 }
 .card {
   background: #FFFFFF;
@@ -367,7 +371,7 @@ ul.rating {
   width: 100%;
   height: 100px;
   background: #ffffff;
-  border-bottom: 1px solid #f3f3f3;
+
 }
 .search-bar-wrapper {
   width: 100%;
