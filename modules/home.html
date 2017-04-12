@@ -21,45 +21,7 @@
 	<!--Senators-->
 	<div class="row padder-top pack">
 		<h3 class="text-md text-bold pack-title" ng-show="persons" >Recent Ratings</h3>
-		<div class="col-md-4 clickable" ng-repeat="rating in ratings | orderBy:orderProp | limitTo:quantity">
-
-			<div class="card" ng-click="showResult(person)">
-				<div class="container card-content" >
-					<div class="col-md-9">
-						<h5 class="card-title" style="color:#23699B;letter-spacing:1px;font-weight:600">{{rating.entity.name}} </h5>
-					</div>
-					<div class="col-md-3 padder-bottom">
-						<span class="label" ng-class="{'label-danger': rating.score< 2.5 ,'label-warning': rating.score >2.5 , 'label-success': rating.score > 4}">RAG</span>
-					</div>
-					<hr>
-					<b class="card-tag"></b><br />
-					<p ng-repeat="sector in person.sectors | pick:sectorSplit" class="">
-					 {{sector.name}},
-					</p>
-					<p>
-						<b class="card-tag">Antidotes</b>:
-						<span>5</span>
-					</p>
-					<p>
-						<b class="card-tag">Likelihood of Occurence</b>:
-						<span>Low</span>
-					</p>
-					<p>
-						<b class="card-tag">Frequency of Occurence</b>:
-						<span>Medium</span>
-					</p>
-					<p>
-						<b class="card-tag">Subsceptible Areas</b>:
-						<span>Admission, Registration, Examination/ Certification...</span>
-					</p>
-
-					<p>
-					<b class="card-tag">Scheme Operators</b>
-					Administrative Staff, Non-Academic Staff ...
-					</p>
-				</div>
-			</div>
-		</div>
+		<rating-card></rating-card>
 	</div>
 	<!--End of projects-->
 
