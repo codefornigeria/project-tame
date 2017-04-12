@@ -84,6 +84,7 @@
           $scope.search = function() {
               if ($scope.searchKeyword) {
                   var schemeService = $feathers.service('schemes')
+
                   schemeService.find({
                       query: {
                           $text: {
@@ -217,7 +218,7 @@
                   entityService.find({
                       query: {
                           domains: user.email,
-                          assessmentType:'self'
+                      
                       }
                   }).then(function(entities) {
                       console.log('returnd entit')
@@ -893,6 +894,34 @@
                   //  $state.go('results', {query: $scope.searchKeyword})
                   $scope.searching = true;
                   var schemeService = $feathers.service('schemes')
+                  var entityService = $feathers.service('entities')
+                var ratingService = $feathers.service('ratings')
+                  entityService.find({
+                    query:{
+                      $text:{
+                        $search: $scope.searchKeyword
+                      }
+                    }
+                  }).then(function(entities){
+    console.log('showing search entities', entities)
+                    if(entities.data.length){
+                    var entityIds = _.pluck(entities.data , '_id')
+                    console.log('entities ids',entityIds)
+                      ratingService.find({
+                        query:{
+                          entity : entityIds
+
+                        }
+                      }).then(function(ratings){
+                        console.log( 'show ratings', ratings)
+                        $scope.$apply(function(){
+                          $scope.ratings = ratings.data
+                        })
+                      })
+                    }
+
+                  })
+
                   schemeService.find({
                       query: {
                           $text: {
