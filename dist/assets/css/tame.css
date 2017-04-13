@@ -76,6 +76,9 @@ a {
   word-wrap: break-word;
   margin-top: 5px;
 }
+.text-centeralized {
+  text-align: center;
+}
 
 .card-tag {
   font-weight: 700;
