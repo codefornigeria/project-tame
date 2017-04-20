@@ -53,7 +53,8 @@ gulp.task('vendorcss', ['clean:production'], function(){
         './development/assets/vendor/animate/animate.css',
         './development/assets/vendor/bootstraps/bootstraps.css',
         './development/assets/vendor/font-awesome/font-awesome.css',
-        './developmentassets/vendor/angular-carousel/dist/angular-carousel.css',
+        './development/assets/vendor/angular-carousel/dist/angular-carousel.css',
+        './development/assets/vendor/loading-bar.min.css',
 				'./development/assets/vendor/**/*.css'
 			])
 		  .pipe(concat('vendor.css'))
@@ -85,7 +86,8 @@ gulp.task('vendorjs', ['clean:production'], function(){
 		'./development/assets/vendor/*.js',
     './development/assets/vendor/bootstrap/bootstrap.min.js',
     './development/assets/vendor/bootstrap/jquery.min.js',
-    './developmentassets/vendor/bootstrap/main.js'
+    './development/assets/vendor/bootstrap/main.js',
+    './development/assets/vendor/loading-bar.min.js'
 		])
     .pipe(concat('vendor.js'))
     .pipe(gulpif(argv.production, uglify()))
