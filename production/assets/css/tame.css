@@ -17,6 +17,16 @@ body {
 a {
     color: inherit;
 }
+.header {
+  margin-bottom: 0;
+  padding-bottom: 12px
+}
+
+.centralize {
+    position: relative;
+    top: 3em;
+    margin-bottom: 2em;
+}
 
 .navbar-brand {
     position: relative;
@@ -50,17 +60,18 @@ a {
     position: relative;
     text-align: center;
     z-index: 1;
-    background-image: linear-gradient(rgba(11, 89, 144, 0.9), rgba(11, 89, 144, 0.9)), url(http://tweet-senate.herokuapp.com/assets/senate-f3c5463087d1661a3938f422cfd2200edbf064d77306e1f8665f71e050a0ffcc.png);
+    background-image: linear-gradient(rgba(11, 89, 144, 0.7), rgba(11, 89, 144, 0.9)), url(http://tweet-senate.herokuapp.com/assets/senate-f3c5463087d1661a3938f422cfd2200edbf064d77306e1f8665f71e050a0ffcc.png);
     background-position: center;
 }
 
-.hero .header {
+.hero .heading {
     font-size: 56px;
     font-weight: 900;
     color: #FFFFFF;
+
 }
 
-.hero .sub-header {
+.hero .sub-heading {
     font-size: 24px;
     font-weight: 300;
     color: #FFFFFF;
@@ -393,7 +404,7 @@ ul.rating {
     min-height: 100px;
 }
 
-.footer .footer-header {
+.footer .footer-heading {
     color: #484848;
     font-weight: 400;
 }
@@ -426,6 +437,7 @@ ul.rating {
     width: 100%;
     height: 60px;
     border-bottom: 1px solid #f3f3f3;
+
 }
 
 .search-bar {
@@ -435,6 +447,7 @@ ul.rating {
     border-bottom: 1px solid #f3f3f3;
     /*box-shadow: 0 0 0 1px rgba(0,0,0,0.2);*/
     position: relative;
+      margin-top: 5%;
 }
 
 @media all and (min-width: 320px) and (max-width: 640px) {
@@ -619,7 +632,7 @@ ul.rating {
     height: 100px;
 }
 
-.projects-header {
+.projects-heading {
     height: 60px;
     width: 100%;
     float: left;
@@ -628,7 +641,7 @@ ul.rating {
     background-image: linear-gradient(rgba(43, 184, 246, 0.8), rgba(43, 184, 246, 0.8)), url("../img/pattern.png");
 }
 
-.projects-header h5 {
+.projects-heading h5 {
     line-height: 60px;
     color: #fff;
 }
@@ -718,8 +731,17 @@ ul.rating {
 }
 
 @media (min-width: 766px) {
+    .hero {
+      position: relative;
+      min-height: 600px;
+      background-position-y: initial;
+    }
+    .hero .heading {
+      letter-spacing: 5px;
+    }
     .header {
         margin-bottom: 0;
+        padding:0;
     }
     .navbar-brand {
         position: relative;
@@ -768,7 +790,13 @@ ul.rating {
     }
     .centralize {
         position: relative;
-        top: 5em;
+        top: 10em;
         margin-bottom: 2em;
     }
+}
+
+@media (min-width:988px) {
+  .header {
+    margin-bottom: -28px;
+  }
 }
