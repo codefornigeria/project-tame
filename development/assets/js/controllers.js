@@ -1123,7 +1123,8 @@
 
               }).catch(function(err) {
                   $scope.userRegistered = false
-                  console.log(err);
+                  console.log(err.description);
+                  // console.log(err.status);
               })
           }
       })
@@ -1164,7 +1165,7 @@
                   $scope.$apply(function() {
                       $scope.error = {
                           type: 'danger',
-                          message: err.message || 'Email or password is not correct'
+                          message: 'Email or password is not correct'
                       }
                   })
               })
@@ -1177,6 +1178,7 @@
               }).catch(function(err) {
 
                   console.log(err);
+
               })
           }
       })

@@ -15,7 +15,8 @@ angular.module('app', [
     'chart.js',
     'angularUtils.directives.dirDisqus',
     'angular.filter',
-    'angular-carousel'
+    'angular-carousel',
+    'angular-loading-bar'
 
     ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
@@ -51,8 +52,12 @@ angular.module('app', [
               // $(".page-preloading").addClass('hidden');
           });
     })
-.config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config',
-  function($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider,$feathersProvider,Config) {
+.config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider','$feathersProvider','Config', 'cfpLoadingBarProvider',
+  function($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider,$feathersProvider,Config, cfpLoadingBarProvider) {
+    // cfpLoadingBarProvider.includeBar = true;
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+  //  cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+
     $feathersProvider.setEndpoint(Config.api)
 
    // You can optionally provide additional opts for socket.io-client
@@ -1333,7 +1338,8 @@ angular.module('app', [
 
               }).catch(function(err) {
                   $scope.userRegistered = false
-                  console.log(err);
+                  console.log(err.description);
+                  // console.log(err.status);
               })
           }
       })
@@ -1374,7 +1380,7 @@ angular.module('app', [
                   $scope.$apply(function() {
                       $scope.error = {
                           type: 'danger',
-                          message: err.message || 'Email or password is not correct'
+                          message: 'Email or password is not correct'
                       }
                   })
               })
@@ -1387,6 +1393,7 @@ angular.module('app', [
               }).catch(function(err) {
 
                   console.log(err);
+
               })
           }
       })

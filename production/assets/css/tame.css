@@ -22,6 +22,11 @@ a {
   padding-bottom: 12px
 }
 
+#loading-bar-container {
+  position: relative;
+  z-index: 555;
+  top:0;
+}
 .centralize {
     position: relative;
     top: 3em;
@@ -777,7 +782,7 @@ ul.rating {
     }
     .divider {
         height: 40px;
-        width: %;
+        /*width: %;*/
         margin-top: 30px;
     }
     .navigation-icon {
@@ -792,6 +797,10 @@ ul.rating {
         position: relative;
         top: 10em;
         margin-bottom: 2em;
+    }
+
+    .clear-bottom {
+      margin-bottom: 8em;
     }
 }
 
