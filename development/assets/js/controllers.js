@@ -1123,13 +1123,13 @@
 
               }).catch(function(err) {
                   $scope.userRegistered = false
-                  console.log(err.description);
+                  console.log(err);
                   // console.log(err.status);
               })
           }
       })
 
-      .controller('loginCtrl', function(user, $scope, $rootScope, $state, $stateParams, $feathers) {
+      .controller('loginCtrl', function(user, $scope, $rootScope, $state, $stateParams, $feathers, $auth) {
           if (user) {
               $state.go('ratings')
           }
@@ -1141,7 +1141,36 @@
                   console.log("Logged out!!")
                   $state.go('home')
               });
-          }
+          };
+
+          $scope.authenticate = function(provider) {
+            if (provider == 'facebook') {
+              $auth.authenticate(provider).then(function(response){
+                console.log('response ===' + response);
+              }).catch (function(error){
+                console.log(error);
+              });
+            }
+
+            if (provider == 'linkedin') {
+              $auth.authenticate(provider).then(function(response){
+                console.log('response===' + response);
+              }).catch(function(error){
+                console.log(error);
+              });
+            };
+
+            if (provider == 'twitter') {
+              $auth.authenticate(provider).then(function(response){
+                console.log('response ===' + response);
+              }).catch(function(error){
+                console.log(error);
+              })
+            }
+
+            // if (provider == '')
+          };
+
           $scope.login = function() {
               $scope.alert = false;
               $scope.user.type = 'local'

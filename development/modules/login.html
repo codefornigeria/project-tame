@@ -10,34 +10,47 @@
 
 	<!--Senators-->
 	<div class="row padder-sm">
-		<div class="col-md-offset-2 col-md-7 centralize clear-bottom">
-			<form novalidate class="form-horizontal">
-				<!-- <div class="form-group  animated animate-slow fadeIn" ng-show="error">
-					{{error.message}}
-				</div> -->
-				<div>
-					<div class="alert alert-danger form-group  animated animate-slow fadeIn" role="alert" ng-show="error">
-					  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-					  <span class="sr-only">Error:</span>
-					  {{error.message}}
+		<h1 class="page-heading">Login</h1>
+		<div class="centralize">
+
+			<div class="col-md-offset-2 col-md-4 col-sm-12 social container">
+				<button ng-click="authenticate('facebook')" class="button-social facebook">
+					<i class="fa fa-facebook fa-1x" aria-hidden="true"></i>
+					<span style="padding-left:10px">Sign in with Facebook</span>
+				</button>
+				<!-- <button ng-click="authenticate('linkedin')">Sign in with LinkedIn</button><br>
+				<button ng-click="authenticate('twitter')">Sign in with Twitter</button> -->
+			</div>
+			<div class="col-md-4  clear-bottom">
+				<form novalidate class="form-horizontal">
+					<!-- <div class="form-group  animated animate-slow fadeIn" ng-show="error">
+						{{error.message}}
+					</div> -->
+					<div>
+						<div class="alert alert-danger form-group  animated animate-slow fadeIn" role="alert" ng-show="error">
+						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						  <span class="sr-only">Error:</span>
+						  {{error.message}}
+						</div>
 					</div>
-				</div>
 
-				<div class="form-group">
-					<label for="Email" >Email</label>
-					<input class="form-control input-lg" type="text" placeholder="Enter email" id="sector" ng-model="user.email">
+					<div class="form-group">
+						<label for="Email" >Email</label>
+						<input class="form-control input-lg" type="text" placeholder="Enter email" id="sector" ng-model="user.email">
 
-				</div>
+					</div>
 
-				<div class="form-group  animated animate-slow fadeIn ">
-					<label for="password">Password</label>
-					<input class="form-control input-lg" type="password" placeholder="Password" id="organization" ng-model="user.password">
+					<div class="form-group  animated animate-slow fadeIn ">
+						<label for="password">Password</label>
+						<input class="form-control input-lg" type="password" placeholder="Password" id="organization" ng-model="user.password">
 
-				</div>
+					</div>
 
-				<button class="btn btn-primary animated fadeIn btn-lg" ng-click="login()">Login</button>
-				<a ui-sref="register" class="pull-right "> No account? Register here </a>
-			</form>
+					<button class="btn btn-primary animated fadeIn btn-lg" ng-click="login()">Login</button>
+					<a ui-sref="register" class="pull-right "> No account? Register here </a>
+				</form>
+			</div>
+
 		</div>
 	</div>
 	<!--End of projects-->

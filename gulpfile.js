@@ -17,6 +17,7 @@ var gulp = require('gulp'),
     purify = require('gulp-purifycss');
 
 
+
 gulp.task('clean:production', function() {
     return gulp.src('production/*')
         .pipe(vinylPaths(del))
@@ -87,7 +88,8 @@ gulp.task('vendorjs', ['clean:production'], function(){
     './development/assets/vendor/bootstrap/bootstrap.min.js',
     './development/assets/vendor/bootstrap/jquery.min.js',
     './development/assets/vendor/bootstrap/main.js',
-    './development/assets/vendor/loading-bar.min.js'
+    './development/assets/vendor/loading-bar.min.js',
+    './development/assets/vendor/satellizer/satellizer.min.js'
 		])
     .pipe(concat('vendor.js'))
     .pipe(gulpif(argv.production, uglify()))

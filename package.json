@@ -30,7 +30,9 @@
   },
   "homepage": "https://github.com/codefornigeria/data-kit-ui#readme",
   "dependencies": {
+    "browser-sync": "^2.18.8",
     "feathers-mongoose": "^5.0.3",
+    "ngrok": "^2.2.6",
     "node-static": "^0.7.7"
   },
   "devDependencies": {
