@@ -83,8 +83,12 @@ angular.module('app.directives', [])
             });
         }
     }
+}).directive('entityCard', function () {
+    return {
+        restrict: 'EA',
+        templateUrl: "modules/entity-card.html"
+    }
 })
-
 .directive('schemeEntityCard', function () {
     return {
         restrict: 'EA',
