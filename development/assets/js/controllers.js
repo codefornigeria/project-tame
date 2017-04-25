@@ -218,14 +218,27 @@
               $scope.ratin.organizationSelected = false
 
               if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
-                  var entityService = $feathers.service('entities')
-                  entityService.find({
+                var entityService = $feathers.service('entities')
+                var entityconfig;
+                if(user.userType = 'independent-assessor'){
+                  entityconfig ={
                       query: {
                           domains: user.email,
-
-                      }
-                  }).then(function(entities) {
-                      console.log('returnd entit')
+                          isSelfRated:true
+                        },
+                      userType: user.userType
+                  }
+                }else{
+                  entityConfig ={
+                      query: {
+                          domains: user.email,
+                          isSelfRated:false
+                        },
+                      userType: user.userType
+                  }
+                }
+                  entityService.find(entityConfig).then(function(entities) {
+                      console.log('returnd entit', entities)
                       if (entities.data.length) {
                           console.log('showing entities', entities.data)
                           $scope.$apply(function() {
@@ -238,7 +251,7 @@
                           })
                       }
                   }).catch(function(err) {
-                      console.log(err)
+                      console.log('entity search error',err)
                       $scope.orgSearch = false;
                   })
 
@@ -1229,7 +1242,7 @@
             }
           }
           $scope.register = function() {
-            
+
               AuthService.signUp($scope.signup_data).then(function(res) {
                   console.log(res);
                   $scope.$apply(function() {
