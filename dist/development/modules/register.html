@@ -1,0 +1,135 @@
+<div class="container min500">
+	<!--	<div class="spinner" ng-if="!persons">
+		<div class="spinner__item1"></div>
+		<div class="spinner__item2"></div>
+		<div class="spinner__item3"></div>
+		<div class="spinner__item4"></div>
+	</div>
+
+-->
+
+	<!--Senators-->
+	<div class="row padder-sm">
+		<h1 style="text-align:center;" class="page-heading">Register</h1>
+		<div class="col-md-offset-2 col-md-7 centralize clear-bottom" ng-show="!userRegistered">
+
+			<form novalidate class="form-horizontal" name="registerForm">
+
+				<div class="form-group">
+					<div class="alert alert-danger form-group  animated animate-slow fadeIn" role="alert" ng-show="error">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<span class="sr-only">Error:</span>
+						{{error.message}}
+					</div>
+					<label for="" class="label row">choose Account type:</label>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-4 col-sm-12">
+								<label class="label">
+									<input type="radio" name="assessorType" value="self-assessor">
+									Self Assessor
+								</label>
+							</div>
+
+							<div class=" col-md-4 col-sm-12">
+								<label class="label">
+									<input type="radio" name="assessorType" value="independent-assessor">
+									Independent Assessor
+								</label>
+							</div>
+							<div class="col-md-4 col-sm-12">
+								<label class="label">
+									<input type="radio" name="assessorType" value="public-assessor">
+									Public Assessor
+								</label>
+							</div>
+
+
+						</div>
+						</div>
+				</div>
+
+
+				<div class="form-group">
+					<label for="fullname" class="label">Full Name</label>
+					<input class="form-control input-lg" type="text" placeholder="Enter Full Name" id="fullname" ng-model="signup_data.fullname">
+				</div>
+
+				<div class="form-group">
+					<label for="Email" class="label">Email</label>
+					<input class="form-control input-lg" type="text" placeholder="Enter email" id="Email" ng-model="signup_data.email">
+
+				</div>
+
+				<div class="form-group">
+					<label for="password" class="label">password</label>
+					<input class="form-control input-lg" type="password" placeholder="Enter password" id="password" ng-model="signup_data.password">
+				</div>
+				<div class="alert alert-danger form-group  animated animate-slow fadeIn" role="alert" ng-show="error">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					{{passwordError.message}}
+				</div>
+
+				<div class="form-group">
+					<label for="confirm_password" class="label">Confirm password</label>
+					<input class="form-control input-lg" type="password" id="confirm_password" ng-model="signup_data.cpassword" name="cpassword" ng-blur="checkPassword()">
+				</div>
+				<div class="form-group">
+					<label for="tel" class="label">Phone Number</label>
+					<input class="form-control input-lg" type="text" placeholder="Enter Phone Number" id="tel" ng-model="signup_data.phone">
+
+				</div>
+
+
+				<button class="btn btn-primary animated fadeIn btn-lg" ng-click="register()">
+								register
+							</button>
+				<a ui-sref="login" class="pull-right"> Do you have an account? Login here </a>
+		</div>
+
+
+
+
+		</form>
+	</div>
+	<div class="container centralize">
+		<div ng-show="userRegistered" style="text-align:center">
+			<p> Congratulations</p>
+			<p> Please check your email ({{registerData.email}}) to verify your account as an assessor</p>
+		</div>
+	</div>
+
+</div>
+<!--End of projects-->
+</div>
+
+
+<div class="footer">
+	<div class="container">
+		<div class="col-md-8">
+			<p class="footer-heading">About</p>
+			<hr> Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
+		</div>
+		<div class="col-md-4 p-t">
+			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>
+			<p class="clickable"><i class="fa fa-twitter-square"></i><a href="https://twitter.com/codefornigeria" target="_blank">Follow us on Twitter</a></p>
+		</div>
+		<div class="col-md-8 partners">
+			<p class="footer-heading">Built by</p>
+			<hr>
+			<a href="http://www.codefornigeria.io" target="_blank"><img src="assets/img/cfnigeria.png"></a>
+			<a href="http://www.integritynigeria.org" target="_blank"><img src="assets/img/integrity.png"></a>
+		</div>
+		<div class="col-md-4 partners">
+			<p class="footer-heading">With Support From</p>
+			<hr>
+			<a href="http://www.undp.org" target="_blank"><img src="assets/img/undp.png"></a>
+			<a href="http://www.europa.eu" target="_blank"><img src="assets/img/eu.jpg"></a>
+			<a href="http://www.unodc.org" target="_blank"><img src="assets/img/unodc.png"></a>
+		</div>
+		<p class="col-md-12 m-t-md text-center text-sm text-thin">
+			<a href="https://github.com/codefornigeria/project-tame" target="_blank">Fork this project on Github</a>
+		</p>
+	</div>
+</div>
