@@ -1537,6 +1537,7 @@ angular.module('app', [
               $auth.authenticate(provider).then(function(response){
                 console.log('response ===' , response);
                 //LocalService.set('satellizer_token' , response.!#access_toke)
+                LocalService.set(feathers-jwt ,response["!#access_token"])
                 $feathers.authenticate({
                       strategy: 'facebook-token',
                       access_token: response["!#access_token"]
