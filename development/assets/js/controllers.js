@@ -1229,7 +1229,7 @@
             }
           }
           $scope.register = function() {
-              //  console.log ($scope.signup_data)
+            
               AuthService.signUp($scope.signup_data).then(function(res) {
                   console.log(res);
                   $scope.$apply(function() {
@@ -1339,6 +1339,8 @@
           };
 
           $scope.register = function() {
+            console.log(' sogin',$scope.signup_data)
+            return
               AuthService.signUp($scope.signup_data).then(function(res) {
                   console.log(res);
 
