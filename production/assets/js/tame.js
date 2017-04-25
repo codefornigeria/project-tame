@@ -1543,7 +1543,7 @@ angular.module('app', [
 
             if (provider == 'linkedin') {
               $auth.authenticate(provider).then(function(response){
-                console.log('response===' + response);
+                console.log('response===' ,response);
               }).catch(function(error){
                 console.log(error);
               });
