@@ -83,6 +83,7 @@ angular.module('app', [
             $authProvider.facebook({
                 // clientId: '1294347140661397',
                 clientId: '643775069155130',
+                responseType:"token",
                 authorizationEndpoint: 'https://www.facebook.com/v2.9/dialog/oauth',
                 popupOptions: {
                     width: 580,
