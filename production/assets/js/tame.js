@@ -1535,7 +1535,7 @@ angular.module('app', [
           $scope.authenticate = function(provider) {
             if (provider == 'facebook') {
               $auth.authenticate(provider).then(function(response){
-                console.log('response ===' + response);
+                console.log('response ===' , response);
               }).catch (function(error){
                 console.log(error);
               });
