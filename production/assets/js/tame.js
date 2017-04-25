@@ -1518,7 +1518,7 @@ angular.module('app', [
           }
       })
 
-      .controller('loginCtrl', function(user, $scope, $rootScope, $state, $stateParams, $feathers, $auth) {
+      .controller('loginCtrl', function(user, $scope, $rootScope, $state, $stateParams, $feathers, $auth,LocalService) {
           if (user) {
               $state.go('ratings')
           }
@@ -1536,6 +1536,14 @@ angular.module('app', [
             if (provider == 'facebook') {
               $auth.authenticate(provider).then(function(response){
                 console.log('response ===' , response);
+                $feathers.authenticate({
+                      strategy: 'facebook-token',
+                      access_token: LocalService.get('satellizer_token')
+                  }).then(function(response){
+                    console.log('facebook token response', response)
+                  }).catch(function(err){
+                    console.log('facebook token error', err)
+                  })
               }).catch (function(error){
                 console.log(error);
               });
