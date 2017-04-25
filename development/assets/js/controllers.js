@@ -121,7 +121,11 @@
                   query: person._id
               })
           }
-
+          $scope.showRagResult = function(rating){
+            $state.go('entityrating',{
+              query: rating._id
+            })
+          }
           $scope.showProject = function(project) {
               Restangular.one('project', project.id).get().then(function(response) {
                   $scope.entity = response;
