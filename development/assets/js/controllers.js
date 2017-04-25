@@ -1089,9 +1089,11 @@
           }
       })
 
-      .controller('entityRatingCtrl', function($scope, Restangular, $state, $stateParams, $feathers) {
+      .controller('entityRatingCtrl', function($scope, Restangular, $state, $stateParams, $feathers,$rootScope) {
           $scope.searchedEntity = $stateParams.query;
-
+          $scope.ratin = {
+              schemes: []
+          };
           $scope.search = function() {
               if ($scope.searchKeyword) {
                   $state.go('results', {
@@ -1109,6 +1111,16 @@
                           $scope.persons = $scope.results.person;
                           $scope.projects = $scope.results.project;
                           $scope.total = parseInt($scope.results.person.length) + parseInt($scope.results.project.length);
+
+
+
+
+
+
+
+
+                          ///////////////////////////////////////////////
+
                       }
                   }, function(error) {
                       $scope.searching = false;
@@ -1116,6 +1128,8 @@
                   });
               }
           }
+
+
 
           $scope.viewEntity = function() {
               if ($scope.searchedEntity) {
@@ -1137,7 +1151,135 @@
                           $scope.entity = rating;
                           $scope.searchKeyword = rating.name;
                         //  $scope.sectors = scheme.sectors;
-          })
+
+                        $scope.loadSchemes = function(assessmentData) {
+                            // load schemes based on assessment data
+                            console.log(assessmentData);
+                            $scope.showAssessment = true
+                            var schemeService = $feathers.service('schemes')
+                            schemeService.find({
+                                query: {
+                                    $populate: {
+                                        path: 'sectors antidotes',
+                                        select: 'name description _id',
+                                        options: {
+                                            limit: 10
+                                        }
+                                    },
+                                    'sectors': assessmentData.sectorId,
+
+                                }
+                            }).then(function(schemes) {
+                                console.log('testq schemes', schemes)
+                                $scope.$apply(function() {
+                                    $scope.ratin.schemes = schemes.data
+                                })
+                            }).catch(function(err) {
+                                console.log(err)
+                            })
+                          };
+
+                          $scope.nextSlideU = function(scheme, slide) {
+                              var errorState = false
+                              scheme.antidotes.map(function(antidote) {
+                                  if (antidote.score >= 0) {
+                                      antidote.error = false
+
+                                  } else {
+                                      antidote.error = true,
+                                          errorState = true
+                                  }
+                                  return antidote
+                              })
+                              if (!errorState) {
+                                  slide()
+                              }
+                          };
+
+                          $scope.rateScheme = function(scheme, antidote, type) {
+                              _.map(scheme.antidotes, function(item) {
+                                  if (item == antidote) {
+                                      (type) ? item.score = 3: item.score = 0
+                                  }
+                              })
+
+                          };
+                          $scope.submitRating = function() {
+                              var ratingService = $feathers.service('ratings')
+                              ratingService.create($scope.ratin).then(function(ratinResult) {
+                                  $scope.$apply(function() {
+                                      console.log('result from rating', ratinResult)
+                                      $scope.ratinResult = ratinResult
+
+                                      $scope.ratingCompleted = true
+                                  })
+                              }).catch(function(err) {
+                                  console.log('ratin error', err)
+                              })
+                          };
+                          $scope.completeRating = function(ratin) {
+
+                              // var ratingService = $feathers.service('ratings')
+                              // ratingService.create(ratin).then(function(storedRating){
+                              //   $scope.$apply(function(){
+                              //     $scope.ratingResult = storedRating
+                              //   })
+                              // })
+
+                              console.log('rating data', ratin)
+                              $scope.ratingCompleted = true
+                              $scope.showAssessment = false
+                          };
+                          $scope.showScheme = function() {
+                              var groupService = $feathers.service('groups')
+                              groupService.find({
+
+                              }).then(function(groups) {
+
+                                  if (groups.data.length) {
+                                      console.log('showing groups', groups.data)
+                                      $scope.$apply(function() {
+                                          $scope.schemeTypes = groups.data
+
+                                      })
+                                  }
+                              }).catch(function(err) {
+                                  console.log(err)
+                                  $scope.searching = false;
+                              })
+                          };
+                          $scope.loadEffect = function() {
+                              $scope.showEffect = true
+                              var storyService = $feathers.service('stories')
+                              storyService.find({}).then(function(stories) {
+
+                                  if (stories.data.length) {
+                                      console.log('showing stories', stories.data)
+                                      $scope.$apply(function() {
+                                          $scope.schemeEffects = stories.data
+
+                                      })
+                                  }
+                              }).catch(function(err) {
+                                  console.log(err)
+                                  $scope.searching = false;
+                              })
+                          };
+                          $scope.rating = 0;
+                          $scope.ratings = [{
+                              current: 1,
+                              max: 5
+                          }];
+
+                          $scope.getSelectedRating = function(rating) {
+                              $scope.rating.rate = rating;
+                          };
+                          $scope.addRating = function() {
+                              console.log('final rating', $scope.rating)
+                              $state.go('scheme')
+                          };
+                      //////////
+                    });
                   }).catch(function(err) {
                       $scope.$apply(function() {
                           $scope.searching = false;
