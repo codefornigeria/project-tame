@@ -218,14 +218,27 @@
               $scope.ratin.organizationSelected = false
 
               if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
-                  var entityService = $feathers.service('entities')
-                  entityService.find({
+                var entityService = $feathers.service('entities')
+                var entityConfig;
+                if(user.userType = 'independent-assessor'){
+                  entityconfig ={
+                      query: {
+                          isSelfRated:true,
+                          indieRated:false
+                        },
+                      userType: user.userType
+                  }
+                }else{
+                  entityConfig ={
                       query: {
                           domains: user.email,
-
-                      }
-                  }).then(function(entities) {
-                      console.log('returnd entit')
+                          isSelfRated:false
+                        },
+                      userType: user.userType
+                  }
+                }
+                  entityService.find(entityConfig).then(function(entities) {
+                      console.log('returnd entit', entities)
                       if (entities.data.length) {
                           console.log('showing entities', entities.data)
                           $scope.$apply(function() {
@@ -238,7 +251,7 @@
                           })
                       }
                   }).catch(function(err) {
-                      console.log(err)
+                      console.log('entity search error',err)
                       $scope.orgSearch = false;
                   })
 
@@ -296,29 +309,53 @@
           }
           $scope.loadSchemes = function(assessmentData) {
               // load schemes based on assessment data
-
               $scope.showAssessment = true
-              var schemeService = $feathers.service('schemes')
-              schemeService.find({
-                  query: {
-                      $populate: {
-                          path: 'sectors antidotes',
-                          select: 'name description _id',
-                          options: {
-                              limit: 10
-                          }
-                      },
-                      'sectors': assessmentData.sectorId,
 
-                  }
-              }).then(function(schemes) {
-                  console.log('testq schemes', schemes)
-                  $scope.$apply(function() {
-                      $scope.ratin.schemes = schemes.data
+              if(user.userType =='independent-assessor'){
+                  //find  organization  rating ,
+                console.log('showing assessor type', user)
+                  var ratingService  = $feathers.service('ratings')
+                  ratingService.find({
+                    query:{
+                      entity :$scope.ratin.organizationId
+                    }
+                  }).then(function(rating){
+                    console.log('showing rating', rating)
+                    if(rating.data.length){
+                      // there is an existing rating for this organization
+                      $scope.$apply(function(){
+                        console.log('rating data' , rating.data[0].ratingData )
+                        $scope._rating_id = rating.data[0]._id
+                        $scope.ratin = rating.data[0].ratingData
+                      })
+                    }
+                  }).catch(function(err){
+                    console.log('rating error', err)
                   })
-              }).catch(function(err) {
-                  console.log(err)
-              })
+              }else{
+                var schemeService = $feathers.service('schemes')
+                schemeService.find({
+                    query: {
+                        $populate: {
+                            path: 'sectors antidotes',
+                            select: 'name description _id',
+                            options: {
+                                limit: 10
+                            }
+                        },
+                        'sectors': assessmentData.sectorId,
+
+                    }
+                }).then(function(schemes) {
+                    console.log('testq schemes', schemes)
+                    $scope.$apply(function() {
+                        $scope.ratin.schemes = schemes.data
+                    })
+                }).catch(function(err) {
+                    console.log(err)
+                })
+              }
+
 
           }
           $scope.rateScheme = function(scheme, antidote, type) {
@@ -330,17 +367,32 @@
 
           }
           $scope.submitRating = function() {
-              var ratingService = $feathers.service('ratings')
-              ratingService.create($scope.ratin).then(function(ratinResult) {
-                  $scope.$apply(function() {
-                      console.log('result from rating', ratinResult)
-                      $scope.ratinResult = ratinResult
 
-                      $scope.ratingCompleted = true
+              var ratingService = $feathers.service('ratings')
+                if(user.userType =='independent-assessor'){
+                  ratingService.patch($scope._rating_id , $scope.ratin).then(function(ratinResult) {
+                      $scope.$apply(function() {
+                          console.log('result from rating', ratinResult)
+                          $scope.ratinResult = ratinResult
+
+                          $scope.ratingCompleted = true
+                      })
+                  }).catch(function(err) {
+                      console.log('ratin error', err)
                   })
-              }).catch(function(err) {
-                  console.log('ratin error', err)
-              })
+                }else{
+                  ratingService.create($scope.ratin).then(function(ratinResult) {
+                      $scope.$apply(function() {
+                          console.log('result from rating', ratinResult)
+                          $scope.ratinResult = ratinResult
+
+                          $scope.ratingCompleted = true
+                      })
+                  }).catch(function(err) {
+                      console.log('ratin error', err)
+                  })
+                }
+
           }
           $scope.completeRating = function(ratin) {
 
@@ -1371,7 +1423,7 @@
             }
           }
           $scope.register = function() {
-              //  console.log ($scope.signup_data)
+
               AuthService.signUp($scope.signup_data).then(function(res) {
                   console.log(res);
                   $scope.$apply(function() {
@@ -1481,6 +1533,8 @@
           };
 
           $scope.register = function() {
+            console.log(' sogin',$scope.signup_data)
+            return
               AuthService.signUp($scope.signup_data).then(function(res) {
                   console.log(res);
 
