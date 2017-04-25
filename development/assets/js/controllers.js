@@ -1275,9 +1275,10 @@
             if (provider == 'facebook') {
               $auth.authenticate(provider).then(function(response){
                 console.log('response ===' , response);
+                LocalService.set('satellizer_token' , response.!#access_toke)
                 $feathers.authenticate({
                       strategy: 'facebook-token',
-                      access_token: LocalService.get('satellizer_token')
+                      access_token: response.!#access_token
                   }).then(function(response){
                     console.log('facebook token response', response)
                   }).catch(function(err){
