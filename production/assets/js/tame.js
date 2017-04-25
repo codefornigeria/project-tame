@@ -1537,14 +1537,14 @@ angular.module('app', [
               $auth.authenticate(provider).then(function(response){
                 console.log('response ===' , response);
                 //LocalService.set('satellizer_token' , response.!#access_toke)
-                // $feathers.authenticate({
-                //       strategy: 'facebook-token',
-                //       access_token: response.!#access_token
-                //   }).then(function(response){
-                //     console.log('facebook token response', response)
-                //   }).catch(function(err){
-                //     console.log('facebook token error', err)
-                //   })
+                $feathers.authenticate({
+                      strategy: 'facebook-token',
+                      access_token: response["!#access_token"]
+                  }).then(function(response){
+                    console.log('facebook token response', response)
+                  }).catch(function(err){
+                    console.log('facebook token error', err)
+                  })
               }).catch (function(error){
                 console.log(error);
               });
