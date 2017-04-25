@@ -177,6 +177,11 @@ angular.module('app', [
                     templateUrl: 'modules/entity.html',
                     controller: 'entityCtrl'
                 })
+                .state('entityrating', {
+                    url: '/entityrating?query',
+                    templateUrl: 'modules/entityrating.html',
+                    controller: 'entityRatingCtrl'
+                })
                 .state('compare', {
                     url: '/compare',
                     templateUrl: 'modules/compare.html',
