@@ -81,7 +81,8 @@ angular.module('app', [
 
             // $authProvider.loginUrl = '/auth/login';
             $authProvider.facebook({
-                clientId: '1294347140661397',
+                // clientId: '1294347140661397',
+                clientId: '643775069155130',
                 authorizationEndpoint: 'https://www.facebook.com/v2.9/dialog/oauth',
                 popupOptions: {
                     width: 580,

@@ -13,9 +13,14 @@
 		<h1 style="text-align:center;" class="page-heading">Register</h1>
 		<div class="col-md-offset-2 col-md-7 centralize clear-bottom" ng-show="!userRegistered">
 
-			<form novalidate class="form-horizontal">
+			<form novalidate class="form-horizontal" name="registerForm">
 
 				<div class="form-group">
+					<div class="alert alert-danger form-group  animated animate-slow fadeIn" role="alert" ng-show="error">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						<span class="sr-only">Error:</span>
+						{{error.message}}
+					</div>
 					<label for="" class="label row">choose Account type:</label>
 					<div class="row">
 						<div class="col-md-12">
@@ -60,9 +65,15 @@
 					<label for="password" class="label">password</label>
 					<input class="form-control input-lg" type="password" placeholder="Enter password" id="password" ng-model="signup_data.password">
 				</div>
+				<div class="alert alert-danger form-group  animated animate-slow fadeIn" role="alert" ng-show="error">
+					<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Error:</span>
+					{{passwordError.message}}
+				</div>
+
 				<div class="form-group">
 					<label for="confirm_password" class="label">Confirm password</label>
-					<input class="form-control input-lg" type="password" id="confirm_password" ng-model="signup_data.cpassword">
+					<input class="form-control input-lg" type="password" id="confirm_password" ng-model="signup_data.cpassword" name="cpassword" ng-blur="checkPassword()">
 				</div>
 				<div class="form-group">
 					<label for="tel" class="label">Phone Number</label>
@@ -82,8 +93,8 @@
 
 		</form>
 	</div>
-	<div class="container">
-		<div ng-show="userRegistered">
+	<div class="container centralize">
+		<div ng-show="userRegistered" style="text-align:center">
 			<p> Congratulations</p>
 			<p> Please check your email ({{registerData.email}}) to verify your account as an assessor</p>
 		</div>

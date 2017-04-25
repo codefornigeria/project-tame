@@ -964,6 +964,7 @@
           $scope.search();
 
           $scope.showResult = function(person) {
+            console.log(person);
               $state.go('entity', {
                   query: person._id
               })
@@ -1112,6 +1113,19 @@
       })
       .controller('registerCtrl', function($scope, $state, $stateParams, $feathers, AuthService, LocalService) {
           $scope.userRegistered = false
+
+          $scope.checkPassword = function(){
+            if ($scope.signup_data.password != $scope.signup_data.cpassword){
+                  $scope.passwordError = {
+                      type: 'danger',
+                      message: 'Ensure You Confirm Your Password'
+                  };
+                  $scope.registerForm.cpassword.$invalid = false;
+                  console.log($scope.registerForm);
+            }else {
+                  $scope.registerForm.cpassword.$invalid = true;
+            }
+          }
           $scope.register = function() {
               //  console.log ($scope.signup_data)
               AuthService.signUp($scope.signup_data).then(function(res) {
@@ -1123,8 +1137,20 @@
 
               }).catch(function(err) {
                   $scope.userRegistered = false
-                  console.log(err);
-                  // console.log(err.status);
+                   console.error('Error authenticating!', err)
+                   console.log(typeof err);
+                   console.log(Object.keys(err));
+                   console.log(err.code);
+
+                   if (err.code == 409) {
+                     $scope.$apply(function() {
+                         $scope.error = {
+                             type: 'danger',
+                             message: 'Email has been taken. Please use another email address'
+                         }
+                     })
+                   }
+                  // console.log(err.match(/Error: E11000 duplicate key error index\d\i/));
               })
           }
       })
