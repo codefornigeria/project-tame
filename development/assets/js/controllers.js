@@ -911,26 +911,7 @@
           }
       })
       .controller('sectorCtrl', function($scope, $state, $stateParams, $feathers) {
-          // $scope.sectorFnc = function() {
-          //     $scope.searching = true;
-          //     var sectorService = $feathers.service('sectors')
-          //     sectorService.find({
-          //         query: {
-          //             active: true
-          //         }
-          //     }).then(function(sectors) {
-          //         console.log('show sectos', sectors)
-          //         $scope.$apply(function() {
-          //             $scope.searching = false
-          //             $scope.total = sectors.total
-          //             $scope.sectors = sectors.data,
-          //                 $scope.notFound = false
-          //         })
-          //     }).catch(function(err) {
-          //         $scope.error = err
-          //     })
-          // }
-          // $scope.sectorFnc()
+
           $scope.showResult = function(sector) {
               console.log('scheme result called', sector)
               $state.go('scheme', {
@@ -938,7 +919,6 @@
               })
           }
 
-          $scope.viewEntity();
 
 
           $scope.compare = function(contract) {
@@ -966,6 +946,11 @@
           $scope.closeModal = function() {
               $scope.compareProjects = false;
           }
+          $scope.search = function() {
+            $state.go('results', {
+      query: $scope.searchKeyword
+  })
+    }
       })
       .controller('resultCtrl', function($scope, Restangular, $state, $stateParams, $feathers) {
                $scope.searchKeyword = $stateParams.query;
