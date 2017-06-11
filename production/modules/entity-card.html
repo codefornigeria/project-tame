@@ -1,0 +1,178 @@
+<div class="col-md-12 col-sm-12 m-b-md shadow-mobile clickable">
+	<div class="col-md-12 card-md clickable" ng-click="showResult(entity)">
+		<span class="col-md-12 no-padder">
+			<p>{{entity.entity.name}}</p>
+
+			<hr>
+		</span>
+
+		<span class="col-md-4 col-xs-6 no-padder">
+			<b>city</b>
+			<p>{{entity.entity.city}}</p>
+		</span>
+
+		<span class="col-md-4 col-xs-6 no-padder">
+			<b>state</b>
+			<p>{{entity.entity.state}}</p>
+
+		</span>
+		<span class="col-md-4 no-padder">
+
+			<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"  ng-click="loadSchemes(entity)">
+Rate Organization
+</button>
+<!-- <ul>
+	<li class="row antidotes" ng-repeat="scheme in entity.schemes">
+		{{scheme}}
+		<div class="padder-sm ">
+			<h3>{{scheme.name}}</h3>
+
+			</div>
+
+		<h4>
+			Antidotes
+		</h4>
+		<div class="col-sm-8 col-md-8">
+			<p>{{antidote.name}}</p>
+			<p>{{antidote.description}}</p>
+		</div>
+	</li>
+</ul> -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Rate {{entity.entity.name}}</h4>
+      </div>
+      <div class="modal-body">
+
+				<!-- <div class="form-group  animated  fadeIn " ng-show="showAssessment && !ratingCompleted"> -->
+				<div class="form-group ">
+					<ul rn-carousel class="container" style="height:700px; overflow-y:scroll;width:inherit" >
+						<li class="row antidotes" ng-repeat="scheme in ratin.schemes">
+
+
+							<div class="antidotes col-md-9 padder-sm " ng-repeat="antidote in scheme.antidotes">
+								<div class="padder-sm ">
+									<h3>{{scheme.name}}</h3>
+
+									</div>
+
+								<h4>
+									Antidotes
+								</h4>
+								<div class="col-sm-8 col-md-8">
+									<p>{{antidote.name}}</p>
+									<p>{{antidote.description}}</p>
+								</div>
+								<div class="col-sm-4">
+									<label class="radio-inline">
+						<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}Yes" value="option1" ng-click="rateScheme(scheme, antidote , true)" > Yes
+						</label>
+									<label class="radio-inline">
+						<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}No" value="option2" ng-click="rateScheme(scheme,antidote , false)"> No
+						</label>
+								</div>
+
+							</div>
+							<div class="clearfix">
+
+							</div>
+							<div class="antidote row col-md-8 col-sm-7">
+								<button class="btn btn-primary animated fadeIn pull left" ng-click="prevSlideU(prevSlide)" ng-show="carouselIndex !=0 ">Previous</button>
+								<button class="btn btn-primary animated fadeIn pull-right" ng-click="nextSlideU(scheme , nextSlide)" ng-hide="ratin.schemes.length-1 == carouselIndex ">Next</button>
+								<button  class="btn btn-primary animated fadeIn pull-right" ng-click="submitRating()"  ng-show="ratin.schemes.length-1 == carouselIndex ">Submit</button>
+						</li>
+
+						</ul>
+
+
+
+					<!-- <ul  rn-carousel class="container" style="height:700px; overflow-y:scroll;width: inherit" >
+						<li class="row antidotes" ng-repeat="scheme in entity.schemes">
+							<div class=" ">
+								<button class="btn btn-primary animated fadeIn btn-lg" ng-click="loadSchemes(entity)">Rate organization</button>
+							</div>
+							<div ng-repeat="antidote in scheme.antidotes">
+								{{antidote}}
+							</div>
+							<div class="antidotes col-md-9 padder-sm " ng-repeat="antidote in scheme.antidotes">
+								<div class="padder-sm ">
+									<h3>{{scheme.name}}</h3>
+
+									</div>
+
+								<h4>
+									Antidotes
+								</h4>
+								<div class="col-sm-8 col-md-8">
+									<p>{{antidote.name}}cc</p>
+									<p>{{antidote.description}}tt</p>
+								</div>
+								<div class="col-sm-4">
+									<label class="radio-inline">
+						<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}Yes" value="option1" ng-click="rateScheme(scheme, antidote , true)" > Yes
+						</label>
+									<label class="radio-inline">
+						<input type="radio"  name="{{scheme._id}}{{antidote._id}}" id="{{antidote._id}}No" value="option2" ng-click="rateScheme(scheme,antidote , false)"> No
+						</label>
+								</div>
+
+							</div>
+							<div class="clearfix">
+
+							</div>
+							<div class="antidote row col-md-8 col-sm-7">
+								<button class="btn btn-primary animated fadeIn pull left" ng-click="prevSlideU(prevSlide)" ng-show="carouselIndex !=0 ">Previous</button>
+								<button class="btn btn-primary animated fadeIn pull-right" ng-click="nextSlideU(scheme , nextSlide)" ng-hide="ratin.schemes.length-1 == carouselIndex ">Next</button>
+								<button  class="btn btn-primary animated fadeIn pull-right" ng-click="submitRating()"  ng-show="ratin.schemes.length-1 == carouselIndex ">Submit</button>
+						</li>
+
+						</ul>				 -->
+					<div class="col-md-12 result m-t no-padder" ng-show="searching">
+						<li ng-repeat="result in results" ng-click="addOrganization(result)">
+							{{result.name}}
+						</li>
+					</div>
+				</div>
+
+
+
+
+
+
+				<div class="form-group  col-md-12 text-centeralized" ng-show="ratingCompleted" style="centralize">
+					<h3 class="">You have successfully assessed {{ratinResult.ratingData.organization}}</h3>
+					<div>
+						<p> Sector : {{ratinResult.ratingData.sector}}</p>
+						<p>organization :{{ratinResult.ratingData.organization}}</p>
+						<p>RAG Rating : {{ratinResult.score}} </p>
+
+
+					</div>
+				</div>
+
+
+
+
+				<!-- <div class="col-md-10"  ng-show="showAssessment && !ratingCompleted"><h1  ng-hide="ratin.schemes.length-1 == carouselIndex ">hello wolrd</h1>
+					<button  class="btn btn-primary animated fadeIn" ng-click="submitRating()"  ng-hide="ratin.schemes.length-1 == carouselIndex ">Submit</button>
+				</div> -->
+			</form>
+		</div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+		</span>
+	</div>
+</div>
