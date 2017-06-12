@@ -1,81 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Project TAME | Code for Nigeria</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="dcterms.format" content="text/html" />
-    <meta name="dcterms.type" content="Text" />
-    <meta property="og:site_name" content="" />
-    <meta property="og:type" content="" />
-    <link rel="shortcut icon" href="" />
-    <meta property="og:url" content="" />
-    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/vnd.microsoft.icon" />
-    <meta name="generator" content="" />
-    <meta name="dcterms.title" content="" />
-    <meta name="description" content="" />
-    <meta name="dcterms.identifier" content="" />
-    <meta name="dcterms.description" content="" />
-    <meta property="og:description" content="" />
-    <meta property="og:title" content="" />
-    <link rel="canonical" href="" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta http-equiv="cleartype" content="on">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>  Home | Tame </title>
 
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-
-    <!-- inject:css -->
+      <!-- inject:css -->
 
     <!-- endinject -->
 
 
     <!-- inject:js -->
     <!-- endinject -->
-
-</head>
+  </head>
 <body ng-app="app">
-    <nav class="header navbar">
-        <div class="container-fluid">
-            <!-- <div class="row"> -->
-                <div class="no-padder">
-                  <div class="navbar-header">
-                    <a ui-sref="home" class="navbar-brand"><img src="assets/img/cfnigeria.png" class="logo"></a>
-                    <button type="button" class="navbar-toggle collapsed fa fa-bars fa-2x navigation-toogle" data-toggle="collapse" data-target="#btn-navbar-collapse" aria-expanded="false">
-                   </button>
-                  </div>
+    <header>
+      <nav class="navbar navbar-toggleable-md fixed-top main-nav">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#main_nav" aria-controls="main_nav" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars" aria-hidden="true"></i>
+        </button>
+        <a class="navbar-brand" href="index.html"><img src="assets/img/logo.png"></a>
 
-
-                  <div class="collapse navbar-collapse" id="btn-navbar-collapse">
-                    <ul class="nav navbar-nav navigation">
-
-                        <li class="navigation-list"><a ui-sref="home">Search By Scheme</a></li>
-                        <li class="navigation-list"> <a ui-sref="sector">Search By Sector</a></li>
-                        <li class="navigation-list"><a ui-sref="ratings">Rate An Organization</a></li>
-                        <li class="navigation-list" ng-show="!user">  <a ui-sref="login">Login</a></li>
-                        <li class="navigation-list" ng-show="user" ><a ui-sref="logout">Logout</a></li>
-
-
-
-
-
-
-                      <li class="b-r divider navigation-list navigation-divider hiden-sm "></li>
-                      <li class="fa fa-twitter navigation-list navigation-icon ">
-                        <a  href="http://twitter.com/codefornigeria" target="_blank" ></a>
-                      </li>
-                      <li class="fa fa-facebook navigation-list navigation-icon">
-                        <a  href="http://facebook.com/codefornigeria" target="_blank" ></a>
-                      </li>
-                    </ul>
-                  </div>
-
-
-                </div>
-            <!-- </div> -->
+        <div class="collapse navbar-collapse" id="main_nav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#">BROWSE</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">DISCOVER</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">REPORT</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Logout</a>
+            </li>
+            <li class="nav-item join-us">
+                <a href="#">Join us</a>
+              
+            </li>
+          </ul>
         </div>
-    </nav>
+      </nav>
+    </header>
 
     <div  ui-view></div>
+     <footer class="footer-area">
+       <div class="container">
+           <div class="row">
+              <div class="col-sm-8 col-md-7">
+                  <h2>SPONSORS</h2>
+                  <ul class="sponsors-logo">
+                    <li><img src="assets/img/footer-logo-1.png"></li>
+                    <li><img src="assets/img/footer-logo-2.jpg"></li>
+                    <li><img src="assets/img/footer-logo-3.png"></li>
+                    <li><img src="assets/img/footer-logo-4.png"></li>
+                   
+                  </ul>
+              </div>
+
+              <div class="col-sm-4 col-md-2">
+                  <h4>SUPPORT</h4>
+                  <ul>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">Tams</a></li>
+                    <li><a href="#">Advanced</a></li>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">RSS</a></li>
+                    <li><a href="#">Help & FAQs</a></li>
+                  </ul>
+              </div>
+
+              <div class="col-sm-12 col-md-3">
+                  <h4>STAY CONNECTED</h4>
+                  <ul class="social-link">
+                    <li><a href="#" class="tw"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="#" class="gle"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                    <li><a href="#" class="fb"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li><a href="#" class="tum"><i class="fa fa-tumblr" aria-hidden="true"></i></a></li>
+                  </ul>
+
+                  <h4>About</h4>
+                  <address>
+                    CodeForNigeria ® is a registered Trademark in Lagos, Nigeria
+                  </address>
+                  <address>
+                    Copyright © 2017 tame.com (ACN 267 668 173)
+                  </address>
+              </div>
+           </div>
+
+       </div>
+    </footer> 
 </body>
 </html>

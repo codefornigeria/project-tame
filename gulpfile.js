@@ -51,13 +51,10 @@ gulp.task('copy-images', ['clean:production'], function(){
 gulp.task('vendorcss', ['clean:production'], function(){
     return gulp
 			.src([
-        './development/assets/vendor/animate/animate.css',
-        './development/assets/vendor/bootstraps/bootstraps.css',
-        './development/assets/vendor/font-awesome/font-awesome.css',
+        './development/assets/css/bootstrap.min.css',
+        './development/assets/css/font-awesome.min.css',
         './development/assets/vendor/angular-carousel/dist/angular-carousel.css',
-        './development/assets/vendor/loading-bar.min.css',
-				'./development/assets/vendor/**/*.css'
-			])
+      	])
 		  .pipe(concat('vendor.css'))
 		  .pipe(gulpif(argv.production, cssmin()))
 			.pipe(gulpif(argv.production, purify(['./production/**/*.js', './production/**/*.html'])))
@@ -97,7 +94,7 @@ gulp.task('vendorjs', ['clean:production'], function(){
 });
 
 gulp.task('appjsfiles', ['clean:production'], function(){
-    return gulp.src([ './configs/local.js', './development/assets/js/app.js', './development/assets/js/*.js', './development/modules/**/*.js'])
+    return gulp.src([ './configs/local.js', './development/assets/js/app.js', './development/assets/js/*.js', './development/assets/js/controllers/*.js','./development/modules/**/*.js'])
     .pipe(concat(json.name.toLowerCase() + '.js'))
     .pipe(gulpif(argv.production, uglify()))
     .pipe(gulpif(argv.production, rename({suffix: '.min'})))
@@ -119,7 +116,7 @@ gulp.task('link-files', ['copy-images', 'copy-fonts', 'copy-html',  'vendorjs', 
 });
 
 gulp.task('style', ['clean:production'], function(){
-    return gulp.src(['./development/assets/css/app.css', '.development/assets/css/ted.css'])
+    return gulp.src(['./development/assets/css/style.css','./development/assets/css/responsive.css'])
 
         .pipe(concat(json.name.toLowerCase() + '.css'))
         .pipe(gulpif(argv.production, cssmin()))

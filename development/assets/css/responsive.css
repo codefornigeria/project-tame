@@ -1,0 +1,454 @@
+@media(max-width: 1199px){
+
+	.footer-area ul.social-link li {
+	    margin: 0 2px;
+	}
+	.footer-area ul.social-link li a {
+	    width: 45px;
+	    height: 40px;
+	}
+
+}
+
+@media(max-width: 990px){
+	.form-area {
+	    margin-top: -125px;
+	    background: #6c44bb;
+	    padding: 5px 60px 5px 15px;
+	}
+	
+	.collapse {
+    display: none;
+}
+
+.navbar-nav{
+	width: 100%;
+	text-align: center;
+	background: #46bc95
+}
+
+.main-nav .navbar-nav .nav-link {
+    color: #fff;
+    font-size: 13px;
+    padding: 0 30px;
+    border-bottom: 1px solid #fff;
+    border-right:0;
+    line-height: normal;
+    padding: 15px 0;
+}
+
+.main-nav .navbar-nav .nav-link:hover{
+    background: #2eab81;
+    text-decoration: none !important;
+
+}
+
+.main-nav .navbar-nav li.join-us a{
+	width: 100%;
+}
+
+.main-nav .navbar-nav li.join-us{
+	margin-top: 10px;
+}
+
+.banner-search{
+	width: 700px;
+}
+
+.inner-banner h1 {
+    font-size: 53px;
+    color: #fff;
+    width: 700px;
+    display: inline-block;
+    line-height: 75px;
+    margin-top: -50px;
+}
+
+.work-reviews ul li{
+	font-size: 20px;
+}
+
+.recent-ratings table tr td:first-child, .recent-ratings table tr th:first-child {
+    padding-left: 15px;
+}
+
+.recent-ratings table tr td:last-child, .recent-ratings table tr th:last-child {
+    padding-right: 15px;
+}
+
+.progress-area h3{
+	font-size: 23px;
+}
+
+.join-area h2{
+	font-size: 50px;
+}
+
+.join-area form{
+	margin-top: 75px;
+}
+
+.encount .col-lg-5{
+	margin-top: 20px; 
+}
+
+.footer-area ul.social-link li {
+    margin: 5px 2px;
+}
+
+.banner{
+	height: 600px;
+}
+
+.rating-area.organization {
+    width: auto;
+    display: block;
+}
+
+.rating-area h1 {
+    font-size: 25px;
+}
+
+.rating-area.organization .rating-inwrap {
+    padding: 45px;
+}
+
+.navbar-toggler-right {
+    color: #fff;
+    margin-top: 7px;
+}
+
+.main-nav .navbar-nav .join-us.group {
+    padding-top: 15px;
+}
+
+.rating-area.progress-wrap{
+	width: auto;
+	display: block;
+	margin-left: 15px ;
+	margin-right: 15px;
+}
+
+
+.congratulations-area h2 {
+    margin: 30px 0;
+    font-size: 34px;
+}
+
+.congratulations-area {
+    padding: 20px;
+}
+
+.congratulations-area {
+    background: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+}
+
+
+}
+
+
+@media(max-width: 766px){
+
+ 
+	.table-responsive{
+		width: 100%;
+		clear: both;
+		overflow-x:auto; 
+	}
+
+	.footer-area .col-md-3{
+		margin-bottom: 25px;
+	}
+
+	.inner-banner{
+		padding: 0 20px;
+	}
+
+	.inner-banner h1,
+	.banner-search{
+		width: 100%
+	}
+
+	.work-reviews ul li {
+	    font-size: 14px;
+	}
+
+	.work-reviews ul li span.bullet {
+	    display: inline-block;
+	    width: 15px;
+	    height: 15px;
+	}
+
+	.recent-ratings table {
+		width: 700px;
+	}
+
+
+	.join-area form .form-control {
+	    height: 55px;
+	    margin: 0;
+	    color: #000;
+	    padding-left: 20px;
+	    padding-right: 20px;
+	    float: left;
+	    width: 170px;
+	}
+
+	.join-area h2:after {
+	    left: 26%;
+	}
+
+	.join-area h2 {
+	   font-size: 35px;
+	}
+
+	.rating-area.details .update {
+    margin-top: 35px;
+}
+
+.rating-area.details .progress-area {
+    margin-right: 0;
+    margin-bottom: 40px;
+}
+
+.rating-area h1 {
+    margin-bottom: 80px;
+}
+
+.not-find {
+    color: #51c69f;
+    border: 1px solid #51c69f;
+    padding: 5px 25px;
+    border-radius: 5px;
+    display: inline-block;
+    position: relative;
+    right: 0;
+    top: 7px;
+    z-index: 100;
+    background: #fff;
+    margin-bottom: 25px;
+}
+
+.rating-area.organization .rating-inwrap input{
+	padding-right: 15px;
+}
+
+.or::after {
+    left: 25px;
+}
+
+
+.main-nav .navbar-nav li.join-us {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+
+}
+
+@media(max-width: 575px){
+
+   	.footer-area {
+	    background: #fff;
+	    padding: 35px 0;
+	    margin-top: 100px;
+  }
+
+  .footer-area{
+		text-align: center;
+   }
+
+   .banner {
+    height: auto;
+    padding: 150px 0;
+}
+
+.inner-banner h1{
+	font-size: 45px;
+}
+
+.work-reviews ul{
+	display: block;
+}
+
+.work-reviews ul li{
+	display: block;
+	padding: 10px 0
+}
+
+.progress-area .col-sm-6{
+	margin-bottom: 25px
+}
+
+   .join-area form{
+   	  background: transparent;
+   }
+
+
+   .join-area form .form-control{
+   	  width: 100%;
+   	  margin: 5px 0
+   }
+
+   .join-area form .btn-success {
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 15px;
+    padding-right: 35px;
+    padding-left: 35px;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.rating-area{
+	width: auto;
+	display: block;
+	margin-left:15px; 
+	margin-right:15px; 
+}
+
+.rating-area.organization button {
+    margin-left: 0;
+}
+
+.bottom-area button, .bottom-area button:focus {
+    width: 100%;
+    float: none;
+    margin-top: 15px;
+}
+
+.footer-area ul li {
+    list-style: none;
+    margin: 30px 0;
+    clear: both;
+    display: block;
+}
+
+.login-wrap{
+  width: 100%
+}
+
+.congratulations-area .createrg{
+  margin: 0
+}
+	
+}
+
+@media(max-width: 475px){
+
+  .join-area h2:after{
+  	display: none;
+  }
+
+  .join-area h2{
+  	padding-top: 50px;
+  }
+
+  .recent-ratings h4, .schemes h2{
+  	 font-size: 18px;
+  }
+
+
+.banner-search .tab-content .btn-outline-success, .join-area form .btn-success {
+    float: right;
+    background: #53d63f;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    height: 55px;
+    border: 1px solid #53d63f;
+    padding: 0 17px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.banner-search .tab-content .form-control {
+    height: 55px;
+    padding-left: 30px;
+    padding-right: 100px;
+    background: #fff url(../images/search-icon.png) no-repeat 8px center;
+    margin-right: -100%;
+    float: left;
+}
+
+.banner-search .nav-tabs li {
+    margin-right: 20px;
+}
+
+.banner-search .nav-tabs .nav-link{
+	font-size: 15px;
+}
+
+.rating-area.organization .rating-inwrap {
+    padding: 45px 20px;
+}
+
+.navbar-brand img{
+	width: auto;
+}
+
+.rating-point a {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #d7d7d7;
+    border-radius: 50%;
+    margin: 0 5px;
+    color: #d7d7d7;
+    display: inline-block;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.bottom-area button, .bottom-area button:focus {
+    width: 100%;
+    float: none;
+    margin-top: 15px;
+}
+
+.login-wrap .nav-tabs li a{
+  font-size: 16px;
+}
+
+.login-wrap label{
+  font-size: 12px;
+}
+
+
+
+.assessor .btn-group button {
+    display: inline-block;
+    width: 33%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 10px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.login-bottom-text{
+  bottom: -70px;
+  text-align: center;
+}
+
+.login-bottom-text p {
+    float: left;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.login-bottom-text a.right{
+  float: none;
+  display: inline-block;
+  margin: 2px;
+}
+
+}
