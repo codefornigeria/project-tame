@@ -159,7 +159,7 @@
 
           $scope.register = function() {
             console.log(' sogin',$scope.signup_data)
-            return
+          
               AuthService.signUp($scope.signup_data).then(function(res) {
                   console.log(res);
 
