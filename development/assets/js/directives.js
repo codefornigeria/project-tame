@@ -22,25 +22,31 @@ angular.module('app.directives', [])
 .directive('ratingCard', function () {
     return {
         restrict: 'EA',
-        templateUrl: "modules/rating-card.html"
+        templateUrl: "modules/directives/ratingcard.html",
+       replace:true,
+        link:function(scope,elem,attrs){
+            console.log(scope)
+        }
     }
 })
 .directive('ratingBadge' , function(){
   return {
-    restrict: 'A',
-    template: '<span ng-class="badge"></span>',
-    scope:{
+    restrict: 'EA',
+    replace:true,
+       templateUrl: "modules/directives/ratingcard.html",
+     scope:{
       rating:'='
     },
     link:function(scope, elem, attrs){
-      if(scope.rating <= 2.5){
-        scope.badge = "label label-danger"
+        console.log('bbadge', scope.rating)
+      if(scope.rating.score <= 2.5){
+        scope.badge = "red"
       }
-      if(scope.rating > 2.5 && Scope.rating <=4){
-        scope.badge = "label label-warning"
+      if(scope.rating.score > 2.5 && scope.rating.score <=4){
+        scope.badge = "amber"
       }
-      if(scope.rating > 4){
-        scope.badge = "label label-success"
+      if(scope.rating.score > 4){
+        scope.badge = "green"
       }
     }
   }
@@ -83,7 +89,29 @@ angular.module('app.directives', [])
             });
         }
     }
-}).directive('entityCard', function () {
+}).directive('userType', function(){
+    return {
+        restrict:'EA',
+         templateUrl: "modules/directives/usertype.html",
+         link: function(scope,elem,attrs){
+             elem.bind('click', function(e){
+                 console.log('data', $(e.target).data('usertype'))
+                 $(e.target).siblings().removeClass('btn-primary').addClass('btn-secondary')
+                 if( $(e.target).hasClass('btn-secondary')){
+                     
+                      $(e.target).removeClass('btn-secondary').addClass('btn-primary')
+                 }else  if( $(e.target).hasClass('btn-primary')){
+                      $(e.target).removeClass('btn-primary').addClass('btn-secondary')
+                 }
+                 scope.$apply(function(){
+                     scope.signup_data.userType = $(e.target).data('usertype')
+                 })
+               })
+         
+         }
+    }
+})
+.directive('entityCard', function () {
     return {
         restrict: 'EA',
         templateUrl: "modules/entity-card.html"

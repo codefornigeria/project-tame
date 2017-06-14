@@ -36,7 +36,7 @@
               if (schemes.data.length) {
                   console.log('test schemes', schemes.data)
                   $scope.$apply(function() {
-                      $scope.persons = schemes.data
+                      $scope.schemes = schemes.data
                   })
               }
           }).catch(function(err) {
@@ -46,7 +46,7 @@
           ratingsService.find({
               query: {
                   $populate: {
-                      path: 'schemes entity',
+                      path: 'scheme entity',
                       select: 'name  _id',
                       options: {
                           limit: 5

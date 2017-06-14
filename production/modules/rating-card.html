@@ -1,30 +1,15 @@
-<div class=" col-md-4 col-sm-6 m-b-md shadow-mobile clickable" ng-repeat="rating in ratings">
-	<div class="card col-md-12 card-md clickable" ng-click="showRagResult(rating)">
-		<span class="col-md-9">
-			<h5 class="card-title" style="color:#23699B;letter-spacing:1px;font-weight:600">{{rating.entity.name}} </h5>
-		</span>
-		<span class="col-md-3 padder-bottom">
-			<span style="color:#ffffff;" class="label" ng-class="{'label-danger': rating.score< 2.5 ,'label-warning': rating.score >2.5 , 'label-success': rating.score > 4}">RAG</span>
-		</span>
-		<hr>
-		</span>
-
-
-
-		<span class="col-md-6 col-xs-6 no-padder">
-			<b>No of Schemes</b>
-			<p> {{rating.schemes.length}}</p>
-
-		</span>
-		<span class="col-md-6 col-xs-6 no-padder">
-			<b>Sector</b>
-			<p> {{rating.ratingData.sector}}</p>
-
-		</span>
-
-
-
-
-
-	</div>
-</div>
+	<tr class="purpel" ng-repeat="rating in ratings">
+							<td>
+								<div class="logo-area">
+									C
+								</div>
+								<h5>{{rating.entity.name}}</h5>
+								<p class="time">Last report 20 days ago</p>
+							</td>
+							<td>{{rating.schemes.length}}</td>
+							<td> 58% </td>
+							<td>35%</td>
+							<td>
+								<span class="badge"> RAG</span>
+							</td>
+					

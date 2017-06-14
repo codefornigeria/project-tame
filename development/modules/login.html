@@ -1,87 +1,105 @@
-<div class="container">
-	<!--	<div class="spinner" ng-if="!persons">
-		<div class="spinner__item1"></div>
-		<div class="spinner__item2"></div>
-		<div class="spinner__item3"></div>
-		<div class="spinner__item4"></div>
-	</div>
+<section class="container">
+       <div class="login-wrap">
+          <div class="login-inwrap">
+             <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item active">
+                    <a class="nav-link sgn" ng-href="#signin" role="tab" data-toggle="tab">Sign in     </a> </li>
+                <li class="nav-item">
+                  <a class="nav-link acc" ng-href="#account" role="tab" data-toggle="tab">New account </a>
+                </li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane in active" id="signin">
+                  <form  name="loginForm"  ng-submit="login(loginForm.$valid)" novalidate>
+                    <div class="form-group">
+                      <label >Sign in with your e-mail address</label>
+                         <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="user.email" required>
+                        <span ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="text-danger">enter a valid email.</span>
+                 </div>
 
--->
+                    <div class="form-group">
+                      <label >password</label>
+                       <input type="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" ng-model="signup_data.password" required>
+                           <span ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="text-danger">enter your first name.</span>
+     </div>
 
-	<!--Senators-->
-	<div class="row padder-sm">
-		<h1 class="page-heading">Login</h1>
-		<div class="centralize">
+                    <button type="submit" class="btn btn-block submit" ng-disabled="loginForm.$invalid">Sign in to TAME dashboard</button>
+                    <div class="or"></div>
+                    <div class="clearfix text-center social-access">
+                        <a href="#"><img src="assets/img/twitter.png"></a>
+                        <a href="#"><img src="assets/img/facebook.png"></a>
+                    </div>
+                    <div class="login-bottom-text">
+                        <p>Don't have any account yet? <a class="start" href="#account" role="tab" data-toggle="tab">Get Started</a></p>
+                        <a class="right" ui-sref="forgotpassword"">Forgot Password?</a>
+                    </div>
+                  </form> 
 
-			<div class="col-md-offset-2 col-md-4 col-sm-12 social container">
-				<button ng-click="authenticate('facebook')" class="button-social facebook">
-					<i class="fa fa-facebook fa-1x" aria-hidden="true"></i>
-					<span style="padding-left:10px">Sign in with Facebook</span>
-				</button>
-				<!-- <button ng-click="authenticate('linkedin')">Sign in with LinkedIn</button><br>
-				<button ng-click="authenticate('twitter')">Sign in with Twitter</button> -->
-			</div>
-			<div class="col-md-4  clear-bottom">
-				<form novalidate class="form-horizontal">
-					<!-- <div class="form-group  animated animate-slow fadeIn" ng-show="error">
-						{{error.message}}
-					</div> -->
-					<div>
-						<div class="alert alert-danger form-group  animated animate-slow fadeIn" role="alert" ng-show="error">
-						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-						  <span class="sr-only">Error:</span>
-						  {{error.message}}
-						</div>
-					</div>
+                  
+                </div> 
+                <!-- End Sign in  sectino Tab -->
+                <div role="tabpanel" class="tab-pane fade" id="account">
+                  <form name="registerForm" ng-submit="register(registerForm.$valid)" novalidate ng-show="!registered">
+                    <div class="form-group">
+                      <label >Enter e-mail</label>
+                      <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="signup_data.email" required>
+                        <span ng-show="registerForm.email.$invalid && !registerForm.email.$pristine" class="text-danger">enter a valid email.</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label >First name</label>
+                            <input type="text" name="firstname" class="form-control" placeholder="First name" ng-model="signup_data.firstname" required>
+                         <span ng-show="registerForm.firstname.$invalid && !registerForm.firstname.$pristine" class="text-danger">enter your first name.</span>
+                </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label >Last name</label>
+                            <input type="text" class="form-control" placeholder="Last name" ng-model="signup_data.lastname" required>
+                      <span ng-show="registerForm.lastname.$invalid && !registerForm.lastname.$pristine" class="text-danger">enter your first name.</span>
+                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label >Password</label>
+                            <input type="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" ng-model="signup_data.password" required>
+                           <span ng-show="registerForm.password.$invalid && !registerForm.password.$pristine" class="text-danger">enter your first name.</span>
+           </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label >Your Phone</label>
+                            <input type="text" class="form-control" placeholder="Your Number " ng-model="signup_data.phone">
+                          </div>
+                        </div>
+                    </div>
 
-					<div class="form-group">
-						<label for="Email" >Email</label>
-						<input class="form-control input-lg" type="text" placeholder="Enter email" id="sector" ng-model="user.email">
+                    <div class="form-group assessor">
+                      <label>Select assessor type <a class="right" href="#"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
+                     <user-type></user-type>  
+                    </div>
 
-					</div>
-
-					<div class="form-group  animated animate-slow fadeIn ">
-						<label for="password">Password</label>
-						<input class="form-control input-lg" type="password" placeholder="Password" id="organization" ng-model="user.password">
-
-					</div>
-
-					<button class="btn btn-primary animated fadeIn btn-lg" ng-click="login()">Login</button>
-					<a ui-sref="register" class="pull-right "> No account? Register here </a>
-				</form>
-			</div>
-
-		</div>
-	</div>
-	<!--End of projects-->
-</div>
-
-
-<div class="footer">
-	<div class="container">
-		<div class="col-md-8">
-			<p class="footer-heading">About</p>
-			<hr> Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
-		</div>
-		<div class="col-md-4 p-t">
-			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>
-			<p class="clickable"><i class="fa fa-twitter-square"></i><a href="https://twitter.com/codefornigeria" target="_blank">Follow us on Twitter</a></p>
-		</div>
-		<div class="col-md-8 partners">
-			<p class="footer-heading">Built by</p>
-			<hr>
-			<a href="http://www.codefornigeria.io" target="_blank"><img src="assets/img/cfnigeria.png"></a>
-			<a href="http://www.integritynigeria.org" target="_blank"><img src="assets/img/integrity.png"></a>
-		</div>
-		<div class="col-md-4 partners">
-			<p class="footer-heading">With Support From</p>
-			<hr>
-			<a href="http://www.undp.org" target="_blank"><img src="assets/img/undp.png"></a>
-			<a href="http://www.europa.eu" target="_blank"><img src="assets/img/eu.jpg"></a>
-			<a href="http://www.unodc.org" target="_blank"><img src="assets/img/unodc.png"></a>
-		</div>
-		<p class="col-md-12 m-t-md text-center text-sm text-thin">
-			<a href="https://github.com/codefornigeria/project-tame" target="_blank">Fork this project on Github</a>
-		</p>
-	</div>
-</div>
+                    <button type="submit" class="btn btn-block submit" ng-disabled="registerForm.$invalid">Signup for Tame</button>
+                    <div class="or"></div>
+                    <div class="clearfix text-center social-access">
+                        <a href="#"><img src="assets/img/twitter.png"></a>
+                        <a href="/auth/facebook"><img src="assets/img/facebook.png"></a>
+                    </div>
+                    <div class="login-bottom-text text-center">
+                        By signinup, you agree to the terms and conditions of Tame LLC
+                    </div>
+                  </form> 
+                     <div ng-show="registered">
+                    <h3>Registration successful</h3>
+                    <p> Hi, you have successfully registered on the TAME project platform </p>
+                    </div>
+                </div>
+                <!-- End new account section Tab -->
+              </div>
+          </div>
+       </div>
+    </section>

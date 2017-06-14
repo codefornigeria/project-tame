@@ -17,7 +17,6 @@ var gulp = require('gulp'),
     purify = require('gulp-purifycss');
 
 
-
 gulp.task('clean:production', function() {
     return gulp.src('production/*')
         .pipe(vinylPaths(del))
@@ -104,7 +103,8 @@ gulp.task('appjsfiles', ['clean:production'], function(){
 gulp.task('connect', function() {
     connect.server({
         root: './production/',
-        port: 4930
+        port: 4930,
+        livereload: true
     });
 });
 
@@ -112,7 +112,9 @@ gulp.task('link-files', ['copy-images', 'copy-fonts', 'copy-html',  'vendorjs', 
   var target = gulp.src('./production/index.html');
   var sources = gulp.src(['./production/assets/js/vendor.js', './production/assets/js/*.js', './production/assets/css/vendor.css', './production/assets/css/*.css'], {read: false});
   return target.pipe(inject(sources, {relative: true}))
-    .pipe(gulp.dest('./production'));
+    .pipe(gulp.dest('./production'))
+     .pipe(connect.reload());
+    
 });
 
 gulp.task('style', ['clean:production'], function(){
@@ -123,6 +125,7 @@ gulp.task('style', ['clean:production'], function(){
 		.pipe(gulpif(argv.production, purify(['./production/assets/**/*.js', './production/modules/**/*.html'])))
         .pipe(gulpif(argv.production, rename({suffix: '.min'})))
 		.pipe(gulp.dest('./production/assets/css'))
+         .pipe(connect.reload());
 });
 
 gulp.task('logger', function(){
@@ -135,5 +138,5 @@ gulp.task('build', [ 'config', 'style', 'link-files']);
 gulp.task('default', ['clean:production', 'config', 'copy-images', 'connect', 'copy-html', 'vendorjs','vendorcss','appjsfiles','copy-fonts','link-files']);
 
 gulp.task('serve', ['connect', 'config', 'style', 'link-files'], function () {
-	return gulp.watch(['./configs/**/*', './development/assets/**/*', './development/modules/**/*'], ['logger','style', 'link-files']);
+    	return gulp.watch(['./configs/**/*', './development/assets/**/*', './development/modules/**/*'], ['logger','style', 'link-files']);
 });

@@ -114,7 +114,7 @@ angular.module('app', [
 
             $stateProvider
                 .state('home', {
-                    url: '',
+                    url: '/',
                     templateUrl: 'modules/home.html',
                     controller: 'appCtrl',
                     resolve: {
@@ -206,6 +206,12 @@ angular.module('app', [
                         }
                     },
                     controller: 'loginCtrl'
+                })
+                .state('forgotpassword', {
+                    url: '/forgotpassword',
+                    templateUrl: 'modules/forgotpassword.html',
+                    
+                    controller: 'resetCtrl'
                 })
                 .state('facebook_auth', {
                     url: '/facebook-auth',
