@@ -51,21 +51,31 @@ angular.module('app.directives', [])
     }
   }
 })
+.directive('entityBadge' , function(){
+  return {
+    restrict: 'EA',
+    replace:true,
+       templateUrl: "modules/directives/entitycard.html",
+    
+    link:function(scope, elem, attrs){
+        console.log('the scope',scope)
+    }
+  }
+})
 .directive('starRating', function () {
     return {
-        restrict: 'A',
-        template: '<ul class="rating">' +
-            '<li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)">' +
-            '\u2605' +
-            '</li>' +
-            '</ul>',
-        scope: {
-            ratingValue: '=',
-            max: '=',
-            onRatingSelected: '&'
-        },
+        restrict: 'EA',
+        template:'<div class="rating-point">'+
+                 '<a href="#" ng-click=setValue(1)>1</a>'+
+                 '<a href="#"ng-click=setValue(2)>2</a>'+
+                 '<a href="#"ng-click=setValue(3)>3</a>'+
+                 '<a  href="#" ng-click=setValue(4)>4</a>'+
+                 '<a href="#" ng-click=setValue(5)>5</a>'+
+               '</div>',
+      
+       
         link: function (scope, elem, attrs) {
-
+            console.log('showing', scope)
             var updateStars = function () {
                 scope.stars = [];
                 for (var i = 0; i < scope.max; i++) {
@@ -75,18 +85,24 @@ angular.module('app.directives', [])
                 }
             };
 
-            scope.toggle = function (index) {
-                scope.ratingValue = index + 1;
-                scope.onRatingSelected({
-                    rating: index + 1
-                });
-            };
+            scope.setValue = function (index) {
+                   elem.bind('click', function(e){
+                scope.ratin.score = index;
+                  $(e.target).siblings().removeClass('active')
+                $(e.target).addClass('active')
+                // scope.onRatingSelected({
+                //     rating: index + 1
+                // });
+            })
+               
 
-            scope.$watch('ratingValue', function (oldVal, newVal) {
-                if (newVal) {
-                    updateStars();
-                }
-            });
+            // scope.$watch('ratingValue', function (oldVal, newVal) {
+            //     if (newVal) {
+            //         updateStars();
+            //     }
+            // });
+        
+    }
         }
     }
 }).directive('userType', function(){

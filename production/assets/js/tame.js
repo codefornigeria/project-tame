@@ -1,31 +1,31 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
-        'ui.router',
-        'ngFeathers',
-        'ngAnimate',
-        'restangular',
-        'ui.bootstrap',
-        'app.controllers',
-        'app.services',
-        'app.config',
-        'app.directives',
-        'chart.js',
-        'angularUtils.directives.dirDisqus',
-        'angular.filter',
-        'angular-carousel',
-        'angular-loading-bar',
-        'satellizer'
+    'ui.router',
+    'ngFeathers',
+    'ngAnimate',
+    'restangular',
+    'ui.bootstrap',
+    'app.controllers',
+    'app.services',
+    'app.config',
+    'app.directives',
+    'chart.js',
+    'angularUtils.directives.dirDisqus',
+    'angular.filter',
+    'angular-carousel',
+    'angular-loading-bar',
+    'satellizer'
 
-    ])
-    .run(function($rootScope, $state, $stateParams, $location, $window, LocalService) {
+])
+    .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
         $rootScope.currentUser = {
             isLoggedIn: LocalService.get('feathers-jwt')
         }
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             //         $("#ui-view").html("");
             //         $(".page-preloading").removeClass('hidden');
             // //code state routing
@@ -38,10 +38,10 @@ angular.module('app', [
             //             return;
             //         }
         })
-        $rootScope.$on('$stateChangeSuccess', function() {
+        $rootScope.$on('$stateChangeSuccess', function () {
             //  $(".page-preloading").addClass('hidden');
         });
-        $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
             event.preventDefault();
             // console.log(event);
             // console.log(toState);
@@ -53,7 +53,7 @@ angular.module('app', [
         });
     })
     .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
-        function($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
+        function ($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
             // cfpLoadingBarProvider.includeBar = true;
             cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
             //  cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
@@ -73,7 +73,7 @@ angular.module('app', [
             });
             RestangularProvider.setBaseUrl('https://budget-datakit-api.herokuapp.com/');
 
-            RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+            RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
                 if (data.response && data.response.data) {
                     var returnedData = data.response.data;
                     return returnedData;
@@ -86,7 +86,7 @@ angular.module('app', [
             $authProvider.facebook({
                 // clientId: '1294347140661397',
                 clientId: '643775069155130',
-                responseType:"token",
+                responseType: "token",
                 authorizationEndpoint: 'https://www.facebook.com/v2.9/dialog/oauth',
                 popupOptions: {
                     width: 580,
@@ -121,13 +121,13 @@ angular.module('app', [
                     templateUrl: 'modules/home.html',
                     controller: 'appCtrl',
                     resolve: {
-                        user: function($q, $feathers, $state, LocalService) {
+                        user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function(res) {
+                            return $feathers.authenticate().then(function (res) {
                                 console.log('auth success', res)
                                 return res.data
-                            }).catch(function(err) {
+                            }).catch(function (err) {
                                 console.log('non user', err)
                                 return false
 
@@ -150,16 +150,23 @@ angular.module('app', [
                 .state('ratings', {
                     url: '/ratings',
                     resolve: {
-                        user: function($q, $feathers, $state, LocalService) {
+                        user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function(res) {
-                                console.log('auth success', res)
-                                return res.data
-                            }).catch(function(err) {
-                                return null
-
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
                             })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                 return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
 
                         }
                     },
@@ -195,13 +202,13 @@ angular.module('app', [
                     url: '/login',
                     templateUrl: 'modules/login.html',
                     resolve: {
-                        user: function($q, $feathers, $state, LocalService) {
+                        user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function(res) {
-                                console.log('auth success', res)
+                            return $feathers.authenticate().then(function (res) {
+                                console.log('auth success again', res)
                                 return res.data
-                            }).catch(function(err) {
+                            }).catch(function (err) {
                                 return null
 
                             })
@@ -213,7 +220,7 @@ angular.module('app', [
                 .state('forgotpassword', {
                     url: '/forgotpassword',
                     templateUrl: 'modules/forgotpassword.html',
-                    
+
                     controller: 'resetCtrl'
                 })
                 .state('facebook_auth', {
@@ -225,8 +232,8 @@ angular.module('app', [
                     url: '/logout',
                     templateUrl: 'modules/login.html',
                     resolve: {
-                        user: function($q, $feathers) {
-                            return $feathers.logout().then(function(res) {
+                        user: function ($q, $feathers) {
+                            return $feathers.logout().then(function (res) {
                                 console.log('--logging out user----')
                                 return null
                             })
@@ -240,12 +247,12 @@ angular.module('app', [
                     templateUrl: 'modules/login.html',
                     controller: 'loginCtrl',
                     resolve: {
-                        verifyStatus: function($stateParams, $feathers) {
+                        verifyStatus: function ($stateParams, $feathers) {
                             var authManagementService = $feathers.service('authManagement')
                             return authManagementService.create({
                                 action: 'verifySignupLong',
                                 value: $stateParams.token
-                            }).then(function(verified) {
+                            }).then(function (verified) {
                                 console.log('showing verified status', verified)
                                 return verified
                             })
@@ -494,21 +501,31 @@ angular.module('app.directives', [])
     }
   }
 })
+.directive('entityBadge' , function(){
+  return {
+    restrict: 'EA',
+    replace:true,
+       templateUrl: "modules/directives/entitycard.html",
+    
+    link:function(scope, elem, attrs){
+        console.log('the scope',scope)
+    }
+  }
+})
 .directive('starRating', function () {
     return {
-        restrict: 'A',
-        template: '<ul class="rating">' +
-            '<li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)">' +
-            '\u2605' +
-            '</li>' +
-            '</ul>',
-        scope: {
-            ratingValue: '=',
-            max: '=',
-            onRatingSelected: '&'
-        },
+        restrict: 'EA',
+        template:'<div class="rating-point">'+
+                 '<a href="#" ng-click=setValue(1)>1</a>'+
+                 '<a href="#"ng-click=setValue(2)>2</a>'+
+                 '<a href="#"ng-click=setValue(3)>3</a>'+
+                 '<a  href="#" ng-click=setValue(4)>4</a>'+
+                 '<a href="#" ng-click=setValue(5)>5</a>'+
+               '</div>',
+      
+       
         link: function (scope, elem, attrs) {
-
+            console.log('showing', scope)
             var updateStars = function () {
                 scope.stars = [];
                 for (var i = 0; i < scope.max; i++) {
@@ -518,18 +535,24 @@ angular.module('app.directives', [])
                 }
             };
 
-            scope.toggle = function (index) {
-                scope.ratingValue = index + 1;
-                scope.onRatingSelected({
-                    rating: index + 1
-                });
-            };
+            scope.setValue = function (index) {
+                   elem.bind('click', function(e){
+                scope.ratin.score = index;
+                  $(e.target).siblings().removeClass('active')
+                $(e.target).addClass('active')
+                // scope.onRatingSelected({
+                //     rating: index + 1
+                // });
+            })
+               
 
-            scope.$watch('ratingValue', function (oldVal, newVal) {
-                if (newVal) {
-                    updateStars();
-                }
-            });
+            // scope.$watch('ratingValue', function (oldVal, newVal) {
+            //     if (newVal) {
+            //         updateStars();
+            //     }
+            // });
+        
+    }
         }
     }
 }).directive('userType', function(){
@@ -645,7 +668,8 @@ angular.module('app.directives', [])
 
 angular.module('app.controllers')
     .controller('appCtrl', function (user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
-
+         $scope.showRater=false
+         $scope.ratin={}
         $scope.sectorSplit = function (val) {
             //  console.log(val)
             return val.name
@@ -665,8 +689,26 @@ angular.module('app.controllers')
 
             });
         }
-
-        var schemeService = $feathers.service('scheme')
+          $scope.search = function() {
+            $state.go('results', {
+      query: $scope.searchKeyword
+  })
+          }
+        var entityService = $feathers.service('entity')
+        entityService.find({
+           
+        }).then(function (entities) {
+            if (entities.data.length) {
+                console.log('test entities', entities.data)
+                $scope.$apply(function () {
+                    $scope.entities = entities.data
+                })
+            }
+        }).catch(function (err) {
+            console.log(err)
+        })
+        
+         var schemeService = $feathers.service('scheme')
         schemeService.find({
             query: {
                 $populate: {
@@ -687,6 +729,7 @@ angular.module('app.controllers')
         }).catch(function (err) {
             console.log(err)
         })
+        
         var ratingsService = $feathers.service('rating')
         ratingsService.find({
             query: {
@@ -719,126 +762,6 @@ angular.module('app.controllers')
         };
 
 
-         $scope.search = function() {
-                 $scope.schemes=[]
-
-                     if ($scope.searchKeyword) {
-                         //  $state.go('results', {query: $scope.searchKeyword})
-                         $scope.searching = true;
-                         var schemeService = $feathers.service('scheme')
-                         var entityService = $feathers.service('entity')
-                         var sectorService = $feathers.service('sector')
-                       var ratingService = $feathers.service('rating')
-                       sectorService.find({
-                         query:{
-                           $text:{
-                             $search : $scope.searchKeyword
-                           }
-                         }
-                       }).then(function(sectors){
-                         if(sectors.data.length){
-                           var sectorIds =_.pluck(sectors.data, '_id')
-                           console.log('sector ids',sectorIds)
-                           schemeService.find({
-                               query: {
-                                   sectors: sectorIds,
-                                   $populate: {
-                                       path: 'sectors',
-                                       select: 'name -_id',
-                                       options: {
-                                           limit: 5
-                                       }
-                                   }
-                               }
-                           }).then(function(schemes) {
-                               console.log('showing ssearch schemes', schemes)
-
-                               $scope.$apply(function() {
-                                   $scope.searching = false;
-
-                                   $scope.total = schemes.total
-                                 schemes.data.map(function(scheme){
-                                   $scope.schemes.push(scheme)
-                                 })
-                                   $scope.notFound = false
-                               });
-
-                           }).catch(function(err) {
-                               $scope.error = err
-                           })
-                         }
-
-                       })
-                         entityService.find({
-                           query:{
-                             $text:{
-                               $search: $scope.searchKeyword
-                             }
-                           }
-                         }).then(function(entities){
-                           console.log('showing search entities', entities)
-                           if(entities.data.length){
-                           var entityIds = _.pluck(entities.data , '_id')
-                           console.log('entities ids',entityIds)
-                             ratingService.find({
-                               query:{
-                                 entity : entityIds,
-                                 $populate: {
-                                     path: 'entity schemes',
-                                     select: 'name -_id',
-                                     options: {
-                                         limit: 5
-                                     }
-                                 }
-
-                               }
-                             }).then(function(ratings){
-                               console.log( 'show ratings', ratings)
-                               $scope.$apply(function(){
-                                 $scope.ratings = ratings.data
-                               })
-                             })
-                           }
-
-                         })
-
-                         schemeService.find({
-                             query: {
-                                 $text: {
-                                     $search: $scope.searchKeyword
-                                 },
-                                 $populate: {
-                                     path: 'sectors',
-                                     select: 'name -_id',
-                                     options: {
-                                         limit: 5
-                                     }
-                                 }
-                             }
-                         }).then(function(schemes) {
-                             console.log('showing search schemes', schemes)
-
-                             $scope.$apply(function() {
-                                 $scope.searching = false;
-
-                                 $scope.total = schemes.total
-                                 schemes.data.map(function(scheme){
-                                   $scope.schemes.push(scheme)
-                                 })
-                                 $scope.notFound = false
-                             });
-
-                         }).catch(function(err) {
-                             $scope.error = err
-                         })
-
-
-                     }
-
-
-               }
-
-
         $scope.showResult = function (person) {
             $state.go('entity', {
                 query: person._id
@@ -848,6 +771,15 @@ angular.module('app.controllers')
             $state.go('entityrating', {
                 query: rating._id
             })
+        }
+        $scope.ratingValue={}
+        $scope.publicRating= function(entity){
+            console.log('entites', entity)
+            $scope.currentEntity= entity
+            $scope.ratin.organization = entity.name
+            $scope.ratin.organizationId = entity._id
+            $scope.ratin.ratingType ="public-assessor"
+            $scope.showRater=true
         }
      
 
@@ -1280,8 +1212,11 @@ angular.module('app.controllers')
           };
 
           $scope.login = function() {
+            console.log(' the user',$scope.user)
               $scope.alert = false;
-              $scope.user.type = 'local'
+              $scope.user.strategy = 'local'
+                console.log(' the user',$scope.user)
+          
               $feathers.authenticate($scope.user).then(function(res) {
                   console.log(res);
 
@@ -1292,7 +1227,7 @@ angular.module('app.controllers')
                           message: 'Login successful'
                       };
                   })
-                  if (res && res.data.isVerified) {
+                  if (res) {
                       // user logged in and user is verified
                       console.log('user is verified')
                       $state.go('ratings')
@@ -1594,29 +1529,22 @@ angular.module('app.controllers')
               })
           }
           $scope.searchOrganization = function() {
-              var inputMin = 1;
+              $scope.sectorsearching = false;
+                 $scope.orgsearching = true;
+          
+             var inputMin = 1;
               $scope.ratin.organizationSelected = false
 
               if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
-                var entityService = $feathers.service('entities')
+                var entityService = $feathers.service('entity')
                 var entityConfig;
                 console.log('showing organization type', user)
                 if(user.userType == 'independent-assessor'){
                   entityconfig ={
-                      query: {
-                          isSelfRated:true,
-                          indieRated:false
-                        },
-                      userType: user.userType
-                  }
+                   }
                 }else{
                   entityConfig ={
-                      query: {
-                          domains: user.email,
-                        //  isSelfRated:false
-                          userType: user.userType
-                        },
-
+                
                   }
                 }
                   entityService.find(entityConfig).then(function(entities) {
@@ -1625,8 +1553,7 @@ angular.module('app.controllers')
                           console.log('showing entities', entities.data)
                           $scope.$apply(function() {
                               $scope.orgSearch = true;
-                              $scope.results = entities.data
-                              $scope.orgs = entities.data
+                            $scope.orgs = entities.data
 
 
 
@@ -1644,11 +1571,13 @@ angular.module('app.controllers')
 
           $scope.searchSector = function() {
               var inputMin = 1;
+                $scope.sectorsearching = true;
+                   $scope.orgsearching = false;
               console.log('search sector called')
               if ($scope.ratin.sector && $scope.ratin.sector.length >= inputMin) {
                   $scope.ratin.sectorSelected = false
 
-                  var sectorService = $feathers.service('sectors')
+                  var sectorService = $feathers.service('sector')
                   sectorService.find({
 
                   }).then(function(sectors) {
@@ -1678,15 +1607,15 @@ angular.module('app.controllers')
               $scope.ratin.sectorSelected = true
               //  $scope.results = []
               $scope.searching = false;
-              $scope.searchOrganization()
-
-          }
+              $scope.sectorsearching =false
+        }
           $scope.addOrganization = function(result) {
               $scope.ratin.organizationId = result._id;
 
               $scope.ratin.organization = result.name;
               $scope.orgSearch = false;
               $scope.ratin.organizationSelected = true
+              $scope.orgsearching=false
 
           }
           $scope.loadSchemes = function(assessmentData) {
@@ -1881,10 +1810,10 @@ angular.module('app.controllers')
                      if ($scope.searchKeyword) {
                          //  $state.go('results', {query: $scope.searchKeyword})
                          $scope.searching = true;
-                         var schemeService = $feathers.service('schemes')
-                         var entityService = $feathers.service('entities')
-                         var sectorService = $feathers.service('sectors')
-                       var ratingService = $feathers.service('ratings')
+                         var schemeService = $feathers.service('scheme')
+                         var entityService = $feathers.service('entity')
+                         var sectorService = $feathers.service('sector')
+                       var ratingService = $feathers.service('rating')
                        sectorService.find({
                          query:{
                            $text:{

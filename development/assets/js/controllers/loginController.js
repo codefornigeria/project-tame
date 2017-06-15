@@ -72,8 +72,11 @@ angular.module('app.controllers')
           };
 
           $scope.login = function() {
+            console.log(' the user',$scope.user)
               $scope.alert = false;
-              $scope.user.type = 'local'
+              $scope.user.strategy = 'local'
+                console.log(' the user',$scope.user)
+          
               $feathers.authenticate($scope.user).then(function(res) {
                   console.log(res);
 
@@ -84,7 +87,7 @@ angular.module('app.controllers')
                           message: 'Login successful'
                       };
                   })
-                  if (res && res.data.isVerified) {
+                  if (res) {
                       // user logged in and user is verified
                       console.log('user is verified')
                       $state.go('ratings')

@@ -1,28 +1,28 @@
 angular.module('app', [
-        'ui.router',
-        'ngFeathers',
-        'ngAnimate',
-        'restangular',
-        'ui.bootstrap',
-        'app.controllers',
-        'app.services',
-        'app.config',
-        'app.directives',
-        'chart.js',
-        'angularUtils.directives.dirDisqus',
-        'angular.filter',
-        'angular-carousel',
-        'angular-loading-bar',
-        'satellizer'
+    'ui.router',
+    'ngFeathers',
+    'ngAnimate',
+    'restangular',
+    'ui.bootstrap',
+    'app.controllers',
+    'app.services',
+    'app.config',
+    'app.directives',
+    'chart.js',
+    'angularUtils.directives.dirDisqus',
+    'angular.filter',
+    'angular-carousel',
+    'angular-loading-bar',
+    'satellizer'
 
-    ])
-    .run(function($rootScope, $state, $stateParams, $location, $window, LocalService) {
+])
+    .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
         $rootScope.currentUser = {
             isLoggedIn: LocalService.get('feathers-jwt')
         }
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
             //         $("#ui-view").html("");
             //         $(".page-preloading").removeClass('hidden');
             // //code state routing
@@ -35,10 +35,10 @@ angular.module('app', [
             //             return;
             //         }
         })
-        $rootScope.$on('$stateChangeSuccess', function() {
+        $rootScope.$on('$stateChangeSuccess', function () {
             //  $(".page-preloading").addClass('hidden');
         });
-        $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams) {
+        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
             event.preventDefault();
             // console.log(event);
             // console.log(toState);
@@ -50,7 +50,7 @@ angular.module('app', [
         });
     })
     .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
-        function($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
+        function ($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
             // cfpLoadingBarProvider.includeBar = true;
             cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
             //  cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
@@ -70,7 +70,7 @@ angular.module('app', [
             });
             RestangularProvider.setBaseUrl('https://budget-datakit-api.herokuapp.com/');
 
-            RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
+            RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
                 if (data.response && data.response.data) {
                     var returnedData = data.response.data;
                     return returnedData;
@@ -83,7 +83,7 @@ angular.module('app', [
             $authProvider.facebook({
                 // clientId: '1294347140661397',
                 clientId: '643775069155130',
-                responseType:"token",
+                responseType: "token",
                 authorizationEndpoint: 'https://www.facebook.com/v2.9/dialog/oauth',
                 popupOptions: {
                     width: 580,
@@ -118,13 +118,13 @@ angular.module('app', [
                     templateUrl: 'modules/home.html',
                     controller: 'appCtrl',
                     resolve: {
-                        user: function($q, $feathers, $state, LocalService) {
+                        user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function(res) {
+                            return $feathers.authenticate().then(function (res) {
                                 console.log('auth success', res)
                                 return res.data
-                            }).catch(function(err) {
+                            }).catch(function (err) {
                                 console.log('non user', err)
                                 return false
 
@@ -147,16 +147,23 @@ angular.module('app', [
                 .state('ratings', {
                     url: '/ratings',
                     resolve: {
-                        user: function($q, $feathers, $state, LocalService) {
+                        user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function(res) {
-                                console.log('auth success', res)
-                                return res.data
-                            }).catch(function(err) {
-                                return null
-
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
                             })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                 return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
 
                         }
                     },
@@ -192,13 +199,13 @@ angular.module('app', [
                     url: '/login',
                     templateUrl: 'modules/login.html',
                     resolve: {
-                        user: function($q, $feathers, $state, LocalService) {
+                        user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function(res) {
-                                console.log('auth success', res)
+                            return $feathers.authenticate().then(function (res) {
+                                console.log('auth success again', res)
                                 return res.data
-                            }).catch(function(err) {
+                            }).catch(function (err) {
                                 return null
 
                             })
@@ -210,7 +217,7 @@ angular.module('app', [
                 .state('forgotpassword', {
                     url: '/forgotpassword',
                     templateUrl: 'modules/forgotpassword.html',
-                    
+
                     controller: 'resetCtrl'
                 })
                 .state('facebook_auth', {
@@ -222,8 +229,8 @@ angular.module('app', [
                     url: '/logout',
                     templateUrl: 'modules/login.html',
                     resolve: {
-                        user: function($q, $feathers) {
-                            return $feathers.logout().then(function(res) {
+                        user: function ($q, $feathers) {
+                            return $feathers.logout().then(function (res) {
                                 console.log('--logging out user----')
                                 return null
                             })
@@ -237,12 +244,12 @@ angular.module('app', [
                     templateUrl: 'modules/login.html',
                     controller: 'loginCtrl',
                     resolve: {
-                        verifyStatus: function($stateParams, $feathers) {
+                        verifyStatus: function ($stateParams, $feathers) {
                             var authManagementService = $feathers.service('authManagement')
                             return authManagementService.create({
                                 action: 'verifySignupLong',
                                 value: $stateParams.token
-                            }).then(function(verified) {
+                            }).then(function (verified) {
                                 console.log('showing verified status', verified)
                                 return verified
                             })

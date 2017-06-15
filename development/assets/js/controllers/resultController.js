@@ -12,10 +12,10 @@
                      if ($scope.searchKeyword) {
                          //  $state.go('results', {query: $scope.searchKeyword})
                          $scope.searching = true;
-                         var schemeService = $feathers.service('schemes')
-                         var entityService = $feathers.service('entities')
-                         var sectorService = $feathers.service('sectors')
-                       var ratingService = $feathers.service('ratings')
+                         var schemeService = $feathers.service('scheme')
+                         var entityService = $feathers.service('entity')
+                         var sectorService = $feathers.service('sector')
+                       var ratingService = $feathers.service('rating')
                        sectorService.find({
                          query:{
                            $text:{

@@ -45,29 +45,22 @@
               })
           }
           $scope.searchOrganization = function() {
-              var inputMin = 1;
+              $scope.sectorsearching = false;
+                 $scope.orgsearching = true;
+          
+             var inputMin = 1;
               $scope.ratin.organizationSelected = false
 
               if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
-                var entityService = $feathers.service('entities')
+                var entityService = $feathers.service('entity')
                 var entityConfig;
                 console.log('showing organization type', user)
                 if(user.userType == 'independent-assessor'){
                   entityconfig ={
-                      query: {
-                          isSelfRated:true,
-                          indieRated:false
-                        },
-                      userType: user.userType
-                  }
+                   }
                 }else{
                   entityConfig ={
-                      query: {
-                          domains: user.email,
-                        //  isSelfRated:false
-                          userType: user.userType
-                        },
-
+                
                   }
                 }
                   entityService.find(entityConfig).then(function(entities) {
@@ -76,8 +69,7 @@
                           console.log('showing entities', entities.data)
                           $scope.$apply(function() {
                               $scope.orgSearch = true;
-                              $scope.results = entities.data
-                              $scope.orgs = entities.data
+                            $scope.orgs = entities.data
 
 
 
@@ -95,11 +87,13 @@
 
           $scope.searchSector = function() {
               var inputMin = 1;
+                $scope.sectorsearching = true;
+                   $scope.orgsearching = false;
               console.log('search sector called')
               if ($scope.ratin.sector && $scope.ratin.sector.length >= inputMin) {
                   $scope.ratin.sectorSelected = false
 
-                  var sectorService = $feathers.service('sectors')
+                  var sectorService = $feathers.service('sector')
                   sectorService.find({
 
                   }).then(function(sectors) {
@@ -129,15 +123,15 @@
               $scope.ratin.sectorSelected = true
               //  $scope.results = []
               $scope.searching = false;
-              $scope.searchOrganization()
-
-          }
+              $scope.sectorsearching =false
+        }
           $scope.addOrganization = function(result) {
               $scope.ratin.organizationId = result._id;
 
               $scope.ratin.organization = result.name;
               $scope.orgSearch = false;
               $scope.ratin.organizationSelected = true
+              $scope.orgsearching=false
 
           }
           $scope.loadSchemes = function(assessmentData) {

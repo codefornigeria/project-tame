@@ -211,6 +211,12 @@ background: linear-gradient(to right, rgba(0,0,0,1) 0%,rgba(66,66,66,1) 100%); /
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#424242',GradientType=1 ); /* IE6-8 */
 }
 
+.result-banner{
+
+	height: 245px;
+    margin-bottom: 30px;
+}
+
 
 .inner-banner{
 	display: table-cell;
@@ -219,7 +225,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
 	vertical-align: middle;
 	text-align: center;
 }
-
+.result-inner-banner{
+	padding-bottom: 50px;
+}
 .inner-banner h1 {
     font-size: 60px;
     color: #fff;
@@ -236,6 +244,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
 	margin-top: 80px;
 }
 
+.result-banner-search{
+	display: inline-block;
+	width: 750px;
+	margin-top: 40px;
+}
 .banner-search .nav-tabs  .nav-link {
     border: 0;
     border-radius: 0;

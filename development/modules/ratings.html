@@ -23,7 +23,7 @@
 							<input class="form-control input-lg capitalize" type="text" placeholder="Enter sector name" id="sector" ng-model="ratin.sector" ng-change="searchSector()" autocomplete="off">
 							<div class="col-md-10 result m-t no-padder" ng-show="searching">
 								<li ng-repeat="result in results" ng-click="addSector(result)">
-									{{result.name}}
+									{{result.name}} 	
 								</li>
 							</div>
 						</div>
@@ -118,31 +118,40 @@
 </div>
 
 
-<div class="footer">
-	<div class="container">
-		<div class="col-md-8">
-			<p class="footer-heading">About</p>
-			<hr> Ratings and analytics system to track, analyse, map, and expose <br>corruption risks / practices.
-		</div>
-		<div class="col-md-4 p-t">
-			<p class="clickable"><i class="fa fa-facebook-square"></i><a href="https://web.facebook.com/codefornigeria" target="_blank">Like us on Facebook</a></p>
-			<p class="clickable"><i class="fa fa-twitter-square"></i><a href="https://twitter.com/codefornigeria" target="_blank">Follow us on Twitter</a></p>
-		</div>
-		<div class="col-md-8 partners">
-			<p class="footer-heading">Built by</p>
-			<hr>
-			<a href="http://www.codefornigeria.io" target="_blank"><img src="assets/img/cfnigeria.png"></a>
-			<a href="http://www.integritynigeria.org" target="_blank"><img src="assets/img/integrity.png"></a>
-		</div>
-		<div class="col-md-4 partners">
-			<p class="footer-heading">With Support From</p>
-			<hr>
-			<a href="http://www.undp.org" target="_blank"><img src="assets/img/undp.png"></a>
-			<a href="http://www.europa.eu" target="_blank"><img src="assets/img/eu.jpg"></a>
-			<a href="http://www.unodc.org" target="_blank"><img src="assets/img/unodc.png"></a>
-		</div>
-		<p class="col-md-12 m-t-md text-center text-sm text-thin">
-			<a href="https://github.com/codefornigeria/project-tame" target="_blank">Fork this project on Github</a>
-		</p>
-	</div>
-</div>
+
+  <section class="clearfix content-area">
+       
+       <div class="container">
+            <div class="rating-area organization auto-suggetion">
+          <form method="post" action="">
+            <h1>Rate an organization</a></h1> 
+            <div class="rating-inwrap">
+               <div class="form-group">
+                  <label>WHAT SECTOR IS THIS ORGANIZATION?</label>
+                  <input type="text" class="form-control" id="organigation" placeholder="Education" ng-model="ratin.sector" ng-change="searchSector()">
+                  <span class="not-find">Can't find</span>
+				  <ul class="" ng-show="sectorsearching">
+					  <li ng-repeat="result in results" ng-click="addSector(result)">
+									{{result.name}} 	
+				</li>
+				  </ul>
+                </div>
+
+              <div class="form-group">
+                  <label>ENTER ORGANIZATION NAME</label>
+                  <input type="text" class="form-control" id="organization-name" placeholder="Nnamdi Azikiwe Univeristy" ng-model="ratin.organization" ng-change="searchOrganization()">
+                  <span class="not-find">Can't find</span>
+               <ul class="" ng-show="orgsearching">
+					<li ng-repeat="result in orgs" ng-click="addOrganization(result)">
+									{{result.name}}
+								</li>
+               </ul>
+               
+               <div class="bottom-area">
+                 Yes, this information is accurate  <button class="btn " type="submit">Rate organization</button>
+               </div>
+            </div>
+          </form>
+       </div>
+       </div>
+    </section>

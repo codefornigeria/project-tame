@@ -1,6 +1,7 @@
 angular.module('app.controllers')
     .controller('appCtrl', function (user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
-
+         $scope.showRater=false
+         $scope.ratin={}
         $scope.sectorSplit = function (val) {
             //  console.log(val)
             return val.name
@@ -20,8 +21,26 @@ angular.module('app.controllers')
 
             });
         }
-
-        var schemeService = $feathers.service('scheme')
+          $scope.search = function() {
+            $state.go('results', {
+      query: $scope.searchKeyword
+  })
+          }
+        var entityService = $feathers.service('entity')
+        entityService.find({
+           
+        }).then(function (entities) {
+            if (entities.data.length) {
+                console.log('test entities', entities.data)
+                $scope.$apply(function () {
+                    $scope.entities = entities.data
+                })
+            }
+        }).catch(function (err) {
+            console.log(err)
+        })
+        
+         var schemeService = $feathers.service('scheme')
         schemeService.find({
             query: {
                 $populate: {
@@ -42,6 +61,7 @@ angular.module('app.controllers')
         }).catch(function (err) {
             console.log(err)
         })
+        
         var ratingsService = $feathers.service('rating')
         ratingsService.find({
             query: {
@@ -74,126 +94,6 @@ angular.module('app.controllers')
         };
 
 
-         $scope.search = function() {
-                 $scope.schemes=[]
-
-                     if ($scope.searchKeyword) {
-                         //  $state.go('results', {query: $scope.searchKeyword})
-                         $scope.searching = true;
-                         var schemeService = $feathers.service('scheme')
-                         var entityService = $feathers.service('entity')
-                         var sectorService = $feathers.service('sector')
-                       var ratingService = $feathers.service('rating')
-                       sectorService.find({
-                         query:{
-                           $text:{
-                             $search : $scope.searchKeyword
-                           }
-                         }
-                       }).then(function(sectors){
-                         if(sectors.data.length){
-                           var sectorIds =_.pluck(sectors.data, '_id')
-                           console.log('sector ids',sectorIds)
-                           schemeService.find({
-                               query: {
-                                   sectors: sectorIds,
-                                   $populate: {
-                                       path: 'sectors',
-                                       select: 'name -_id',
-                                       options: {
-                                           limit: 5
-                                       }
-                                   }
-                               }
-                           }).then(function(schemes) {
-                               console.log('showing ssearch schemes', schemes)
-
-                               $scope.$apply(function() {
-                                   $scope.searching = false;
-
-                                   $scope.total = schemes.total
-                                 schemes.data.map(function(scheme){
-                                   $scope.schemes.push(scheme)
-                                 })
-                                   $scope.notFound = false
-                               });
-
-                           }).catch(function(err) {
-                               $scope.error = err
-                           })
-                         }
-
-                       })
-                         entityService.find({
-                           query:{
-                             $text:{
-                               $search: $scope.searchKeyword
-                             }
-                           }
-                         }).then(function(entities){
-                           console.log('showing search entities', entities)
-                           if(entities.data.length){
-                           var entityIds = _.pluck(entities.data , '_id')
-                           console.log('entities ids',entityIds)
-                             ratingService.find({
-                               query:{
-                                 entity : entityIds,
-                                 $populate: {
-                                     path: 'entity schemes',
-                                     select: 'name -_id',
-                                     options: {
-                                         limit: 5
-                                     }
-                                 }
-
-                               }
-                             }).then(function(ratings){
-                               console.log( 'show ratings', ratings)
-                               $scope.$apply(function(){
-                                 $scope.ratings = ratings.data
-                               })
-                             })
-                           }
-
-                         })
-
-                         schemeService.find({
-                             query: {
-                                 $text: {
-                                     $search: $scope.searchKeyword
-                                 },
-                                 $populate: {
-                                     path: 'sectors',
-                                     select: 'name -_id',
-                                     options: {
-                                         limit: 5
-                                     }
-                                 }
-                             }
-                         }).then(function(schemes) {
-                             console.log('showing search schemes', schemes)
-
-                             $scope.$apply(function() {
-                                 $scope.searching = false;
-
-                                 $scope.total = schemes.total
-                                 schemes.data.map(function(scheme){
-                                   $scope.schemes.push(scheme)
-                                 })
-                                 $scope.notFound = false
-                             });
-
-                         }).catch(function(err) {
-                             $scope.error = err
-                         })
-
-
-                     }
-
-
-               }
-
-
         $scope.showResult = function (person) {
             $state.go('entity', {
                 query: person._id
@@ -203,6 +103,15 @@ angular.module('app.controllers')
             $state.go('entityrating', {
                 query: rating._id
             })
+        }
+        $scope.ratingValue={}
+        $scope.publicRating= function(entity){
+            console.log('entites', entity)
+            $scope.currentEntity= entity
+            $scope.ratin.organization = entity.name
+            $scope.ratin.organizationId = entity._id
+            $scope.ratin.ratingType ="public-assessor"
+            $scope.showRater=true
         }
      
 

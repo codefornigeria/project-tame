@@ -1,4 +1,4 @@
-<section class="clearfix content-area">
+<section class="clearfix content-area" ng-show="!showRater">
 	<div class="banner">
 
 
@@ -15,7 +15,7 @@
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane  in active" id="scheme">
-						<form action="#" method="post">
+						<form>
 							<input class="form-control" type="text" placeholder="What are you looking for ?" ng-model="searchKeyword">
 							<button class="btn btn-outline-success" type="button" ng-click="search()">Search</button>
 						</form>
@@ -23,7 +23,7 @@
 					</div>
 					<!-- End you sectino Tab -->
 					<div role="tabpanel" class="tab-pane fade" id="sector">
-						<form action="#" method="post">
+						<form>
 							<input class="form-control" type="text" placeholder="What are you looking for ?">
 							<button class="btn btn-outline-success" type="button">Search</button>
 						</form>
@@ -49,38 +49,41 @@
 			</div>
 			<div class="recent-ratings">
 				<h4>Recent Ratings</h4>
-				<a href="#" class="rate-now"> RATE NOW</a>
 				<div class="table-responsive">
 					<table class="table ">
-							<tr>
+						<tr>
 							<th>Institutions</th>
 							<th>No of schemes </th>
 							<th>Sector</th>
 							<th></th>
 						</tr>
-						
-					
-						<tr class="purpel" ng-repeat="rating in ratings" rating=rating rating-badge >
-							<td>
-								<div class="logo-area">
-									C
-								</div>
-								<h5>{{rating.entity.name}}</h5>
-								<p class="time">Last report 20 days ago</p>
-							</td>
-							<td class=>{{rating.schemes.length}}</td>
-							<td> 58% </td>
-							<td>35%</td>
-							<td>
-								<span class="badge"> RAG</span>
-								
-							</td>
+
+
+						<tr class="purpel" ng-repeat="rating in ratings" rating=rating rating-badge>
+
 						</tr>
-						
+
 					</table>
 				</div>
 			</div>
+	<div class="recent-ratings">
+				<h4>Recent Entities</h4>
+					<div class="table-responsive">
+					<table class="table ">
+						<tr>
+							<th>Institutions</th>
+							<th>Sectors</th>
+							<th></th>
+						</tr>
 
+
+						<tr class="purpel" ng-repeat="entity in entities" entity-badge>
+
+						</tr>
+
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- End rating wrap -->
@@ -98,7 +101,7 @@
 						<h5><strong>Scheme Operators: </strong> AdministraIve Staﬀ, NonAcademic Staﬀ ...</h5>
 						<h5><strong>Antidotes: </strong> {{scheme.antidotes.length}}</h5>
 						<a href="#" class="read-more">Read More</a>
-						
+
 					</div>
 				</div>
 				<!-- End scheme thumb -->
@@ -118,3 +121,56 @@
 		</div>
 	</div>
 </section>
+
+    <section class="clearfix content-area" ng-show="showRater">
+       
+       <div class="rating-area">
+          <form method="post" action="">
+            <h1>Rate {{currentEntity.name}} <a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h1> 
+			  <div class="rating-inwrap">
+				          <div class="row select-wrap">
+                  <div class="col-md-12">
+                      <div class="form-group">
+                         <label>Schemes</label>
+						  <select name="mySelect" id="mySelect" 
+						  class="custom-select form-control"
+						  ng-change=""
+      ng-options="option.name for option in schemes track by option._id"
+      ng-model="ratin.scheme">
+	  <option value="">Select Corruption Scheme</option> <!-- not selected / blank option -->
+     </select>
+                      
+                      </div>
+                  </div>
+                
+               </div>
+               <div class="rating-point">
+               <star-rating></star-rating>
+		  
+               <div class="clearfix encount">
+                   <div class="row">
+                      <div class="col-lg-7">
+                          Have you ever encountered any scheme at play in this entity? 
+                      </div>
+                      <div class="col-lg-5">
+                          <div class="btn-group" role="group" aria-label="Basic example">
+                            <a class="btn btn-secondary" href="#">YES</a>
+                            <a class="btn btn-secondary" href="#">NO</a>
+                          </div>
+                      </div>
+                   </div>
+               </div>
+       
+               <div class="form-group">
+                  <textarea rows="5" class="form-control" placeholder="Additional comments (optional)"></textarea>
+               </div>
+
+               <p class="remind"><i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; All messages are rewieved and conﬁdental</p>
+               </div>
+               <div class="bottom-area">
+                 Yes, this information is accurate  <button class="btn " type="submit">Rate entity</button>
+               </div>
+            </div>
+          </form>
+       </div>
+    </section>
