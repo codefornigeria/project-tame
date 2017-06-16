@@ -65,7 +65,7 @@ gulp.task('vendorjs', ['clean:production'], function(){
 		.src([
       './development/assets/vendor/angular/angular.js',
       './development/assets/vendor/angular/angular-animate/angular-animate.js',
-      './development/assets/vendor/angular/angular-bootstrap/ui-bootstrap-custom-tpls-0.14.3.min.js',
+      './development/assets/vendor/angular/angular-bootstrap/ui-bootstrap-tpls-2.5.0.min.js',
       './development/assets/vendor/angular/angular-ui-router/angular-ui-router.js',
       './development/assets/vendor/angular/restangular/restangular.min.js',
       './development/assets/vendor/angular/ng-feathers.standalone.min.js',

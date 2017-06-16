@@ -24,8 +24,8 @@
 					<!-- End you sectino Tab -->
 					<div role="tabpanel" class="tab-pane fade" id="sector">
 						<form>
-							<input class="form-control" type="text" placeholder="What are you looking for ?">
-							<button class="btn btn-outline-success" type="button">Search</button>
+							<input class="form-control" type="text" placeholder="What are you looking for ?" ng-model="searchKeyword">
+							<button class="btn btn-outline-success" type="button" ng-click="search()">Search</button>
 						</form>
 
 					</div>
