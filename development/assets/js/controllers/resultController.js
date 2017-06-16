@@ -1,6 +1,7 @@
    angular.module('app.controllers').controller('resultCtrl', function($scope, Restangular, $state, $stateParams, $feathers) {
-               $scope.searchKeyword = $stateParams.query;
-               console.log($scope)
+               
+               $scope.searchKeyword={}
+               $scope.searchKeyword.keyword = $stateParams.query;
                $scope.showRagResult = function(rating){
                  $state.go('entityrating',{
                    query: rating._id
@@ -9,7 +10,7 @@
                $scope.search = function() {
                  $scope.schemes=[]
 
-                     if ($scope.searchKeyword) {
+                     if ($scope.searchKeyword.keyword) {
                          //  $state.go('results', {query: $scope.searchKeyword})
                          $scope.searching = true;
                          var schemeService = $feathers.service('scheme')
@@ -19,7 +20,7 @@
                        sectorService.find({
                          query:{
                            $text:{
-                             $search : $scope.searchKeyword
+                             $search : $scope.searchKeyword.keyword
                            }
                          }
                        }).then(function(sectors){
@@ -59,7 +60,7 @@
                          entityService.find({
                            query:{
                              $text:{
-                               $search: $scope.searchKeyword
+                               $search: $scope.searchKeyword.keyword
                              }
                            }
                          }).then(function(entities){
@@ -92,7 +93,7 @@
                          schemeService.find({
                              query: {
                                  $text: {
-                                     $search: $scope.searchKeyword
+                                     $search: $scope.searchKeyword.keyword
                                  },
                                  $populate: {
                                      path: 'sectors',
@@ -154,25 +155,9 @@
                $scope.search = function() {
                    if ($scope.searchKeyword) {
                        $state.go('results', {
-                           query: $scope.searchKeyword
+                           query: $scope.searchKeyword.keyword
                        })
-                       $scope.searching = true;
-                       Restangular.one('search').get({
-                           query: $scope.searchKeyword
-                       }).then(function(response) {
-                           $scope.searching = false;
-                           if (response.person == '' && response.project == '') {
-                               $scope.notFound = true;
-                           } else {
-                               $scope.results = response;
-                               $scope.persons = $scope.results.person;
-                               $scope.projects = $scope.results.project;
-                               $scope.total = parseInt($scope.results.person.length) + parseInt($scope.results.project.length);
-                           }
-                       }, function(error) {
-                           $scope.searching = false;
-                           $scope.error = error;
-                       });
+                  
                    }
                }
 

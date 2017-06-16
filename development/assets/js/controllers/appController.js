@@ -2,6 +2,7 @@ angular.module('app.controllers')
     .controller('appCtrl', function (user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
          $scope.showRater=false
          $scope.ratin={}
+         $scope.searchKeyword ={};
         $scope.sectorSplit = function (val) {
             //  console.log(val)
             return val.name
@@ -22,8 +23,10 @@ angular.module('app.controllers')
             });
         }
           $scope.search = function() {
+              console.log('keywords',$scope.searchKeyword)
+            
             $state.go('results', {
-      query: $scope.searchKeyword
+        query: $scope.searchKeyword.keyword
   })
           }
         var entityService = $feathers.service('entity')
