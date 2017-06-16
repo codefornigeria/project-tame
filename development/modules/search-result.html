@@ -38,9 +38,8 @@
 	<div class="ratings-wrap">
 		<div class="container">
 		
-			<div class="result-ratings">
+			<div class="result-ratings" ng-show="ratings.length">
 				<h4> Ratings Result</h4>
-				<a href="#" class="rate-now"> RATE NOW</a>
 				<div class="table-responsive">
 					<table class="table ">
 							<tr>
@@ -52,20 +51,7 @@
 						
 					
 						<tr class="purpel" ng-repeat="rating in ratings" rating=rating rating-badge >
-							<td>
-								<div class="logo-area">
-									C
-								</div>
-								<h5>{{rating.entity.name}}</h5>
-								<p class="time">Last report 20 days ago</p>
-							</td>
-							<td class=>{{rating.schemes.length}}</td>
-							<td> 58% </td>
-							<td>35%</td>
-							<td>
-								<span class="badge"> RAG</span>
-								
-							</td>
+						
 						</tr>
 						
 					</table>
@@ -76,7 +62,7 @@
 	</div>
 	<!-- End rating wrap -->
 	<div class="schemes">
-		<div class="container">
+		<div class="container" ng-show="schemes.length">
 			<h2> Schemes Result</h2>
 
 			<div class="row scheme-thumb-wrap">

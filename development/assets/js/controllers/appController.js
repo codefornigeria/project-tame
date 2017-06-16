@@ -62,7 +62,8 @@ angular.module('app.controllers')
             console.log(err)
         })
         
-        var ratingsService = $feathers.service('rating')
+   $scope.ratingFunc =function(){
+            var ratingsService = $feathers.service('rating')
         ratingsService.find({
             query: {
                 $populate: {
@@ -70,8 +71,10 @@ angular.module('app.controllers')
                     select: 'name  _id',
                     options: {
                         limit: 5
-                    }
-                }
+                    },
+            
+                },
+                      $limit:5  
             }
         }).then(function (ratings) {
             if (ratings.data.length) {
@@ -83,6 +86,8 @@ angular.module('app.controllers')
         }).catch(function (err) {
             console.log(err)
         })
+   }
+   $scope.ratingFunc()
 
         $scope.options = {
             tooltipEvents: [],
@@ -108,12 +113,29 @@ angular.module('app.controllers')
         $scope.publicRating= function(entity){
             console.log('entites', entity)
             $scope.currentEntity= entity
-            $scope.ratin.organization = entity.name
-            $scope.ratin.organizationId = entity._id
+                $scope.ratin.entity = entity._id
             $scope.ratin.ratingType ="public-assessor"
+            $scope.ratin.schemes = _.pluck($scope.schemes, '_id')
+                       
             $scope.showRater=true
         }
      
-
+        $scope.submitRating= function(valid){
+            if(!valid){
+                return
+            }
+              $scope.showRater=false
+                  var ratingService = $feathers.service('rating')
+                
+                      ratingService.create($scope.ratin).then(function(ratinResult) {
+                          $scope.$apply(function() {
+                             $scope.ratingFunc()
+                            
+                          })
+                      }).catch(function(err) {
+                          console.log('ratin error', err)
+                      })
+                
+        }
         
     })
