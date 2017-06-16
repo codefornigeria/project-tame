@@ -117,7 +117,7 @@ angular.module('app', [
 
             $stateProvider
                 .state('home', {
-                    url: '/',
+                    url: '',
                     templateUrl: 'modules/home.html',
                     controller: 'appCtrl',
                     resolve: {
