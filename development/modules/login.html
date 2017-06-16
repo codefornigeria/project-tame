@@ -1,105 +1,107 @@
 <section class="container">
-       <div class="login-wrap">
-          <div class="login-inwrap">
-             <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item active">
-                    <a class="nav-link sgn" ng-href="#signin" role="tab" data-toggle="tab">Sign in     </a> </li>
-                <li class="nav-item">
-                  <a class="nav-link acc" ng-href="#account" role="tab" data-toggle="tab">New account </a>
-                </li>
-              </ul>
-              <!-- Tab panes -->
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane in active" id="signin">
-                  <form  name="loginForm"  ng-submit="login(loginForm.$valid)" novalidate>
-                    <div class="form-group">
-                      <label >Sign in with your e-mail address</label>
-                         <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="user.email" required>
-                        <span ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="text-danger">enter a valid email.</span>
-                 </div>
+  <div class="login-wrap">
+    <div class="login-inwrap">
+      <uib-tabset active="active">
+        <uib-tab index="0" heading="Sign in">
+           <form name="loginForm" ng-submit="login(loginForm.$valid)" novalidate>
+            <div class="form-group">
+              <label>Sign in with your e-mail address</label>
+              <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="user.email" required>
+              <span ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="text-danger">enter a valid email.</span>
+            </div>
 
-                    <div class="form-group">
-                      <label >password</label>
-                       <input type="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" ng-model="user.password" required>
-                           <span ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="text-danger">enter your first name.</span>
-     </div>
+            <div class="form-group">
+              <label>password</label>
+              <input type="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" ng-model="user.password"
+                required>
+              <span ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="text-danger">enter your first name.</span>
+            </div>
 
-                    <button type="submit" class="btn btn-block submit" ng-disabled="loginForm.$invalid">Sign in to TAME dashboard</button>
-                    <div class="or"></div>
-                    <div class="clearfix text-center social-access">
-                        <a href="#"><img src="assets/img/twitter.png"></a>
-                        <a href="#"><img src="assets/img/facebook.png"></a>
-                    </div>
-                    <div class="login-bottom-text">
-                        <p>Don't have any account yet? <a class="start" href="#account" role="tab" data-toggle="tab">Get Started</a></p>
-                        <a class="right" ui-sref="forgotpassword"">Forgot Password?</a>
-                    </div>
-                  </form> 
+            <button type="submit" class="btn btn-block submit" ng-disabled="loginForm.$invalid">Sign in to TAME dashboard</button>
+           <!-- 
+              <div class="or"></div>
+            <div class="clearfix text-center social-access">
+              <a href="#"><img src="assets/img/twitter.png"></a>
+              <a href="#"><img src="assets/img/facebook.png"></a>
+            </div>
+           -->
+            <div class="login-bottom-text">
+              <p>Don't have any account yet? <a class="start" href="#account" role="tab" data-toggle="tab">Get Started</a></p>
+              <a class="right" ui-sref="forgotpassword">Forgot Password?</a>
+            </div>
+          </form>
 
-                  
-                </div> 
-                <!-- End Sign in  sectino Tab -->
-                <div role="tabpanel" class="tab-pane fade" id="account">
-                  <form name="registerForm" ng-submit="register(registerForm.$valid)" novalidate ng-show="!registered">
-                    <div class="form-group">
-                      <label >Enter e-mail</label>
-                      <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="signup_data.email" required>
-                        <span ng-show="registerForm.email.$invalid && !registerForm.email.$pristine" class="text-danger">enter a valid email.</span>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label >First name</label>
-                            <input type="text" name="firstname" class="form-control" placeholder="First name" ng-model="signup_data.firstname" required>
-                         <span ng-show="registerForm.firstname.$invalid && !registerForm.firstname.$pristine" class="text-danger">enter your first name.</span>
+
+        </uib-tab>
+        <uib-tab index="1" heading="New account">
+          <form name="registerForm " ng-submit="register(registerForm.$valid) " novalidate ng-show="!registered ">
+            <div class="form-group ">
+              <label>Enter e-mail</label>
+              <input type="email " name="email " class="form-control " placeholder="new@tame.com " ng-model="signup_data.email " required>
+              <span ng-show="registerForm.email.$invalid && !registerForm.email.$pristine " class="text-danger ">enter a valid email.</span>
+            </div>
+            <div class="row ">
+              <div class="col-md-6 ">
+                <div class="form-group ">
+                  <label>First name</label>
+                  <input type="text " name="firstname " class="form-control " placeholder="First name
+                " ng-model="signup_data.firstname " required>
+                  <span ng-show="registerForm.firstname.$invalid && !registerForm.firstname.$pristine " class="text-danger ">enter your first name.</span>
                 </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label >Last name</label>
-                            <input type="text" class="form-control" placeholder="Last name" ng-model="signup_data.lastname" required>
-                      <span ng-show="registerForm.lastname.$invalid && !registerForm.lastname.$pristine" class="text-danger">enter your first name.</span>
-                </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label >Password</label>
-                            <input type="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" ng-model="signup_data.password" required>
-                           <span ng-show="registerForm.password.$invalid && !registerForm.password.$pristine" class="text-danger">enter your first name.</span>
-           </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <label >Your Phone</label>
-                            <input type="text" class="form-control" placeholder="Your Number " ng-model="signup_data.phone">
-                          </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group assessor">
-                      <label>Select assessor type <a class="right" href="#"><i class="fa fa-question-circle" aria-hidden="true"></i></a></label>
-                     <user-type></user-type>  
-                    </div>
-
-                    <button type="submit" class="btn btn-block submit" ng-disabled="registerForm.$invalid">Signup for Tame</button>
-                    <div class="or"></div>
-                    <div class="clearfix text-center social-access">
-                        <a href="#"><img src="assets/img/twitter.png"></a>
-                        <a href="/auth/facebook"><img src="assets/img/facebook.png"></a>
-                    </div>
-                    <div class="login-bottom-text text-center">
-                        By signinup, you agree to the terms and conditions of Tame LLC
-                    </div>
-                  </form> 
-                     <div ng-show="registered">
-                    <h3>Registration successful</h3>
-                    <p> Hi, you have successfully registered on the TAME project platform </p>
-                    </div>
-                </div>
-                <!-- End new account section Tab -->
               </div>
+              <div class="col-md-6 ">
+                <div class="form-group ">
+                  <label>Last name</label>
+                  <input type="text " class="form-control " placeholder="Last name " ng-model="signup_data.lastname " required>
+                  <span ng-show="registerForm.lastname.$invalid && !registerForm.lastname.$pristine " class="text-danger ">enter your first name.</span>
+                </div>
+              </div>
+            </div>
+            <div class="row ">
+              <div class="col-md-6 ">
+                <div class="form-group ">
+                  <label>Password</label>
+                  <input type="password " class="form-control " placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
+                " ng-model="signup_data.password " required>
+                  <span ng-show="registerForm.password.$invalid && !registerForm.password.$pristine " class="text-danger ">enter your first name.</span>
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="form-group ">
+                  <label>Your Phone</label>
+                  <input type="text " class="form-control " placeholder="Your Number " ng-model="signup_data.phone ">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group assessor ">
+              <label>Select assessor type <a class="right " href="# "><i class="fa fa-question-circle
+                " aria-hidden="true "></i></a></label>
+              <user-type></user-type>
+            </div>
+
+            <button type="submit " class="btn btn-block submit " ng-disabled="registerForm.$invalid ">Signup for Tame</button>
+           <!--  <div class="or "></div>
+            <div class="clearfix text-center social-access ">
+              <a href="# "><img src="assets/img/twitter.png "></a>
+              <a href="/auth/facebook "><img src="assets/img/facebook.png "></a>
+            </div>
+            -->
+            <div class="login-bottom-text text-center ">
+              By signing up, you agree to the terms and conditions of TAME Project
+            </div>
+          </form>
+          <div ng-show="registered">
+            <h3>Registration successful</h3>
+            <p> Hi, you have successfully registered on the TAME project platform </p>
           </div>
-       </div>
-    </section>
+
+        </uib-tab>
+
+
+      </uib-tabset>
+
+      
+    </div>
+  </div>
+</section>

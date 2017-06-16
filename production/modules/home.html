@@ -5,32 +5,27 @@
 		<div class="inner-banner">
 			<h1>Track Corruption Schemes and Antidotes</h1>
 			<div class="banner-search">
-				<ul class="nav nav-tabs" role="tablist">
-					<li class="nav-item active">
-						<a class="nav-link " href="#scheme" role="tab" data-toggle="tab">Search by Scheme </a> </li>
-					<li class="nav-item">
-						<a class="nav-link" href="#sector" role="tab" data-toggle="tab">Search by Sector </a>
-					</li>
-				</ul>
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane  in active" id="scheme">
+		<uib-tabset active="active">
+					<uib-tab index="0" heading="Search by Scheme">
 						<form>
 							<input class="form-control" type="text" placeholder="What are you looking for ?" ng-model="searchKeyword">
 							<button class="btn btn-outline-success" type="button" ng-click="search()">Search</button>
 						</form>
 
-					</div>
-					<!-- End you sectino Tab -->
-					<div role="tabpanel" class="tab-pane fade" id="sector">
+					</uib-tab>
+					<uib-tab index="1" heading="Search by Sector">
 						<form>
 							<input class="form-control" type="text" placeholder="What are you looking for ?" ng-model="searchKeyword">
 							<button class="btn btn-outline-success" type="button" ng-click="search()">Search</button>
 						</form>
 
-					</div>
-					<!-- End Partner section Tab -->
-				</div>
+					</uib-tab>
+
+
+				</uib-tabset>
+
+
+
 			</div>
 
 		</div>
@@ -39,6 +34,7 @@
 	<div class="ratings-wrap">
 		<div class="container">
 			<div class="work-reviews">
+				
 				<ul>
 					<li> <span class="bullet cas"></span> 20M Cases </li>
 					<li> <span class="bullet sch"></span> 800 Schemes </li>
@@ -111,6 +107,8 @@
 	<!-- End schemes -->
 	<div class="join-area">
 		<div class="container">
+		
+
 			<h2>Join to kill corruption now!</h2>
 			<form class="form-inline" method="post" action="#">
 				<input type="text" placeholder="Name" class="form-control">
