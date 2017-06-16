@@ -61,8 +61,8 @@
 		</div>
 	</div>
 	<!-- End rating wrap -->
-	<div class="schemes">
-		<div class="container" ng-show="schemes.length">
+	<div class="schemes" ng-show="schemes.length">
+		<div class="container" >
 			<h2> Schemes Result</h2>
 
 			<div class="row scheme-thumb-wrap">
@@ -82,6 +82,22 @@
 			</div>
 		</div>
 	</div>
+	
 	<!-- End schemes -->
 
+
+	<div class="schemes" ng-show="!schemes.length && !ratings.length">
+		<div class="container" >
+			<h2> No search result found</h2>
+
+			<div class="row scheme-thumb-wrap">
+				<div class="col-md-4 col-sm-6">
+					<p>Ooops!!, we couldn't match your search criteria. please try again.</p>
+				</div>
+				<!-- End scheme thumb -->
+			</div>
+		</div>
+	</div>
+	
+	<!-- End schemes -->
 </section>

@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
     'ui.router',
@@ -199,7 +199,7 @@ angular.module('app', [
                     controller: 'compareCtrl'
                 })
                 .state('login', {
-                    url: '/login',
+                    url: '/login?query',
                     templateUrl: 'modules/login.html',
                     resolve: {
                         user: function ($q, $feathers, $state, LocalService) {

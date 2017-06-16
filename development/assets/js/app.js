@@ -196,7 +196,7 @@ angular.module('app', [
                     controller: 'compareCtrl'
                 })
                 .state('login', {
-                    url: '/login',
+                    url: '/login?query',
                     templateUrl: 'modules/login.html',
                     resolve: {
                         user: function ($q, $feathers, $state, LocalService) {
