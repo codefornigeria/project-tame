@@ -1,12 +1,13 @@
 angular.module('app.controllers')
      .controller('loginCtrl', function(user,
       $scope, $rootScope, $state, $stateParams,
-       $feathers, $auth,AuthService,LocalService,$anchorScroll , $location) {
+       $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
          console.log('auth service', AuthService)
+        
           if (user) {
               $state.go('ratings')
           }
-
+          $scope.user ={}
           $scope.signup_data={}
           $rootScope.user = user
           $scope.registered=false
@@ -95,6 +96,8 @@ angular.module('app.controllers')
               }).catch(function(err) {
                   console.log(err);
                   $scope.$apply(function() {
+                      toastr.error('Incorrect username and/or password');
+
                       $scope.error = {
                           type: 'danger',
                           message: 'Email or password is not correct'

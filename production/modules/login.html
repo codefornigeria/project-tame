@@ -3,9 +3,13 @@
     <div class="login-inwrap">
       <uib-tabset active="active">
         <uib-tab index="0" heading="Sign in">
-           <form name="loginForm" ng-submit="login(loginForm.$valid)" novalidate>
-            <div class="form-group">
-              <label>Sign in with your e-mail address</label>
+           <form 
+           name="loginForm" ng-submit="login(loginForm.$valid)" novalidate>
+            <div class="form-group" >
+              <label uib-tooltip="Invalid username or password!! plese try again" 
+           tooltip-trigger="focus"
+           tooltip-placement="bottom"
+           >Sign in with your e-mail address</label>
               <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="user.email" required>
               <span ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="text-danger">enter a valid email.</span>
             </div>

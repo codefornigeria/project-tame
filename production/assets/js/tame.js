@@ -16,6 +16,7 @@ angular.module('app', [
     'angular.filter',
     'angular-carousel',
     'angular-loading-bar',
+    'toastr',
     'satellizer'
 
 ])
@@ -52,7 +53,18 @@ angular.module('app', [
             // $(".page-preloading").addClass('hidden');
         });
     })
-    .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
+    .config(function(toastrConfig) {
+  angular.extend(toastrConfig, {
+    autoDismiss: true,
+    containerId: 'toast-container',
+    maxOpened: 0,    
+    newestOnTop: true,
+    positionClass: 'toast-top-center',
+    preventDuplicates: true,
+    preventOpenDuplicates: true,
+    target: 'div.login-wrap'
+  });
+}).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
         function ($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
             // cfpLoadingBarProvider.includeBar = true;
             cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
@@ -1166,12 +1178,13 @@ angular.module('app.controllers')
 angular.module('app.controllers')
      .controller('loginCtrl', function(user,
       $scope, $rootScope, $state, $stateParams,
-       $feathers, $auth,AuthService,LocalService,$anchorScroll , $location) {
+       $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
          console.log('auth service', AuthService)
+        
           if (user) {
               $state.go('ratings')
           }
-
+          $scope.user ={}
           $scope.signup_data={}
           $rootScope.user = user
           $scope.registered=false
@@ -1260,6 +1273,8 @@ angular.module('app.controllers')
               }).catch(function(err) {
                   console.log(err);
                   $scope.$apply(function() {
+                      toastr.error('Incorrect username and/or password');
+
                       $scope.error = {
                           type: 'danger',
                           message: 'Email or password is not correct'

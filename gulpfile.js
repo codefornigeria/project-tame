@@ -52,7 +52,8 @@ gulp.task('vendorcss', ['clean:production'], function(){
 			.src([
         './development/assets/css/bootstrap.min.css',
         './development/assets/css/font-awesome.min.css',
-        './development/assets/vendor/angular-carousel/dist/angular-carousel.css',
+         './development/assets/css/angular-toastr.min.css',
+       './development/assets/vendor/angular-carousel/dist/angular-carousel.css',
       	])
 		  .pipe(concat('vendor.css'))
 		  .pipe(gulpif(argv.production, cssmin()))
@@ -66,6 +67,7 @@ gulp.task('vendorjs', ['clean:production'], function(){
       './development/assets/vendor/angular/angular.js',
       './development/assets/vendor/angular/angular-animate/angular-animate.js',
       './development/assets/vendor/angular/angular-bootstrap/ui-bootstrap-tpls-2.5.0.min.js',
+      './development/assets/vendor/angular/angular-toastr/angular-toastr.tpls.min.js',
       './development/assets/vendor/angular/angular-ui-router/angular-ui-router.js',
       './development/assets/vendor/angular/restangular/restangular.min.js',
       './development/assets/vendor/angular/ng-feathers.standalone.min.js',

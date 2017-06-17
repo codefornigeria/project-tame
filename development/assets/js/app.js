@@ -13,6 +13,7 @@ angular.module('app', [
     'angular.filter',
     'angular-carousel',
     'angular-loading-bar',
+    'toastr',
     'satellizer'
 
 ])
@@ -49,7 +50,18 @@ angular.module('app', [
             // $(".page-preloading").addClass('hidden');
         });
     })
-    .config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
+    .config(function(toastrConfig) {
+  angular.extend(toastrConfig, {
+    autoDismiss: true,
+    containerId: 'toast-container',
+    maxOpened: 0,    
+    newestOnTop: true,
+    positionClass: 'toast-top-center',
+    preventDuplicates: true,
+    preventOpenDuplicates: true,
+    target: 'div.login-wrap'
+  });
+}).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
         function ($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
             // cfpLoadingBarProvider.includeBar = true;
             cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
