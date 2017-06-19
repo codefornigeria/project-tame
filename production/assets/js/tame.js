@@ -530,6 +530,19 @@ angular.module('app.directives', [])
     }
   }
 })
+.directive('bootstrapWizard', function(){
+    return {
+        restrict:'EA',
+        link: function(scope,elem, attrs){
+            $(elem).bootstrapWizard({onTabShow: function(tab, navigation, index) {
+            var $total = navigation.find('li').length;
+            var $current = index+1;
+            var $percent = ($current/$total) * 100;
+            elem.find('.bar').css({width:$percent+'%'});
+          }})
+        }
+    }
+})
 .directive('starRating', function () {
     return {
         restrict: 'EA',
@@ -806,12 +819,15 @@ angular.module('app.controllers')
         $scope.publicRating= function(entity){
             console.log('entites', entity)
             $scope.currentEntity= entity
+            $scope.slides = $scope.schemes
                 $scope.ratin.entity = entity._id
             $scope.ratin.ratingType ="public-assessor"
             $scope.ratin.schemes = _.pluck($scope.schemes, '_id')
                        
             $scope.showRater=true
         }
+
+        current
      
         $scope.submitRating= function(valid){
             if(!valid){

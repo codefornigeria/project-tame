@@ -62,6 +62,19 @@ angular.module('app.directives', [])
     }
   }
 })
+.directive('bootstrapWizard', function(){
+    return {
+        restrict:'EA',
+        link: function(scope,elem, attrs){
+            $(elem).bootstrapWizard({onTabShow: function(tab, navigation, index) {
+            var $total = navigation.find('li').length;
+            var $current = index+1;
+            var $percent = ($current/$total) * 100;
+            elem.find('.bar').css({width:$percent+'%'});
+          }})
+        }
+    }
+})
 .directive('starRating', function () {
     return {
         restrict: 'EA',

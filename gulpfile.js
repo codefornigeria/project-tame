@@ -53,7 +53,7 @@ gulp.task('vendorcss', ['clean:production'], function(){
         './development/assets/css/bootstrap.min.css',
         './development/assets/css/font-awesome.min.css',
          './development/assets/css/angular-toastr.min.css',
-       './development/assets/vendor/angular-carousel/dist/angular-carousel.css',
+       './development/assets/css/angular-carousel.css',
       	])
 		  .pipe(concat('vendor.css'))
 		  .pipe(gulpif(argv.production, cssmin()))

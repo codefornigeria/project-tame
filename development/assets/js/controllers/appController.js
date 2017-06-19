@@ -120,12 +120,15 @@ angular.module('app.controllers')
         $scope.publicRating= function(entity){
             console.log('entites', entity)
             $scope.currentEntity= entity
+            $scope.slides = $scope.schemes
                 $scope.ratin.entity = entity._id
             $scope.ratin.ratingType ="public-assessor"
             $scope.ratin.schemes = _.pluck($scope.schemes, '_id')
                        
             $scope.showRater=true
         }
+
+        current
      
         $scope.submitRating= function(valid){
             if(!valid){
