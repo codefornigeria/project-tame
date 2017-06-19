@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
     'ui.router',
@@ -217,7 +217,7 @@ angular.module('app', [
                     controller: 'compareCtrl'
                 })
                 .state('login', {
-                    url: '/login?query',
+                    url: '/login?action',
                     templateUrl: 'modules/login.html',
                     resolve: {
                         user: function ($q, $feathers, $state, LocalService) {
@@ -1189,11 +1189,14 @@ angular.module('app.controllers')
      .controller('loginCtrl', function(user,
       $scope, $rootScope, $state, $stateParams,
        $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
-         console.log('auth service', AuthService)
         
-          if (user) {
+        
+         if (user) {
               $state.go('ratings')
           }
+
+           $scope.resetToken = $stateParams.token;
+           $scope.active = $stateParams.token == 'newaccount'? 1:0
           $scope.user ={}
           $scope.signup_data={}
           $rootScope.user = user
@@ -1208,6 +1211,11 @@ angular.module('app.controllers')
    
       $anchorScroll();
     };
+    $scope.newAccount = function(){
+      $state.go('login',{
+        token:'newaccount'
+      })
+    }
        $scope.gotoSignup = function() {
     $location.hash('account');
 

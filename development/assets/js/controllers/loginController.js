@@ -2,11 +2,14 @@ angular.module('app.controllers')
      .controller('loginCtrl', function(user,
       $scope, $rootScope, $state, $stateParams,
        $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
-         console.log('auth service', AuthService)
         
-          if (user) {
+        
+         if (user) {
               $state.go('ratings')
           }
+
+           $scope.resetToken = $stateParams.token;
+           $scope.active = $stateParams.token == 'newaccount'? 1:0
           $scope.user ={}
           $scope.signup_data={}
           $rootScope.user = user
@@ -21,6 +24,11 @@ angular.module('app.controllers')
    
       $anchorScroll();
     };
+    $scope.newAccount = function(){
+      $state.go('login',{
+        token:'newaccount'
+      })
+    }
        $scope.gotoSignup = function() {
     $location.hash('account');
 
