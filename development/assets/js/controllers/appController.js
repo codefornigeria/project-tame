@@ -127,8 +127,6 @@ angular.module('app.controllers')
                        
             $scope.showRater=true
         }
-
-        current
      
         $scope.submitRating= function(valid){
             if(!valid){
