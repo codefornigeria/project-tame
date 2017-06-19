@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"http://localhost:3030","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
     'ui.router',
@@ -136,14 +136,20 @@ angular.module('app', [
                         user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function (res) {
-                                console.log('auth success', res)
-                                return res.data
-                            }).catch(function (err) {
-                                console.log('non user', err)
-                                return false
-
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
                             })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                 return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
 
                         }
                     },
@@ -230,7 +236,7 @@ angular.module('app', [
                     controller: 'loginCtrl'
                 })
                 .state('forgotpassword', {
-                    url: '/forgotpassword',
+                    url: '/forgotpassword?token',
                     templateUrl: 'modules/forgotpassword.html',
 
                     controller: 'resetCtrl'
@@ -682,23 +688,27 @@ angular.module('app.controllers')
     .controller('appCtrl', function (user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
          $scope.showRater=false
          $scope.ratin={}
+         $rootScope.user = user
          $scope.searchKeyword ={};
         $scope.sectorSplit = function (val) {
             //  console.log(val)
             return val.name
 
         }
-
+        console.log('the user', user)
+        $rootScope.isLoggedIn  = $rootScope.user ? true:false
         $scope.checkUser = function () {
             console.log('checking if user is logged in')
         }
-        $scope.logout = function () {
+         console.log('the scope', $scope)
+       
+        $rootScope.logout = function () {
             console.log('logout clicked')
             $feathers.logout().then(function (params) {
                 console.log(params);
                 console.log("Logged out!!")
-                $scope.user = null
-                //$state.reload()
+                $rootScope.user = null
+                $state.reload()
 
             });
         }
@@ -1538,7 +1548,8 @@ angular.module('app.controllers')
      .controller('ratingsCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
 
           $rootScope.user = user
-          console.log('show user', user)
+         $rootScope.isLoggedIn  = $rootScope.user ? true:false
+         console.log('show rootScope', $rootScope)
           $scope.showEffect = false
           $scope.showAssessment = false
           $scope.ratingCompleted = false
@@ -1546,6 +1557,16 @@ angular.module('app.controllers')
           $scope.ratin = {
               schemes: []
           }
+          $rootScope.logout = function () {
+            console.log('logout clicked')
+            $feathers.logout().then(function (params) {
+                console.log(params);
+                console.log("Logged out!!")
+                $rootScope.user = null
+                $state.reload()
+
+            });
+        }
           console.log('showing organization type', user)
           $scope.nextSlideU = function(scheme, slide, schemeLength , index) {
             console.log('scheme length', schemeLength)
@@ -1835,32 +1856,59 @@ angular.module('app.controllers')
           }
       })
 angular.module('app.controllers')
-     .controller('resetCtrl', function( $scope, $rootScope, $state, $stateParams, $feathers, $auth,LocalService,toastr) {
-       
-   var authManagement = new AuthManagement($feathers)
-          console.log('auth', AuthManagement)
-    
-        $scope.resetPassword = function(valid) {
-            if(!valid){
+    .controller('resetCtrl', function ($scope, $rootScope, $state, $stateParams, $feathers,
+        $auth, LocalService, toastr, $timeout) {
+            $scope.showNewPassword = false
+        $scope.resetToken = $stateParams.token;
+        console.log($scope)
+        var authManagement = new AuthManagement($feathers)
+
+        if ($scope.resetToken) {
+            $scope.showNewPassword = true
+
+        }
+        console.log('auth', AuthManagement)
+
+        $scope.resetPassword = function (valid) {
+            if (!valid) {
                 return
             }
-            
+
             authManagement.sendResetPwd($scope.user,
-                    {preferredComm: 'email'}).then(function(result){
-                        console.log('reset result',result)
-                    }).catch(function(err){
-                        console.log('reset error',err)
-                             toastr.error(err.message);
+                { preferredComm: 'email' }).then(function (result) {
+                    console.log('reset result', result)
+                    toastr.success('your password verification tokenhas been sent to your email address ')
+                }).catch(function (err) {
+                    console.log('reset error', err)
+                    toastr.error(err.message);
 
-                    })
+                })
         }
-        
-        $scope.backToLogin = function(){
-            $state.go('login')
-        }  
 
-          
-      })
+        $scope.changePassword = function (valid) {
+               if (!valid) {
+                return
+            }
+           
+            authManagement.resetPwdLong($scope.resetToken,
+                $scope.newPassword).then(function (result) {
+                    toastr.success('Your password reset was successful.')
+                    $timeout(function () {
+                        $scope.backToLogin()
+                    }, 3000)
+                }).catch(function (err) {
+                    console.log(err)
+                    toastr.error('Your password reset failed.')
+                })
+
+        }
+
+        $scope.backToLogin = function () {
+            $state.go('login')
+        }
+
+
+    })
    angular.module('app.controllers').controller('resultCtrl', function($scope, Restangular, $state, $stateParams, $feathers) {
                
                $scope.searchKeyword={}

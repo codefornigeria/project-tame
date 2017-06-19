@@ -2,23 +2,27 @@ angular.module('app.controllers')
     .controller('appCtrl', function (user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
          $scope.showRater=false
          $scope.ratin={}
+         $rootScope.user = user
          $scope.searchKeyword ={};
         $scope.sectorSplit = function (val) {
             //  console.log(val)
             return val.name
 
         }
-
+        console.log('the user', user)
+        $rootScope.isLoggedIn  = $rootScope.user ? true:false
         $scope.checkUser = function () {
             console.log('checking if user is logged in')
         }
-        $scope.logout = function () {
+         console.log('the scope', $scope)
+       
+        $rootScope.logout = function () {
             console.log('logout clicked')
             $feathers.logout().then(function (params) {
                 console.log(params);
                 console.log("Logged out!!")
-                $scope.user = null
-                //$state.reload()
+                $rootScope.user = null
+                $state.reload()
 
             });
         }

@@ -133,14 +133,20 @@ angular.module('app', [
                         user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             //  var token = LocalService.get('feathers-jwt')
-                            return $feathers.authenticate().then(function (res) {
-                                console.log('auth success', res)
-                                return res.data
-                            }).catch(function (err) {
-                                console.log('non user', err)
-                                return false
-
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
                             })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                 return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
 
                         }
                     },
@@ -227,7 +233,7 @@ angular.module('app', [
                     controller: 'loginCtrl'
                 })
                 .state('forgotpassword', {
-                    url: '/forgotpassword',
+                    url: '/forgotpassword?token',
                     templateUrl: 'modules/forgotpassword.html',
 
                     controller: 'resetCtrl'
