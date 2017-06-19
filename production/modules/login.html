@@ -10,15 +10,16 @@
            tooltip-trigger="focus"
            tooltip-placement="bottom"
            >Sign in with your e-mail address</label>
-              <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="user.email" required>
+              <input type="email" name="email" class="form-control" placeholder="new@tame.com" ng-model="user.email" required ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine }">
               <span ng-show="loginForm.email.$invalid && !loginForm.email.$pristine" class="text-danger">enter a valid email.</span>
-            </div>
+                      </div>
 
             <div class="form-group">
               <label>password</label>
               <input type="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" ng-model="user.password"
-                required>
-              <span ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="text-danger">enter your first name.</span>
+              ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }"  required>
+              <span ng-show="loginForm.password.$invalid && !loginForm.password.$pristine" class="text-danger">enter your password.</span>
+            <span ng-show="loginForm.password.$invalid && loginForm.password.$pristine" class="text-danger">your password is required.</span>
             </div>
 
             <button type="submit" class="btn btn-block submit" ng-disabled="loginForm.$invalid">Sign in to TAME dashboard</button>

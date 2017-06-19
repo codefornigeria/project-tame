@@ -122,4 +122,16 @@ angular.module('app.controllers')
 
               })
           }
+
+          $scope.forgotPassword = function(valid){
+
+            if(!valid){
+              return // confirm email is entered
+            }
+            
+          }
+
+          $scope.confirmPassword= function(){
+
+          }
       })

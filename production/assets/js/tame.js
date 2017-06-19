@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
     'ui.router',
@@ -1299,6 +1299,18 @@ angular.module('app.controllers')
 
               })
           }
+
+          $scope.forgotPassword = function(valid){
+
+            if(!valid){
+              return // confirm email is entered
+            }
+            
+          }
+
+          $scope.confirmPassword= function(){
+
+          }
       })
    angular.module('app.controllers').controller('publicRatingsCtrl', function($rootScope, $scope, $state, $stateParams, $feathers) {
 
@@ -1823,11 +1835,24 @@ angular.module('app.controllers')
           }
       })
 angular.module('app.controllers')
-     .controller('resetCtrl', function( $scope, $rootScope, $state, $stateParams, $feathers, $auth,LocalService) {
+     .controller('resetCtrl', function( $scope, $rootScope, $state, $stateParams, $feathers, $auth,LocalService,toastr) {
        
+   var authManagement = new AuthManagement($feathers)
+          console.log('auth', AuthManagement)
+    
+        $scope.resetPassword = function(valid) {
+            if(!valid){
+                return
+            }
+            
+            authManagement.sendResetPwd($scope.user,
+                    {preferredComm: 'email'}).then(function(result){
+                        console.log('reset result',result)
+                    }).catch(function(err){
+                        console.log('reset error',err)
+                             toastr.error(err.message);
 
-        $scope.resetPassword = function() {
-           
+                    })
         }
         
         $scope.backToLogin = function(){
