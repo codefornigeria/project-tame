@@ -1,17 +1,16 @@
 
 
-  <section class="clearfix content-area">
+  <section class="clearfix content-area" ng-show="!showAssessment">
        
        <div class="container">
             <div class="rating-area organization auto-suggetion">
-          <form method="post" action="">
+          <form name="ratingForm" ng-submit="loadSchemes(ratingForm.$valid)" >
             <h1>Rate an organization</a></h1> 
             <div class="rating-inwrap auto-suggetion">
                <div class="form-group">
                   <label>WHAT SECTOR IS THIS ORGANIZATION?</label>
                   <input type="text" class="form-control" id="organigation" placeholder="Education" ng-model="ratin.sector" ng-change="searchSector()">
-                  <span class="not-find">Can't find</span>
-				  <ul class="typeahead dropdown-menu" ng-show="sectorsearching">
+          				  <ul class="typeahead dropdown-menu" ng-show="sectorsearching">
 					  <li ng-repeat="result in results" ng-click="addSector(result)">
 									{{result.name}} 	
 				</li>
@@ -21,8 +20,7 @@
               <div class="form-group">
                   <label>ENTER ORGANIZATION NAME</label>
                   <input type="text" class="form-control" id="organization-name" placeholder="Nnamdi Azikiwe Univeristy" ng-model="ratin.organization" ng-change="searchOrganization()">
-                  <span class="not-find">Can't find</span>
-               <ul class="typeahead dropdown-menu" ng-show="orgsearching">
+                  <ul class="typeahead dropdown-menu" ng-show="orgsearching">
 					<li ng-repeat="result in orgs" ng-click="addOrganization(result)">
 									{{result.name}}
 								</li>
@@ -34,5 +32,81 @@
             </div>
           </form>
        </div>
+       </div>
+    </section>
+
+
+    <section class="clearfix content-area" ng-show="showAssessment">
+       <div class="rating-area organization progress-wrap">
+         <section class="f-w quiz-wrap">
+           <!--==================End quiz single sectin =============== -->
+            <div class="f-w" id="rootwizard"  >
+              <div class="rating-progress">
+                  <div class="quiz-progress_area">
+                    <div id="bar" class="quiz-progress-bar progress ">
+                      <div class="bar quiz-progress-bar-inner progress-bar green-bold" style="width:5%;"></div>
+                    </div>
+                    <div class="count">
+                     <ul>
+                      <li  ng-repeat="tab in schemerater track by $index"><a href="#tab{{$index+1}}" data-toggle="tab">{{$index+1}}</a></li>
+                       
+                            <span class="total"> / {{schemerater.length}}</span>
+                      </ul>
+                   </div>
+                  </div><!--/ End progress bar -->
+              </div>
+               <h1>Rate an organization</a></h1> 
+              <div class="tab-content quiz-tab-content">
+                  <div class="tab-pane  " id="tab{{$index+1}}" ng-repeat="scheme in  schemerater track by $index" >
+                      <div class="rating-inwrap">
+                         <div class="rating-single">
+
+                      
+                            <h3>{{scheme.scheme}}</h3>
+                             <div class="row">
+                                <div class="col-md-7">
+                                    <h4>Antidotes </h4>
+                                     <article>
+                                       <h6>Title: </h6>
+                                        <p>{{scheme.antidoteName}}</p>
+                                     </article>
+
+                                     <article>
+                                       <h6>Description: </h6>
+                                        <p>{{scheme.antidoteDesc}}</p>
+                                     </article>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="label-group">
+                                        <label class="custom-control custom-radio">
+                                      <input id="radio1" name="radio" type="radio" class="custom-control-input">
+                                      <span class="custom-control-indicator"></span>
+                                      <span class="custom-control-description">Yes</span>
+                                    </label>
+                                  <label class="custom-control custom-radio">
+                                    <input id="radio2" name="radio" type="radio" class="custom-control-input">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">No</span>
+                                  </label>
+
+                                    </div>
+                                </div>
+                             </div>
+                         </div>
+                      </div>
+                  </div>
+                
+              </div>
+              <div class="quiz-control bottom-area">
+                <ul class="pager wizard quiz-button-area">
+                  <li class="previous prev "><a ><i class="fa fa-angle-left" aria-hidden="true"></i>  Previous</a> </li>
+                  <li class="next"> <a class="nx" >Next <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                  <p class="submit">Yes, this information is accurate to the best of my knowledge <button class="btn " type="submit" data-toggle="modal" data-target="#success">SUBMIT</button></p>
+                  </li>
+                </ul>
+
+              </div>
+            </div>        
+          </section> <!--/ End quiz-area -->
        </div>
     </section>

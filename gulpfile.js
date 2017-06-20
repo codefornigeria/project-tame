@@ -64,6 +64,8 @@ gulp.task('vendorcss', ['clean:production'], function(){
 gulp.task('vendorjs', ['clean:production'], function(){
     return gulp
 		.src([
+       './development/assets/vendor/jquery/jquery.min.js',
+        './development/assets/vendor/jquery/jquery.bootstrap.wizard.js',      
       './development/assets/vendor/angular/angular.js',
       './development/assets/vendor/angular/angular-animate/angular-animate.js',
       './development/assets/vendor/angular/angular-bootstrap/ui-bootstrap-tpls-2.5.0.min.js',
@@ -84,7 +86,6 @@ gulp.task('vendorjs', ['clean:production'], function(){
     './development/assets/vendor/angular/angular-carousel/dist/angular-carousel.js',
 		'./development/assets/vendor/*.js',
     './development/assets/vendor/bootstrap/bootstrap.min.js',
-    './development/assets/vendor/bootstrap/jquery.min.js',
     './development/assets/vendor/bootstrap/main.js',
     './development/assets/vendor/loading-bar.min.js',
     './development/assets/vendor/satellizer/satellizer.min.js'

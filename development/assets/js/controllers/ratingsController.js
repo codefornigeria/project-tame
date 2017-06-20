@@ -2,7 +2,9 @@
      .controller('ratingsCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
 
           $rootScope.user = user
+          $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
+         $schemeLoaded=false
          console.log('show rootScope', $rootScope)
           $scope.showEffect = false
           $scope.showAssessment = false
@@ -147,12 +149,14 @@
           }
           $scope.loadSchemes = function(assessmentData) {
               // load schemes based on assessment data
+              console.log('show ratin', $scope.ratin)
+             console.log('show user', user)
               $scope.showAssessment = true
-
+             
               if(user.userType =='independent-assessor'){
                   //find  organization  rating ,
                 console.log('showing assessor type', user)
-                  var ratingService  = $feathers.service('ratings')
+                  var ratingService  = $feathers.service('rating')
                   ratingService.find({
                     query:{
                       entity :$scope.ratin.organizationId
@@ -171,7 +175,7 @@
                     console.log('rating error', err)
                   })
               }else{
-                var schemeService = $feathers.service('schemes')
+                var schemeService = $feathers.service('scheme')
                 schemeService.find({
                     query: {
                         $populate: {
@@ -181,13 +185,12 @@
                                 limit: 10
                             }
                         },
-                        'sectors': assessmentData.sectorId,
+                        'sectors': $scope.ratin.sectorId,
 
                     }
                 }).then(function(schemes) {
                     console.log('testq schemes', schemes)
-                    $scope.$apply(function() {
-                      $scope.schemerater = []
+                    var raterArray =[]
                      schemes.data.map(function (scheme){
                          scheme.antidotes.map(function(antidote){
                            var rateData ={
@@ -197,10 +200,12 @@
                              antidoteDesc : antidote.description,
                              antidoteId:antidote._id
                            }
-                           $scope.schemerater.push(rateData)
+                           raterArray.push(rateData)
                          })
                      })
-                     console.log('showing scheme rater', $scope.schemerater)
+                    $scope.$apply(function() {
+                    
+                    $scope.schemerater = raterArray
                        $scope.ratin.schemes = schemes.data
                     })
                 }).catch(function(err) {
