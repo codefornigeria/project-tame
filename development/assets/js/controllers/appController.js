@@ -1,9 +1,12 @@
 angular.module('app.controllers')
-    .controller('appCtrl', function (user, $scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
+    .controller('appCtrl', function (user,schemes,entities, ratings ,$scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
          $scope.showRater=false
          $scope.ratin={}
          $rootScope.user = user
          $scope.searchKeyword ={};
+         $scope.schemes = schemes
+         $scope.entities = entities
+         $scope.ratings = ratings
         $scope.sectorSplit = function (val) {
             //  console.log(val)
             return val.name
@@ -33,42 +36,8 @@ angular.module('app.controllers')
         query: $scope.searchKeyword.keyword
   })
           }
-        var entityService = $feathers.service('entity')
-        entityService.find({
-           
-        }).then(function (entities) {
-            if (entities.data.length) {
-                console.log('test entities', entities.data)
-                $scope.$apply(function () {
-                    $scope.entities = entities.data
-                })
-            }
-        }).catch(function (err) {
-            console.log(err)
-        })
-        
-         var schemeService = $feathers.service('scheme')
-        schemeService.find({
-            query: {
-                $populate: {
-                    path: 'sectors antidotes',
-                    select: 'name description _id',
-                    options: {
-                        limit: 5
-                    }
-                }
-            }
-        }).then(function (schemes) {
-            if (schemes.data.length) {
-                console.log('test schemes', schemes.data)
-                $scope.$apply(function () {
-                    $scope.schemes = schemes.data
-                })
-            }
-        }).catch(function (err) {
-            console.log(err)
-        })
-        
+       
+     
    $scope.ratingFunc =function(){
             var ratingsService = $feathers.service('rating')
         ratingsService.find({
@@ -94,7 +63,7 @@ angular.module('app.controllers')
             console.log(err)
         })
    }
-   $scope.ratingFunc()
+  
 
         $scope.options = {
             tooltipEvents: [],
