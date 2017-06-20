@@ -215,7 +215,7 @@ angular.module('app', [
                     controller: 'ratingsCtrl'
                 })
                 .state('rating-result', {
-                    url: '/rating-result',
+                    url: '/rating-result?rating',
                     resolve: {
                         user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :

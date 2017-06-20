@@ -256,7 +256,7 @@
           }
           $scope.viewRating = function(){
              $state.go('rating-result',{
-                 ratin : $scope.ratin
+                 rating : $scope.ratinResult._id
              })
           }
           $scope.completeRating = function(ratin) {

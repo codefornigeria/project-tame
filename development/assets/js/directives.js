@@ -65,27 +65,26 @@ angular.module('app.directives', [])
 .directive('bootstrapWizard', function(){
     return {
         restrict:'EA',
-        scope:{
-            schemerater:'='
-        },
+     replace:true,
+       templateUrl: "modules/directives/ratingwizard.html",
         link: function(scope,elem, attrs){
-
-
-        var    updateBootstrap =function(){
-            $(elem).bootstrapWizard({onTabShow: function(tab, navigation, index) {
-            var $total = elem.find('ul.nav li').length;
-            console.log('total')
+            // $timeout(function(){
+            //     console.log('timeout called', 4000)
+            // })
+            console.log('the firective', scope)
+             scope.$watchCollection('schemerater',function(newVal,oldVal){
+                console.log('oldval', oldVal)
+                console.log('newval', newVal)
+                if(newVal.length){
+                 elem.bootstrapWizard({onTabShow: function(tab, navigation, index) {
+            var $total = navigation.find('li').length;
             var $current = index+1;
             var $percent = ($current/$total) * 100;
             elem.find('.bar').css({width:$percent+'%'});
           }})
-            }
-            
-
-          scope.$watch('schemerater', function(oldVal,newVal) {
-              console.log('schemes new value', newVal)
-          updateBootstrap()
-      });
+          
+                }
+            })
         }
     }
 })

@@ -29,7 +29,16 @@
               
             </li>-->
             <li class="nav-item">
+                      <a class="nav-link" ui-sref="ratings" ng-show="isLoggedIn">Ratings</a>
+           
+                 </li>
+               <li class="nav-item">
+             <a class="nav-link" ui-sref="reports" ng-show="isLoggedIn">Reports</a>
+           
+              </li>
+               <li class="nav-item">
               <a class="nav-link" ui-sref="login" ng-show="!isLoggedIn">Login</a>
+               
               <a class="nav-link" ng-click="logout()" ng-show="isLoggedIn">LOGOUT</a>
             </li>
             <li class="nav-item join-us" ng-show="!isLoggedIn">

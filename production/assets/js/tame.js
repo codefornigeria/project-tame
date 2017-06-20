@@ -218,7 +218,7 @@ angular.module('app', [
                     controller: 'ratingsCtrl'
                 })
                 .state('rating-result', {
-                    url: '/rating-result',
+                    url: '/rating-result?rating',
                     resolve: {
                         user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
@@ -585,27 +585,26 @@ angular.module('app.directives', [])
 .directive('bootstrapWizard', function(){
     return {
         restrict:'EA',
-        scope:{
-            schemerater:'='
-        },
+     replace:true,
+       templateUrl: "modules/directives/ratingwizard.html",
         link: function(scope,elem, attrs){
-
-
-        var    updateBootstrap =function(){
-            $(elem).bootstrapWizard({onTabShow: function(tab, navigation, index) {
-            var $total = elem.find('ul.nav li').length;
-            console.log('total')
+            // $timeout(function(){
+            //     console.log('timeout called', 4000)
+            // })
+            console.log('the firective', scope)
+             scope.$watchCollection('schemerater',function(newVal,oldVal){
+                console.log('oldval', oldVal)
+                console.log('newval', newVal)
+                if(newVal.length){
+                 elem.bootstrapWizard({onTabShow: function(tab, navigation, index) {
+            var $total = navigation.find('li').length;
             var $current = index+1;
             var $percent = ($current/$total) * 100;
             elem.find('.bar').css({width:$percent+'%'});
           }})
-            }
-            
-
-          scope.$watch('schemerater', function(oldVal,newVal) {
-              console.log('schemes new value', newVal)
-          updateBootstrap()
-      });
+          
+                }
+            })
         }
     }
 })
@@ -1890,7 +1889,7 @@ angular.module('app.controllers')
           }
           $scope.viewRating = function(){
              $state.go('rating-result',{
-                 ratin : $scope.ratin
+                 rating : $scope.ratinResult._id
              })
           }
           $scope.completeRating = function(ratin) {
@@ -1957,13 +1956,14 @@ angular.module('app.controllers')
       })
   angular.module('app.controllers')
      .controller('ratingsResultCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
-
+            $scope.ratin = $stateParams.rating
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
          $scope.showRatingPage =false
          $schemeLoaded=false
          console.log('show rootScope', $rootScope)
+         console.log('show rating', $scope.ratin)
           $scope.showEffect = false
           $scope.showAssessment = false
           $scope.ratingCompleted = false
