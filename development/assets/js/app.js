@@ -49,18 +49,18 @@ angular.module('app', [
             // $(".page-preloading").addClass('hidden');
         });
     })
-    .config(function(toastrConfig) {
-  angular.extend(toastrConfig, {
-    autoDismiss: true,
-    containerId: 'toast-container',
-    maxOpened: 0,    
-    newestOnTop: true,
-    positionClass: 'toast-top-center',
-    preventDuplicates: true,
-    preventOpenDuplicates: true,
-    target: 'div.login-wrap'
-  });
-}).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
+    .config(function (toastrConfig) {
+        angular.extend(toastrConfig, {
+            autoDismiss: true,
+            containerId: 'toast-container',
+            maxOpened: 0,
+            newestOnTop: true,
+            positionClass: 'toast-top-center',
+            preventDuplicates: true,
+            preventOpenDuplicates: true,
+            target: 'div.login-wrap'
+        });
+    }).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
         function ($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
             // cfpLoadingBarProvider.includeBar = true;
             cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
@@ -141,7 +141,7 @@ angular.module('app', [
                                     return $feathers.service('users').get(payload.userId);
                                 })
                                 .then(user => {
-                                 return user
+                                    return user
                                 })
                                 .catch(function (error) {
                                     console.error('Error authenticating!', error);
@@ -168,7 +168,7 @@ angular.module('app', [
                                     return $feathers.service('users').get(payload.userId);
                                 })
                                 .then(user => {
-                                 return user
+                                    return user
                                 })
                                 .catch(function (error) {
                                     console.error('Error authenticating!', error);
@@ -203,7 +203,7 @@ angular.module('app', [
                                     return $feathers.service('users').get(payload.userId);
                                 })
                                 .then(user => {
-                                 return user
+                                    return user
                                 })
                                 .catch(function (error) {
                                     console.error('Error authenticating!', error);
@@ -229,16 +229,28 @@ angular.module('app', [
                                     return $feathers.service('users').get(payload.userId);
                                 })
                                 .then(user => {
-                                 return user
+                                    return user
                                 })
                                 .catch(function (error) {
                                     console.error('Error authenticating!', error);
                                 });
 
                         },
-                        rating: function($, feathers, $state, $stateParams){
+                      
+                        rating: function ($q, $feathers, $state, $stateParams) {
                             console.log('params', $stateParams.rating)
-                            return 'ok'
+                            return $feathers.service('rating').get($stateParams.rating)
+                                .then(function (ratings) {
+                                    console.log('get rating', ratings)
+                                    if (ratings) {
+
+                                        return ratings
+                                    }
+                                    return null
+                                }).catch(function (err) {
+                                    console.log(err)
+                                    return null
+                                })
                         }
                     },
                     templateUrl: 'modules/rating-result.html',
