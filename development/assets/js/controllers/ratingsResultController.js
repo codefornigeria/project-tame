@@ -1,6 +1,6 @@
   angular.module('app.controllers')
-     .controller('ratingsResultCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
-            $scope.ratin = $stateParams.rating
+     .controller('ratingsResultCtrl', function(user,rating, $rootScope, $scope, $state, $stateParams, $feathers) {
+          
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
@@ -24,7 +24,23 @@
                 $state.reload()
 
             });
+            
         }
       
-    
+         $scope.getRating = function(){
+              var ratingService = $feathers.service('rating')
+          ratingService.get($stateParams.rating).then(function(ratings) {
+               console.log('get rating',ratings)
+              if (ratings) {
+             
+                  $scope.$apply(function() {
+                      $scope.rating = ratings
+                  })
+              }
+          }).catch(function(err) {
+              console.log(err)
+          })
+          
+         }
+         $scope.getRating()
       })

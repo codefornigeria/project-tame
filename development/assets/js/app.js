@@ -235,6 +235,10 @@ angular.module('app', [
                                     console.error('Error authenticating!', error);
                                 });
 
+                        },
+                        rating: function($, feathers, $state, $stateParams){
+                            console.log('params', $stateParams.rating)
+                            return 'ok'
                         }
                     },
                     templateUrl: 'modules/rating-result.html',

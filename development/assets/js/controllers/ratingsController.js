@@ -140,7 +140,9 @@
               $scope.sectorsearching =false
         }
           $scope.addOrganization = function(result) {
+              console.log('rating now',$scope.ratin)
               $scope.ratin.organizationId = result._id;
+                $scope.ratin.entity = result._id;
 
               $scope.ratin.organization = result.name;
               $scope.orgSearch = false;

@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
     'ui.router',
@@ -238,6 +238,10 @@ angular.module('app', [
                                     console.error('Error authenticating!', error);
                                 });
 
+                        },
+                        rating: function($, feathers, $state, $stateParams){
+                            console.log('params', $stateParams.rating)
+                            return 'ok'
                         }
                     },
                     templateUrl: 'modules/rating-result.html',
@@ -1773,7 +1777,9 @@ angular.module('app.controllers')
               $scope.sectorsearching =false
         }
           $scope.addOrganization = function(result) {
+              console.log('rating now',$scope.ratin)
               $scope.ratin.organizationId = result._id;
+                $scope.ratin.entity = result._id;
 
               $scope.ratin.organization = result.name;
               $scope.orgSearch = false;
@@ -1955,8 +1961,8 @@ angular.module('app.controllers')
           }
       })
   angular.module('app.controllers')
-     .controller('ratingsResultCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
-            $scope.ratin = $stateParams.rating
+     .controller('ratingsResultCtrl', function(user,rating, $rootScope, $scope, $state, $stateParams, $feathers) {
+          
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
@@ -1980,9 +1986,25 @@ angular.module('app.controllers')
                 $state.reload()
 
             });
+            
         }
       
-    
+         $scope.getRating = function(){
+              var ratingService = $feathers.service('rating')
+          ratingService.get($stateParams.rating).then(function(ratings) {
+               console.log('get rating',ratings)
+              if (ratings) {
+             
+                  $scope.$apply(function() {
+                      $scope.rating = ratings
+                  })
+              }
+          }).catch(function(err) {
+              console.log(err)
+          })
+          
+         }
+         $scope.getRating()
       })
 angular.module('app.controllers')
     .controller('resetCtrl', function ($scope, $rootScope, $state, $stateParams, $feathers,
