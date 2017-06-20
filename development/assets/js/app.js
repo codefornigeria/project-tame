@@ -15,7 +15,6 @@ angular.module('app', [
     'angular-loading-bar',
     'toastr',
     'satellizer'
-
 ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
         $rootScope.currentUser = {
@@ -214,6 +213,32 @@ angular.module('app', [
                     },
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
+                })
+                .state('rating-result', {
+                    url: '/rating-result',
+                    resolve: {
+                        user: function ($q, $feathers, $state, LocalService) {
+                            //  authManagement  :
+                            //  var token = LocalService.get('feathers-jwt')
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
+                            })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                 return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
+
+                        }
+                    },
+                    templateUrl: 'modules/rating-result.html',
+                    controller: 'ratingsResultCtrl'
                 })
                 .state('public-ratings', {
                     url: '/public-ratings',

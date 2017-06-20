@@ -4,6 +4,7 @@
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
+         $scope.showRatingPage =false
          $schemeLoaded=false
          console.log('show rootScope', $rootScope)
           $scope.showEffect = false
@@ -218,11 +219,12 @@
           $scope.rateScheme = function(item, type) {
 
                       (type) ? item.score = 3: item.score = 0
+                      console.log('current item', item)
                   }
 
           $scope.submitRating = function() {
 
-              var ratingService = $feathers.service('ratings')
+              var ratingService = $feathers.service('rating')
                 if(user.userType =='independent-assessor'){
                   ratingService.create($scope.ratin).then(function(ratinResult) {
                       $scope.$apply(function() {
@@ -251,6 +253,11 @@
                   })
                 }
 
+          }
+          $scope.viewRating = function(){
+             $state.go('rating-result',{
+                 ratin : $scope.ratin
+             })
           }
           $scope.completeRating = function(ratin) {
 

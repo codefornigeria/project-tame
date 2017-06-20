@@ -18,7 +18,6 @@ angular.module('app', [
     'angular-loading-bar',
     'toastr',
     'satellizer'
-
 ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
         $rootScope.currentUser = {
@@ -217,6 +216,32 @@ angular.module('app', [
                     },
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
+                })
+                .state('rating-result', {
+                    url: '/rating-result',
+                    resolve: {
+                        user: function ($q, $feathers, $state, LocalService) {
+                            //  authManagement  :
+                            //  var token = LocalService.get('feathers-jwt')
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
+                            })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                 return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
+
+                        }
+                    },
+                    templateUrl: 'modules/rating-result.html',
+                    controller: 'ratingsResultCtrl'
                 })
                 .state('public-ratings', {
                     url: '/public-ratings',
@@ -1613,6 +1638,7 @@ angular.module('app.controllers')
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
+         $scope.showRatingPage =false
          $schemeLoaded=false
          console.log('show rootScope', $rootScope)
           $scope.showEffect = false
@@ -1827,11 +1853,12 @@ angular.module('app.controllers')
           $scope.rateScheme = function(item, type) {
 
                       (type) ? item.score = 3: item.score = 0
+                      console.log('current item', item)
                   }
 
           $scope.submitRating = function() {
 
-              var ratingService = $feathers.service('ratings')
+              var ratingService = $feathers.service('rating')
                 if(user.userType =='independent-assessor'){
                   ratingService.create($scope.ratin).then(function(ratinResult) {
                       $scope.$apply(function() {
@@ -1860,6 +1887,11 @@ angular.module('app.controllers')
                   })
                 }
 
+          }
+          $scope.viewRating = function(){
+             $state.go('rating-result',{
+                 ratin : $scope.ratin
+             })
           }
           $scope.completeRating = function(ratin) {
 
@@ -1922,6 +1954,35 @@ angular.module('app.controllers')
               console.log('final rating', $scope.rating)
               $state.go('scheme')
           }
+      })
+  angular.module('app.controllers')
+     .controller('ratingsResultCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
+
+          $rootScope.user = user
+          $scope.schemerater =[]
+         $rootScope.isLoggedIn  = $rootScope.user ? true:false
+         $scope.showRatingPage =false
+         $schemeLoaded=false
+         console.log('show rootScope', $rootScope)
+          $scope.showEffect = false
+          $scope.showAssessment = false
+          $scope.ratingCompleted = false
+          $scope.orgSearch = false;
+          $scope.ratin = {
+              schemes: []
+          }
+          $rootScope.logout = function () {
+            console.log('logout clicked')
+            $feathers.logout().then(function (params) {
+                console.log(params);
+                console.log("Logged out!!")
+                $rootScope.user = null
+                $state.reload()
+
+            });
+        }
+      
+    
       })
 angular.module('app.controllers')
     .controller('resetCtrl', function ($scope, $rootScope, $state, $stateParams, $feathers,
