@@ -302,6 +302,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     letter-spacing: 1px;
     font-size: 12px;
     cursor: pointer;
+  
 }
 
 .banner-search .tab-content .btn-outline-success:hover{
@@ -570,6 +571,7 @@ background: -moz-linear-gradient(top, rgba(44,83,150,1) 0%, rgba(29,66,111,1) 10
 background: -webkit-linear-gradient(top, rgba(44,83,150,1) 0%,rgba(29,66,111,1) 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(to bottom, rgba(44,83,150,1) 0%,rgba(29,66,111,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', endColorstr='#1d426f',GradientType=0 ); /* IE6-8 */
+  padding-bottom: 150px;
 }
 
 .join-area h2 {
@@ -963,6 +965,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
 
 .auto-suggetion .typeahead.dropdown-menu{
     background: #fff;
+    display: block;
+    width:100%;
 }
 
 .auto-suggetion .typeahead.dropdown-menu li{

@@ -6,31 +6,31 @@
             <div class="rating-area organization auto-suggetion">
           <form method="post" action="">
             <h1>Rate an organization</a></h1> 
-            <div class="rating-inwrap">
+            <div class="rating-inwrap auto-suggetion">
                <div class="form-group">
                   <label>WHAT SECTOR IS THIS ORGANIZATION?</label>
                   <input type="text" class="form-control" id="organigation" placeholder="Education" ng-model="ratin.sector" ng-change="searchSector()">
                   <span class="not-find">Can't find</span>
-				  <ul class="" ng-show="sectorsearching">
+				  <ul class="typeahead dropdown-menu" ng-show="sectorsearching">
 					  <li ng-repeat="result in results" ng-click="addSector(result)">
 									{{result.name}} 	
 				</li>
 				  </ul>
                 </div>
-
+                <div>
               <div class="form-group">
                   <label>ENTER ORGANIZATION NAME</label>
                   <input type="text" class="form-control" id="organization-name" placeholder="Nnamdi Azikiwe Univeristy" ng-model="ratin.organization" ng-change="searchOrganization()">
                   <span class="not-find">Can't find</span>
-               <ul class="" ng-show="orgsearching">
+               <ul class="typeahead dropdown-menu" ng-show="orgsearching">
 					<li ng-repeat="result in orgs" ng-click="addOrganization(result)">
 									{{result.name}}
 								</li>
                </ul>
-               
-               <div class="bottom-area">
+              </div>
+         <div class="bottom-area">
                  Yes, this information is accurate  <button class="btn " type="submit">Rate organization</button>
-               </div>
+               </div>      
             </div>
           </form>
        </div>
