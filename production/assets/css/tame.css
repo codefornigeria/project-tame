@@ -493,6 +493,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     padding: 15px;
     overflow: hidden;
     margin-top: 35px;
+    min-height: 320px;
 }
 
 .scheme-thumb h4{
@@ -515,6 +516,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     font-size: 13px;
     color: #949494;
     margin-bottom: 15px;
+    line-height: 20px;
 }
 
 .scheme-thumb h5 strong {
