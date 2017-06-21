@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"http://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
     'ui.router',
@@ -907,7 +907,7 @@ angular.module('app.directives', [])
 angular.module('app.controllers')
     .controller('appCtrl', function (user,schemes,entities, ratings ,$scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
          $scope.showRater=false
-         $scope.ratin={}
+         $scope.ratin={ratingType:'public-assessor'}
          $rootScope.user = user
          $scope.searchKeyword ={};
          $scope.schemes = schemes
@@ -1741,6 +1741,9 @@ angular.module('app.controllers')
   angular.module('app.controllers')
      .controller('ratingsCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
 
+         if(!user){
+             $state.go('login')
+         }
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
@@ -1752,7 +1755,8 @@ angular.module('app.controllers')
           $scope.ratingCompleted = false
           $scope.orgSearch = false;
           $scope.ratin = {
-              schemes: []
+              schemes: [],
+              creator : user._id
           }
           $rootScope.logout = function () {
             console.log('logout clicked')

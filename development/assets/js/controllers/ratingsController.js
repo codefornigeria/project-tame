@@ -1,6 +1,9 @@
   angular.module('app.controllers')
      .controller('ratingsCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
 
+         if(!user){
+             $state.go('login')
+         }
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
@@ -12,7 +15,8 @@
           $scope.ratingCompleted = false
           $scope.orgSearch = false;
           $scope.ratin = {
-              schemes: []
+              schemes: [],
+              creator : user._id
           }
           $rootScope.logout = function () {
             console.log('logout clicked')
