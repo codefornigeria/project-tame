@@ -10,10 +10,8 @@ angular.module('app.controllers')
           $scope.action=1
         }
         if(verifyStatus){
-          $scope.alert = {
-                          type: 'success',
-                          message: ' Your account has been verified please login now'
-                      }
+       
+           toastr.success('Your account has been verified please login now.');               
         }
          if (user) {
               $state.go('ratings')
