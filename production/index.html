@@ -43,12 +43,12 @@
            
               </li>
                <li class="nav-item">
-              <a class="nav-link" ui-sref="login" ng-show="!isLoggedIn">Login</a>
+              <a class="nav-link" ui-sref="login({action:0})" ng-show="!isLoggedIn">Login</a>
                
               <a class="nav-link" ng-click="logout()" ng-show="isLoggedIn">LOGOUT</a>
             </li>
             <li class="nav-item join-us" ng-show="!isLoggedIn">
-                <a ui-sref="login">Join us</a>
+                <a ui-sref="login({action:1})">Join us</a>
               
             </li>
           </ul>

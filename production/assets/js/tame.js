@@ -1376,7 +1376,12 @@ angular.module('app.controllers')
       $scope, $rootScope, $state, $stateParams,
        $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
         
-        
+        console.log($stateParams)
+        if($stateParams.action =="1"){
+          console.log('active called')
+          $scope.action=1
+        }
+       
          if (user) {
               $state.go('ratings')
           }
@@ -1388,26 +1393,7 @@ angular.module('app.controllers')
           $rootScope.user = user
           $scope.registered=false
           var authManagement = new AuthManagement($feathers)
-          console.log('auth', AuthManagement)
-          $scope.gotoLogin = function() {
-      // set the location.hash to the id of
-      // the element you wish to scroll to.
-      $location.hash('signin');
-
-   
-      $anchorScroll();
-    };
-    $scope.newAccount = function(){
-      $state.go('login',{
-        token:'newaccount'
-      })
-    }
-       $scope.gotoSignup = function() {
-    $location.hash('account');
-
-   
-      $anchorScroll();
-    }
+        
           $scope.logout = function() {
               $feathers.logout().then(function(params) {
                   console.log(params);
