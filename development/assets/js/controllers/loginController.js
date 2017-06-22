@@ -71,11 +71,15 @@ angular.module('app.controllers')
       $scope.alert = false;
       $scope.user.strategy = 'local'
       console.log(' the user', $scope.user)
-      authManagement.authenticate($scope.user.email, $scope.user.password, (err, res) => {
-        console.log('the error', err.message)
-        console.log('theresponse', res)
-        if (err) {
-          $scope.$apply(function () {
+      authManagement.authenticate($scope.user.email, $scope.user.password)
+      .then ((res) => {
+        console.log('the res',res)
+        if (res) {
+          console.log('user is verified')
+          $state.go('dashboard')
+        }
+      }).catch((err)=>{
+$scope.$apply(function () {
             if (err.code) {
               toastr.error('Incorrect username and/or password');
 
@@ -89,13 +93,6 @@ angular.module('app.controllers')
               message: err.message
             }
           })
-        }
-
-
-        if (res) {
-          console.log('user is verified')
-          $state.go('dashboard')
-        }
       })
 
     };

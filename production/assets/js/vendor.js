@@ -53278,7 +53278,7 @@ function AuthManagement(app) {
     }, {}, cb);
   };
 
-  this.authenticate = function (email, password, cb) {
+  this.authenticate = function (email, password) {
     var cbCalled = false;
     return app.authenticate({ strategy: 'local', email: email, password: password }).then(function (result) {
       return app.passport.verifyJWT(result.accessToken)
@@ -53288,18 +53288,13 @@ function AuthManagement(app) {
   }).then(user => {
      if (!user || !user.isVerified) {
         app.logout();
-        return cb(new Error(user ? 'User\'s email is not verified.' : 'No user returned.'));
+        throw new Error(user ? 'User\'s email is not verified.' : 'No user returned.');
       }
-     if (cb) {
-        cbCalled = true;
-        return cb(null, user);
-      }
+    
 
       return user;
     }).catch(function (err) {
-      if (!cbCalled) {
-        cb(err);
-      }
+      throw err
     });
   };
 }
