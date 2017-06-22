@@ -2812,7 +2812,6 @@ angular.module('app.controllers')
     $scope.active = $stateParams.token == 'newaccount' ? 1 : 0
     $scope.user = {}
     $scope.signup_data = {}
-    $rootScope.user = user
     $scope.registered = false
     var authManagement = new AuthManagement($feathers)
 
