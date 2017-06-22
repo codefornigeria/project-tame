@@ -1,14 +1,20 @@
 angular.module('app.controllers')
-     .controller('loginCtrl', function(user,
+     .controller('verifyCtrl', function(verifyStatus,
       $scope, $rootScope, $state, $stateParams,
        $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
         
         console.log($stateParams)
+        $scope.action = 0
         if($stateParams.action =="1"){
           console.log('active called')
           $scope.action=1
         }
-       
+        if(verifyStatus){
+          $scope.alert = {
+                          type: 'success',
+                          message: ' Your account has been verified please login now'
+                      }
+        }
          if (user) {
               $state.go('ratings')
           }
@@ -85,7 +91,7 @@ angular.module('app.controllers')
                   if (res) {
                       // user logged in and user is verified
                       console.log('user is verified')
-                      $state.go('dashboard')
+                      $state.go('ratings')
                   }
               }).catch(function(err) {
                   console.log(err);

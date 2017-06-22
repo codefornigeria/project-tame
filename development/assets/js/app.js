@@ -315,7 +315,7 @@ angular.module('app', [
                     controller: 'schemeCtrl'
                 })
                 .state('ratings', {
-                    url: '/ratings',
+                    url: '/ratings?ratingType',
                     resolve: {
                         user: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
@@ -454,7 +454,7 @@ angular.module('app', [
                 .state('verify-user', {
                     url: '/verify?token',
                     templateUrl: 'modules/login.html',
-                    controller: 'loginCtrl',
+                    controller: 'verifyCtrl',
                     resolve: {
                         verifyStatus: function ($stateParams, $feathers) {
                             var authManagementService = $feathers.service('authManagement')
@@ -474,6 +474,32 @@ angular.module('app', [
                     url: '/register',
                     templateUrl: 'modules/register.html',
                     controller: 'registerCtrl'
+                })
+                .state('dashboard', {
+                    url:'/dashboard',
+                    templateUrl: 'modules/dashboard.html',
+                    controller: 'dashboardCtrl',
+                    resolve: {
+                        user: function ($q, $feathers, $state, LocalService) {
+                            //  authManagement  :
+                            //  var token = LocalService.get('feathers-jwt')
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
+                            })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                    return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
+
+                        },
+                    }
                 })
 
 

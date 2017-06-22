@@ -1,0 +1,72 @@
+    <section class="clearfix content-area">
+        <div class="container">
+         <div class="form-group"></div>
+         
+          <div class="clearfix"></div>
+           <div class="rating-area organization  organization-rating">
+              <h1> Welcome {{user.firstname}}, {{user.lastname}}  </h1> 
+
+              <div class="row">
+                  <div class="col-md-6">
+                    <div class="thum-inner">
+                      <h4>History</h4>
+                      <p>5</p>
+                      <a href="#">view More ?</a>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="thum-inner">
+                        <h4>Ratings </h4>
+                       <ul>
+                           <li>   
+                               <a ui-sref="ratings({
+                                   ratingType:'self'
+                               })">Create self rating</a>
+                     </li>
+                          <li>   
+                               <a ui-sref="ratings({
+                                   ratingType:'independent'
+                               })">Create independent rating</a>
+                     </li>
+                        <li>   <a href="#">View ratings.</a>
+                      
+                     </li>
+                     <li> 
+                         <a href="#">Delete ratings</a>
+                     </li>
+                       </ul>
+
+                       
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="thum-inner">
+                        <h4>Reports</h4>
+                        <p>5</p>
+                        <a href="#">view More ?</a>
+                      </div>
+                  </div>
+
+                  <div class="col-md-6">
+                      <div class="thum-inner">
+                        <h4>Settings</h4>
+                         <ul>
+                           <li>   <a href="#">Become self assessor.</a>
+                     </li>
+                        <li>   <a href="#">Become independent assessor.</a>
+                     </li>
+                        <li>   <a href="#">Change your password.</a>
+                      
+                     </li>
+                     <li> 
+                         <a href="#">Delete account.</a>
+                     </li>
+                       </ul>
+
+                      </div>
+                  </div>
+              </div>
+
+                </div>
+       </div>
+    </section>
