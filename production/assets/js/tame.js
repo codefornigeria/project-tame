@@ -1727,163 +1727,136 @@ angular.module('app.controllers')
           }
       })
 angular.module('app.controllers')
-     .controller('loginCtrl', function(user,
-      $scope, $rootScope, $state, $stateParams,
-       $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
-        
-        console.log($stateParams)
-        if($stateParams.action =="1"){
-          console.log('active called')
-          $scope.action=1
-        }
-       
-         if (user) {
-              $state.go('ratings')
-          }
+  .controller('loginCtrl', function (user,
+    $scope, $rootScope, $state, $stateParams,
+    $feathers, $auth, AuthService, LocalService, $anchorScroll, $location, toastr) {
 
-           $scope.resetToken = $stateParams.token;
-           $scope.active = $stateParams.token == 'newaccount'? 1:0
-          $scope.user ={}
-          $scope.signup_data={}
-          $rootScope.user = user
-          $scope.registered=false
-          var authManagement = new AuthManagement($feathers)
-        
-          $scope.logout = function() {
-              $feathers.logout().then(function(params) {
-                  console.log(params);
-                  console.log("Logged out!!")
-                  $state.go('home')
-              });
-          };
+    console.log($stateParams)
+    if ($stateParams.action == "1") {
+      console.log('active called')
+      $scope.action = 1
+    }
 
-          $scope.authenticate = function(provider) {
-            if (provider == 'facebook') {
-              $auth.authenticate(provider).then(function(response){
-                console.log('response ===' , response);
-                LocalService.set(feathers-jwt ,response["!#access_token"])
-                $feathers.authenticate({
-                      strategy: 'facebook-token',
-                      access_token: response["!#access_token"]
-                  }).then(function(response){
-                    console.log('facebook token response', response)
-                  }).catch(function(err){
-                    console.log('facebook token error', err)
-                  })
-              }).catch (function(error){
-                console.log(error);
-              });
-            }
+    if (user) {
+      $state.go('ratings')
+    }
 
-            if (provider == 'linkedin') {
-              $auth.authenticate(provider).then(function(response){
-                console.log('response===' ,response);
-              }).catch(function(error){
-                console.log(error);
-              });
-            };
+    $scope.resetToken = $stateParams.token;
+    $scope.active = $stateParams.token == 'newaccount' ? 1 : 0
+    $scope.user = {}
+    $scope.signup_data = {}
+    $rootScope.user = user
+    $scope.registered = false
+    var authManagement = new AuthManagement($feathers)
 
-            if (provider == 'twitter') {
-              $auth.authenticate(provider).then(function(response){
-                console.log('response ===' + response);
-              }).catch(function(error){
-                console.log(error);
-              })
-            }
+    $scope.logout = function () {
+      $feathers.logout().then(function (params) {
+        console.log(params);
+        console.log("Logged out!!")
+        $state.go('home')
+      });
+    };
 
-            // if (provider == '')
-          };
-
-          $scope.login = function() {
-            console.log(' the user',$scope.user)
-              $scope.alert = false;
-              $scope.user.strategy = 'local'
-                console.log(' the user',$scope.user)
-          authManagement.authenticate($scope.user.email, $scope.user.password, (err,res)=>{
-            console.log( 'the error',err.message)
-            console.log('theresponse', res)
-            if(err){
-                    $scope.$apply(function() {
-                      if(err.code){
-                           toastr.error('Incorrect username and/or password');
-
-                      }else{
-                      toastr.error(err.message);
-     
-                      }
-                     
-                      $scope.error = {
-                          type: 'danger',
-                          message: err.message
-                      }
-                  })
-            }
-
-                
-                  if (res) {
-                      console.log('user is verified')
-                      $state.go('dashboard')
-                  }
+    $scope.authenticate = function (provider) {
+      if (provider == 'facebook') {
+        $auth.authenticate(provider).then(function (response) {
+          console.log('response ===', response);
+          LocalService.set(feathers - jwt, response["!#access_token"])
+          $feathers.authenticate({
+            strategy: 'facebook-token',
+            access_token: response["!#access_token"]
+          }).then(function (response) {
+            console.log('facebook token response', response)
+          }).catch(function (err) {
+            console.log('facebook token error', err)
           })
-              // $feathers.authenticate($scope.user).then(function(res) {
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
 
+      if (provider == 'linkedin') {
+        $auth.authenticate(provider).then(function (response) {
+          console.log('response===', response);
+        }).catch(function (error) {
+          console.log(error);
+        });
+      };
 
-              //     console.log('auth result',res);
+      if (provider == 'twitter') {
+        $auth.authenticate(provider).then(function (response) {
+          console.log('response ===' + response);
+        }).catch(function (error) {
+          console.log(error);
+        })
+      }
 
-              //     $scope.$apply(function() {
-              //         $scope.error = false
-              //         $scope.alert = {
-              //             type: 'success',
-              //             message: 'Login successful'
-              //         };
-              //     })
-              //     if (res) {
-              //         // user logged in and user is verified
-              //         console.log('user is verified')
-              //         $state.go('dashboard')
-              //     }
-              // }).catch(function(err) {
-              //     console.log(err);
-              //     $scope.$apply(function() {
-              //         toastr.error('Incorrect username and/or password');
+      // if (provider == '')
+    };
 
-              //         $scope.error = {
-              //             type: 'danger',
-              //             message: 'Email or password is not correct'
-              //         }
-              //     })
-              // })
-          };
+    $scope.login = function () {
+      console.log(' the user', $scope.user)
+      $scope.alert = false;
+      $scope.user.strategy = 'local'
+      console.log(' the user', $scope.user)
+      authManagement.authenticate($scope.user.email, $scope.user.password, (err, res) => {
+        console.log('the error', err.message)
+        console.log('theresponse', res)
+        if (err) {
+          $scope.$apply(function () {
+            if (err.code) {
+              toastr.error('Incorrect username and/or password');
 
-          $scope.register = function() {
-            console.log(' sogin',$scope.signup_data)
-          
-              AuthService.signUp($scope.signup_data).then(function(res) {
-                  console.log(res);
-                    $scope.$apply(function() {
-                  $scope.registered= true
-                    })
-              }).catch(function(err) {
-                        $scope.$apply(function() {
-                  $scope.registered= false
-                    })
-                  console.log(err.toJSON());
+            } else {
+              toastr.error(err.message);
 
-              })
-          }
-
-          $scope.forgotPassword = function(valid){
-
-            if(!valid){
-              return // confirm email is entered
             }
-            
-          }
 
-          $scope.confirmPassword= function(){
+            $scope.error = {
+              type: 'danger',
+              message: err.message
+            }
+          })
+        }
 
-          }
+
+        if (res) {
+          console.log('user is verified')
+          $state.go('dashboard')
+        }
       })
+
+    };
+
+    $scope.register = function () {
+      console.log(' sogin', $scope.signup_data)
+
+      AuthService.signUp($scope.signup_data).then(function (res) {
+        console.log(res);
+        $scope.$apply(function () {
+          $scope.registered = true
+        })
+      }).catch(function (err) {
+        $scope.$apply(function () {
+          $scope.registered = false
+        })
+        console.log(err.toJSON());
+
+      })
+    }
+
+    $scope.forgotPassword = function (valid) {
+
+      if (!valid) {
+        return // confirm email is entered
+      }
+
+    }
+
+    $scope.confirmPassword = function () {
+
+    }
+  })
    angular.module('app.controllers').controller('publicRatingsCtrl', function($rootScope, $scope, $state, $stateParams, $feathers) {
 
 
@@ -2819,137 +2792,135 @@ angular.module('app.controllers')
     }
       })
 angular.module('app.controllers')
-     .controller('verifyCtrl', function(verifyStatus,
-      $scope, $rootScope, $state, $stateParams,
-       $feathers, $auth,AuthService,LocalService,$anchorScroll , $location,toastr) {
-        
-        console.log($stateParams)
-        $scope.action = 0
-        if($stateParams.action =="1"){
-          console.log('active called')
-          $scope.action=1
+  .controller('verifyCtrl', function (verifyStatus,
+    $scope, $rootScope, $state, $stateParams,
+    $feathers, $auth, AuthService, LocalService, $anchorScroll, $location, toastr) {
+
+    console.log($stateParams)
+    $scope.action = 0
+    if ($stateParams.action == "1") {
+      console.log('active called')
+      $scope.action = 1
+    }
+    if (verifyStatus) {
+
+      toastr.success('Your account has been verified please login now.');
+    }
+
+
+    $scope.resetToken = $stateParams.token;
+    $scope.active = $stateParams.token == 'newaccount' ? 1 : 0
+    $scope.user = {}
+    $scope.signup_data = {}
+    $rootScope.user = user
+    $scope.registered = false
+    var authManagement = new AuthManagement($feathers)
+
+    $scope.logout = function () {
+      $feathers.logout().then(function (params) {
+        console.log(params);
+        console.log("Logged out!!")
+        $state.go('home')
+      });
+    };
+
+    $scope.authenticate = function (provider) {
+      if (provider == 'facebook') {
+        $auth.authenticate(provider).then(function (response) {
+          console.log('response ===', response);
+          LocalService.set(feathers - jwt, response["!#access_token"])
+          $feathers.authenticate({
+            strategy: 'facebook-token',
+            access_token: response["!#access_token"]
+          }).then(function (response) {
+            console.log('facebook token response', response)
+          }).catch(function (err) {
+            console.log('facebook token error', err)
+          })
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+
+      if (provider == 'linkedin') {
+        $auth.authenticate(provider).then(function (response) {
+          console.log('response===', response);
+        }).catch(function (error) {
+          console.log(error);
+        });
+      };
+
+      if (provider == 'twitter') {
+        $auth.authenticate(provider).then(function (response) {
+          console.log('response ===' + response);
+        }).catch(function (error) {
+          console.log(error);
+        })
+      }
+
+      // if (provider == '')
+    };
+
+    $scope.login = function () {
+      console.log(' the user', $scope.user)
+      $scope.alert = false;
+      $scope.user.strategy = 'local'
+      console.log(' the user', $scope.user)
+      authManagement.authenticate($scope.user.email, $scope.user.password, (err, res) => {
+        console.log('the error', err.message)
+        console.log('theresponse', res)
+        if (err) {
+          $scope.$apply(function () {
+            if (err.code) {
+              toastr.error('Incorrect username and/or password');
+
+            } else {
+              toastr.error(err.message);
+
+            }
+
+            $scope.error = {
+              type: 'danger',
+              message: err.message
+            }
+          })
         }
-        if(verifyStatus){
-       
-           toastr.success('Your account has been verified please login now.');               
+
+
+        if (res) {
+          console.log('user is verified')
+          $state.go('dashboard')
         }
-         if (user) {
-              $state.go('ratings')
-          }
-
-           $scope.resetToken = $stateParams.token;
-           $scope.active = $stateParams.token == 'newaccount'? 1:0
-          $scope.user ={}
-          $scope.signup_data={}
-          $rootScope.user = user
-          $scope.registered=false
-          var authManagement = new AuthManagement($feathers)
-        
-          $scope.logout = function() {
-              $feathers.logout().then(function(params) {
-                  console.log(params);
-                  console.log("Logged out!!")
-                  $state.go('home')
-              });
-          };
-
-          $scope.authenticate = function(provider) {
-            if (provider == 'facebook') {
-              $auth.authenticate(provider).then(function(response){
-                console.log('response ===' , response);
-                LocalService.set(feathers-jwt ,response["!#access_token"])
-                $feathers.authenticate({
-                      strategy: 'facebook-token',
-                      access_token: response["!#access_token"]
-                  }).then(function(response){
-                    console.log('facebook token response', response)
-                  }).catch(function(err){
-                    console.log('facebook token error', err)
-                  })
-              }).catch (function(error){
-                console.log(error);
-              });
-            }
-
-            if (provider == 'linkedin') {
-              $auth.authenticate(provider).then(function(response){
-                console.log('response===' ,response);
-              }).catch(function(error){
-                console.log(error);
-              });
-            };
-
-            if (provider == 'twitter') {
-              $auth.authenticate(provider).then(function(response){
-                console.log('response ===' + response);
-              }).catch(function(error){
-                console.log(error);
-              })
-            }
-
-            // if (provider == '')
-          };
-
-          $scope.login = function() {
-            console.log(' the user',$scope.user)
-              $scope.alert = false;
-              $scope.user.strategy = 'local'
-                console.log(' the user',$scope.user)
-          
-              $feathers.authenticate($scope.user).then(function(res) {
-                  console.log(res);
-
-                  $scope.$apply(function() {
-                      $scope.error = false
-                      $scope.alert = {
-                          type: 'success',
-                          message: 'Login successful'
-                      };
-                  })
-                  if (res) {
-                      // user logged in and user is verified
-                      console.log('user is verified')
-                      $state.go('ratings')
-                  }
-              }).catch(function(err) {
-                  console.log(err);
-                  $scope.$apply(function() {
-                      toastr.error('Incorrect username and/or password');
-
-                      $scope.error = {
-                          type: 'danger',
-                          message: 'Email or password is not correct'
-                      }
-                  })
-              })
-          };
-
-          $scope.register = function() {
-            console.log(' sogin',$scope.signup_data)
-          
-              AuthService.signUp($scope.signup_data).then(function(res) {
-                  console.log(res);
-                    $scope.$apply(function() {
-                  $scope.registered= true
-                    })
-              }).catch(function(err) {
-                        $scope.$apply(function() {
-                  $scope.registered= false
-                    })
-                  console.log(err.toJSON());
-
-              })
-          }
-
-          $scope.forgotPassword = function(valid){
-
-            if(!valid){
-              return // confirm email is entered
-            }
-            
-          }
-
-          $scope.confirmPassword= function(){
-
-          }
       })
+
+    };
+
+    $scope.register = function () {
+      console.log(' sogin', $scope.signup_data)
+
+      AuthService.signUp($scope.signup_data).then(function (res) {
+        console.log(res);
+        $scope.$apply(function () {
+          $scope.registered = true
+        })
+      }).catch(function (err) {
+        $scope.$apply(function () {
+          $scope.registered = false
+        })
+        console.log(err.toJSON());
+
+      })
+    }
+
+    $scope.forgotPassword = function (valid) {
+
+      if (!valid) {
+        return // confirm email is entered
+      }
+
+    }
+
+    $scope.confirmPassword = function () {
+
+    }
+  })
