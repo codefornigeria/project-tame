@@ -1,5 +1,5 @@
 angular.module("app.config", [])
-.constant("Config", {"api":"https://tame-api.herokuapp.com","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
+.constant("Config", {"api":"http://localhost:3030","facebookAppId":"1503484316624984","googleMapKey":"AIzaSyBpzQ8_m8SrgbbIk0X2o5NVTyg1XdFgSOk"});
 
 angular.module('app', [
     'ui.router',
@@ -1799,33 +1799,60 @@ angular.module('app.controllers')
               $scope.alert = false;
               $scope.user.strategy = 'local'
                 console.log(' the user',$scope.user)
-          
-              $feathers.authenticate($scope.user).then(function(res) {
-                  console.log(res);
+          authManagement.authenticate($scope.user.email, $scope.user.password, (err,res)=>{
+            console.log( 'the error',err.message)
+            console.log('theresponse', res)
+            if(err){
+                    $scope.$apply(function() {
+                      if(err.code){
+                           toastr.error('Incorrect username and/or password');
 
-                  $scope.$apply(function() {
-                      $scope.error = false
-                      $scope.alert = {
-                          type: 'success',
-                          message: 'Login successful'
-                      };
+                      }else{
+                      toastr.error(err.message);
+     
+                      }
+                     
+                      $scope.error = {
+                          type: 'danger',
+                          message: err.message
+                      }
                   })
+            }
+
+                
                   if (res) {
-                      // user logged in and user is verified
                       console.log('user is verified')
                       $state.go('dashboard')
                   }
-              }).catch(function(err) {
-                  console.log(err);
-                  $scope.$apply(function() {
-                      toastr.error('Incorrect username and/or password');
+          })
+              // $feathers.authenticate($scope.user).then(function(res) {
 
-                      $scope.error = {
-                          type: 'danger',
-                          message: 'Email or password is not correct'
-                      }
-                  })
-              })
+
+              //     console.log('auth result',res);
+
+              //     $scope.$apply(function() {
+              //         $scope.error = false
+              //         $scope.alert = {
+              //             type: 'success',
+              //             message: 'Login successful'
+              //         };
+              //     })
+              //     if (res) {
+              //         // user logged in and user is verified
+              //         console.log('user is verified')
+              //         $state.go('dashboard')
+              //     }
+              // }).catch(function(err) {
+              //     console.log(err);
+              //     $scope.$apply(function() {
+              //         toastr.error('Incorrect username and/or password');
+
+              //         $scope.error = {
+              //             type: 'danger',
+              //             message: 'Email or password is not correct'
+              //         }
+              //     })
+              // })
           };
 
           $scope.register = function() {

@@ -53280,16 +53280,17 @@ function AuthManagement(app) {
 
   this.authenticate = function (email, password, cb) {
     var cbCalled = false;
+    return app.authenticate({ strategy: 'local', email: email, password: password }).then(function (result) {
+      return app.passport.verifyJWT(result.accessToken)
+  }).then(payload => {
+    return app.service('users').get(payload.userId)
 
-    return app.authenticate({ type: 'local', email: email, password: password }).then(function (result) {
-      var user = result.data;
-
-      if (!user || !user.isVerified) {
+  }).then(user => {
+     if (!user || !user.isVerified) {
         app.logout();
         return cb(new Error(user ? 'User\'s email is not verified.' : 'No user returned.'));
       }
-
-      if (cb) {
+     if (cb) {
         cbCalled = true;
         return cb(null, user);
       }
