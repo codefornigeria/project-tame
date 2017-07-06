@@ -36,9 +36,9 @@
 			<div class="work-reviews">
 
 				<ul>
-					<li> <span class="bullet cas"></span> 20M Cases </li>
-					<li> <span class="bullet sch"></span> 800 Schemes </li>
-					<li> <span class="bullet sec"></span> 20 sectors</li>
+					<li> <span class="bullet sch"></span> 80 Schemes </li>
+					<li> <span class="bullet cas"></span> 500 Antidotes </li>
+					<li> <span class="bullet sec"></span> 1 sector</li>
 				</ul>
 
 				<a href="#" class="btn btn-outline-success">See How It Works</a>
@@ -93,9 +93,9 @@
 					<div class="scheme-thumb">
 						<p class="update">updated 4 days ago</p>
 						<h4>{{scheme.name}}</h4>
-						<h5><strong>Sector: </strong> Education</h5>
-						<h5><strong>Subsceptible Areas: </strong> Admission, Registration, Examination/ Certiﬁcation...</h5>
-						<h5><strong>Scheme Operators: </strong> AdministraIve Staﬀ, Non-Academic Staﬀ ...</h5>
+						<h5><strong>Sector: </strong> {{scheme.sectors[0].name}}</h5>
+						<h5><strong>Focus Areas: </strong> {{scheme.focus}}</h5>
+						<h5><strong>Level</strong> {{scheme.level}}</h5>
 						<h5><strong>Antidotes: </strong> {{scheme.antidotes.length}}</h5>
 					
 					</div>
