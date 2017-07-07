@@ -201,8 +201,8 @@ angular.module('app', [
                             }).then(function (ratings) {
                                 if (ratings.data.length) {
                                     console.log('test ratings', ratings.data)
-                                      return ratings.data
-                                 
+                                    return ratings.data
+
                                 }
                             }).catch(function (err) {
                                 console.log(err)
@@ -291,8 +291,8 @@ angular.module('app', [
                             }).then(function (ratings) {
                                 if (ratings.data.length) {
                                     console.log('test ratings', ratings.data)
-                                      return ratings.data
-                                 
+                                    return ratings.data
+
                                 }
                             }).catch(function (err) {
                                 console.log(err)
@@ -469,14 +469,39 @@ angular.module('app', [
                         }
                     }
                 })
+                .state('request-assessor', {
+                    url: '/request-assessor?type',
+                    templateUrl: 'modules/request.html',
+                    controller: 'requestCtrl',
+                    resolve: {
+                        user: function ($q, $feathers, $state, LocalService) {
+                            //  authManagement  :
+                            //  var token = LocalService.get('feathers-jwt')
+                            return $feathers.authenticate().then(response => {
+                                console.log('Authenticated!', response);
+                                return $feathers.passport.verifyJWT(response.accessToken);
+                            })
+                                .then(payload => {
+                                    console.log('JWT Payload', payload);
+                                    return $feathers.service('users').get(payload.userId);
+                                })
+                                .then(user => {
+                                    return user
+                                })
+                                .catch(function (error) {
+                                    console.error('Error authenticating!', error);
+                                });
 
+                        },
+                    }
+                })
                 .state('register', {
                     url: '/register',
                     templateUrl: 'modules/register.html',
                     controller: 'registerCtrl'
                 })
                 .state('dashboard', {
-                    url:'/dashboard',
+                    url: '/dashboard',
                     templateUrl: 'modules/dashboard.html',
                     controller: 'dashboardCtrl',
                     resolve: {

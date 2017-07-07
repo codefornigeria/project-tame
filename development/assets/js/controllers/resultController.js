@@ -24,19 +24,14 @@
                            }
                          }
                        }).then(function(sectors){
+                           console.log('the sectors', sectors)
                          if(sectors.data.length){
                            var sectorIds =_.pluck(sectors.data, '_id')
                            console.log('sector ids',sectorIds)
                            schemeService.find({
                                query: {
                                    sectors: sectorIds,
-                                   $populate: {
-                                       path: 'sectors',
-                                       select: 'name -_id',
-                                       options: {
-                                           limit: 5
-                                       }
-                                   }
+                                   
                                }
                            }).then(function(schemes) {
                                console.log('showing ssearch schemes', schemes)
@@ -71,13 +66,7 @@
                              ratingService.find({
                                query:{
                                  entity : entityIds,
-                                 $populate: {
-                                     path: 'entity schemes',
-                                     select: 'name -_id',
-                                     options: {
-                                         limit: 5
-                                     }
-                                 }
+                                 
 
                                }
                              }).then(function(ratings){
@@ -95,13 +84,7 @@
                                  $text: {
                                      $search: $scope.searchKeyword.keyword
                                  },
-                                 $populate: {
-                                     path: 'sectors',
-                                     select: 'name -_id',
-                                     options: {
-                                         limit: 5
-                                     }
-                                 }
+                                 
                              }
                          }).then(function(schemes) {
                              console.log('showing search schemes', schemes)
