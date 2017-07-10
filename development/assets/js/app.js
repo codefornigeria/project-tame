@@ -493,6 +493,20 @@ angular.module('app', [
                                 });
 
                         },
+                        entities: function ($q, $feathers, $state, LocalService) {
+                            return $feathers.service('entity').find({
+
+                            }).then(function (entities) {
+                                if (entities.data.length) {
+                                    console.log('test entities', entities.data)
+                                    return entities.data
+
+                                }
+                            }).catch(function (err) {
+                                console.log(err)
+                            })
+
+                        },
                     }
                 })
                 .state('register', {
