@@ -10,10 +10,12 @@
             <div class="form-group row">
               <label class="col-3">Organization</label>
               <div class="col-9">
-                <select name="orgSelect" id="orgSelect" class="custom-select form-control" ng-change="" ng-options="option._id  as option.name for option in entities track by option._id"
-                  ng-model="request.entity">
+                <select name="entitySelect" id="entitySelect" class="custom-select form-control" ng-change="" ng-options="option._id  as option.name for option in entities track by option._id"
+                  ng-model="request.entity" required>
 	               <option value="">Select Organization</option> <!-- not selected / blank option -->
                </select>
+               <span ng-show="requestForm.entitySelect.$invalid && !requestForm.entitySelect.$pristine " class="text-danger ">Select Entity you intend to assess</span>
+             
               </div>
             </div>
 

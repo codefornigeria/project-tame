@@ -340,6 +340,27 @@ angular.module('app', [
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
                 })
+                 .state('view-ratings', {
+                    url: '/view-ratings',
+                    resolve: {
+                        
+                        ratings: function ($q, $feathers, $state, LocalService) {
+                            return $feathers.service('rating').find({
+                               
+                            }).then(function (ratings) {
+                                if (ratings.data.length) {
+                                    console.log('view ratings', ratings.data)
+                                    return ratings.data
+
+                                }
+                            }).catch(function (err) {
+                                console.log(err)
+                            })
+                    }
+                    },
+                    templateUrl: 'modules/view-ratings.html',
+                    controller: 'viewRatingCtrl'
+                })
                 .state('rating-result', {
                     url: '/rating-result?rating',
                     resolve: {

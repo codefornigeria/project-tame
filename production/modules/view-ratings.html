@@ -1,0 +1,42 @@
+<section class="clearfix content-area">
+
+
+	<div class="schemes" ng-show="ratings.length">
+		<div class="container" >
+			<h2> Ratings</h2>
+
+			<div class="row scheme-thumb-wrap">
+				<div class="col-md-4 col-sm-6" ng-repeat="rating in ratings">
+					<div class="scheme-thumb">
+						<p class="update">updated 4 days ago</p>
+						<h4>{{scheme.name}}</h4>
+						<h5><strong>Sector: </strong> Education</h5>
+						<h5><strong>Subsceptible Areas: </strong> Admission, RegistraIon, ExaminaIon/ CerIﬁcaIon...</h5>
+						<h5><strong>Scheme Operators: </strong> AdministraIve Staﬀ, NonAcademic Staﬀ ...</h5>
+						<h5><strong>Antidotes: </strong> {{scheme.antidotes.length}}</h5>
+								
+					</div>
+				</div>
+				<!-- End scheme thumb -->
+			</div>
+		</div>
+	</div>
+	
+	<!-- End schemes -->
+
+
+	<div class="schemes" ng-show="!ratings.length">
+		<div class="container" >
+			<h2> No search result found</h2>
+
+			<div class="row scheme-thumb-wrap">
+				<div class="col-md-4 col-sm-6">
+					<p>Ooops!!, we couldn't match your search criteria. please try again.</p>
+				</div>
+				<!-- End scheme thumb -->
+			</div>
+		</div>
+	</div>
+	
+	<!-- End schemes -->
+</section>

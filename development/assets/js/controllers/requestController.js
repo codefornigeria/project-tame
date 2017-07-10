@@ -5,7 +5,7 @@ angular.module('app.controllers')
 
     console.log($stateParams)
     $scope.requestType = $stateParams.type
-    $scope.request = {assessorType:$stateParams.type}
+    $scope.request = {assessorType:$stateParams.type , user: user._id}
 
   
     
@@ -26,20 +26,23 @@ angular.module('app.controllers')
       });
     };
    
-          $scope.submitRequest = function() {
+          $scope.submitRequest = function(valid) {
+            if(!valid){
+              return
+            }
               console.log('request data', $scope.request)
-              // var requestService = $feathers.service('request')
-              //   requestService.create($scope.request).then(function(requestResult) {
-              //         $scope.$apply(function() {
-              //             console.log('result from rating', requestResult)
-              //             $scope.requestResult = requestResult
+              var requestService = $feathers.service('request')
+                requestService.create($scope.request).then(function(requestResult) {
+                      $scope.$apply(function() {
+                          console.log('result from request', requestResult)
+                          $scope.requestResult = requestResult
 
-              //             $scope.requestCompleted = true
-              //         })
-              //     }).catch(function(err) {
-              //          $scope.requestCompleted = false
-              //         console.log('ratin error', err)
-              //     })
+                          $scope.requestCompleted = true
+                      })
+                  }).catch(function(err) {
+                       $scope.requestCompleted = false
+                      console.log('ratin error', err)
+                 })
                 
           }
           

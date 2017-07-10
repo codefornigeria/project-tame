@@ -343,6 +343,27 @@ angular.module('app', [
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
                 })
+                 .state('view-ratings', {
+                    url: '/view-ratings',
+                    resolve: {
+                        
+                        ratings: function ($q, $feathers, $state, LocalService) {
+                            return $feathers.service('rating').find({
+                               
+                            }).then(function (ratings) {
+                                if (ratings.data.length) {
+                                    console.log('view ratings', ratings.data)
+                                    return ratings.data
+
+                                }
+                            }).catch(function (err) {
+                                console.log(err)
+                            })
+                    }
+                    },
+                    templateUrl: 'modules/view-ratings.html',
+                    controller: 'viewRatingCtrl'
+                })
                 .state('rating-result', {
                     url: '/rating-result?rating',
                     resolve: {
@@ -2496,7 +2517,7 @@ angular.module('app.controllers')
 
     console.log($stateParams)
     $scope.requestType = $stateParams.type
-    $scope.request = {assessorType:$stateParams.type}
+    $scope.request = {assessorType:$stateParams.type , user: user._id}
 
   
     
@@ -2517,20 +2538,23 @@ angular.module('app.controllers')
       });
     };
    
-          $scope.submitRequest = function() {
+          $scope.submitRequest = function(valid) {
+            if(!valid){
+              return
+            }
               console.log('request data', $scope.request)
-              // var requestService = $feathers.service('request')
-              //   requestService.create($scope.request).then(function(requestResult) {
-              //         $scope.$apply(function() {
-              //             console.log('result from rating', requestResult)
-              //             $scope.requestResult = requestResult
+              var requestService = $feathers.service('request')
+                requestService.create($scope.request).then(function(requestResult) {
+                      $scope.$apply(function() {
+                          console.log('result from request', requestResult)
+                          $scope.requestResult = requestResult
 
-              //             $scope.requestCompleted = true
-              //         })
-              //     }).catch(function(err) {
-              //          $scope.requestCompleted = false
-              //         console.log('ratin error', err)
-              //     })
+                          $scope.requestCompleted = true
+                      })
+                  }).catch(function(err) {
+                       $scope.requestCompleted = false
+                      console.log('ratin error', err)
+                 })
                 
           }
           
@@ -2983,3 +3007,20 @@ angular.module('app.controllers')
 
     }
   })
+  angular.module('app.controllers')
+     .controller('viewRatingCtrl', function(ratings, $rootScope, $scope, $state, $stateParams, $feathers) {
+
+                $scope.ratings = ratings
+          $rootScope.logout = function () {
+            console.log('logout clicked')
+            $feathers.logout().then(function (params) {
+                console.log(params);
+                console.log("Logged out!!")
+                $rootScope.user = null
+                $state.reload()
+
+            });
+        }
+        
+
+      })
