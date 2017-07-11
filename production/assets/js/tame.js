@@ -343,6 +343,20 @@ angular.module('app', [
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
                 })
+                .state('request', {
+                    url: '/request?action&requestId',
+                    resolve:{
+                        requestStatus:function($q,$feathers, $state, $stateParams){
+                            console.log('state params',$stateParams )
+                            return $feathers.service('request').get().then(result =>{
+                                return result
+                                    
+                            })
+                        }
+                    },
+                    templateUrl:'modules/request-result.html',
+                    controller: 'requestResultCtrl'
+                })
                  .state('view-ratings', {
                     url: '/view-ratings',
                     resolve: {
@@ -2301,6 +2315,10 @@ angular.module('app.controllers')
           }
           $scope.loadSchemes = function(assessmentData) {
               // load schemes based on assessment data
+              console.log('assess', assessmentData)
+              if(!assessmentData){
+                  return
+              }
               console.log('show ratin', $scope.ratin)
              console.log('show user', user)
               $scope.showAssessment = true
@@ -2566,6 +2584,19 @@ angular.module('app.controllers')
                  })
                 
           }
+          
+  
+  })
+angular.module('app.controllers')
+  .controller('requestResultCtrl', function (user,entities,
+    $scope, $rootScope, $state, $stateParams,
+    $feathers, $auth, AuthService, LocalService, $anchorScroll, $location, toastr) {
+
+    console.log($stateParams)
+  
+        
+ 
+          
           
   
   })

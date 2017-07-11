@@ -165,6 +165,10 @@
           }
           $scope.loadSchemes = function(assessmentData) {
               // load schemes based on assessment data
+              console.log('assess', assessmentData)
+              if(!assessmentData){
+                  return
+              }
               console.log('show ratin', $scope.ratin)
              console.log('show user', user)
               $scope.showAssessment = true

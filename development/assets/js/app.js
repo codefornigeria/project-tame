@@ -340,6 +340,20 @@ angular.module('app', [
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
                 })
+                .state('request', {
+                    url: '/request?action&requestId',
+                    resolve:{
+                        requestStatus:function($q,$feathers, $state, $stateParams){
+                            console.log('state params',$stateParams )
+                            return $feathers.service('request').get().then(result =>{
+                                return result
+                                    
+                            })
+                        }
+                    },
+                    templateUrl:'modules/request-result.html',
+                    controller: 'requestResultCtrl'
+                })
                  .state('view-ratings', {
                     url: '/view-ratings',
                     resolve: {
