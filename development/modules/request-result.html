@@ -4,6 +4,9 @@
   
     <div >
       <p> You have processed the following request</p>
+      <p><strong> Assessment Type:</strong> {{requestData.assessorType}}</p>
+       <p><strong>Entity:</strong> {{requestData.entity[0].name}}, {{requestData.entity[0].city}}</p>
+       <p><strong>Requester: </strong> {{requestData.user[0].firstname}}, {{requestData.user[0].lastname}}
       <button class="btn btn-primary" type="button" ui-sref="login">Back to Dashboard</button>
     </div>
   </div>
