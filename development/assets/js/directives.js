@@ -92,11 +92,11 @@ angular.module('app.directives', [])
     return {
         restrict: 'EA',
         template:'<div class="rating-point">'+
-                 '<a href="#" ng-click=setValue(1)>1</a>'+
-                 '<a href="#"ng-click=setValue(2)>2</a>'+
-                 '<a href="#"ng-click=setValue(3)>3</a>'+
-                 '<a  href="#" ng-click=setValue(4)>4</a>'+
-                 '<a href="#" ng-click=setValue(5)>5</a>'+
+                 '<button href="#" ng-click=setValue(1)>1</button>'+
+                 '<button href="#"ng-click=setValue(2)>2</button>'+
+                 '<button href="#"ng-click=setValue(3)>3</button>'+
+                 '<button  href="#" ng-click=setValue(4)>4</button>'+
+                 '<button href="#" ng-click=setValue(5)>5</button>'+
                '</div>',
       
        

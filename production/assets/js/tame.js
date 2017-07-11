@@ -154,15 +154,7 @@ angular.module('app', [
                         schemes: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             return $feathers.service('scheme').find({
-                                query: {
-                                    $populate: {
-                                        path: 'sectors antidotes',
-                                        select: 'name description _id',
-                                        options: {
-                                            limit: 5
-                                        }
-                                    }
-                                }
+                              
                             }).then(function (schemes) {
                                 if (schemes.data.length) {
                                     console.log('test schemes', schemes.data)
@@ -245,13 +237,7 @@ angular.module('app', [
                             //  authManagement  :
                             return $feathers.service('scheme').find({
                                 query: {
-                                    $populate: {
-                                        path: 'sectors antidotes',
-                                        select: 'name description _id',
-                                        options: {
-                                            limit: 5
-                                        }
-                                    }
+                                   
                                 }
                             }).then(function (schemes) {
                                 if (schemes.data.length) {
@@ -879,11 +865,11 @@ angular.module('app.directives', [])
     return {
         restrict: 'EA',
         template:'<div class="rating-point">'+
-                 '<a href="#" ng-click=setValue(1)>1</a>'+
-                 '<a href="#"ng-click=setValue(2)>2</a>'+
-                 '<a href="#"ng-click=setValue(3)>3</a>'+
-                 '<a  href="#" ng-click=setValue(4)>4</a>'+
-                 '<a href="#" ng-click=setValue(5)>5</a>'+
+                 '<button href="#" ng-click=setValue(1)>1</button>'+
+                 '<button href="#"ng-click=setValue(2)>2</button>'+
+                 '<button href="#"ng-click=setValue(3)>3</button>'+
+                 '<button  href="#" ng-click=setValue(4)>4</button>'+
+                 '<button href="#" ng-click=setValue(5)>5</button>'+
                '</div>',
       
        

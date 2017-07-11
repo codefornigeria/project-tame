@@ -151,15 +151,7 @@ angular.module('app', [
                         schemes: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             return $feathers.service('scheme').find({
-                                query: {
-                                    $populate: {
-                                        path: 'sectors antidotes',
-                                        select: 'name description _id',
-                                        options: {
-                                            limit: 5
-                                        }
-                                    }
-                                }
+                              
                             }).then(function (schemes) {
                                 if (schemes.data.length) {
                                     console.log('test schemes', schemes.data)
@@ -242,13 +234,7 @@ angular.module('app', [
                             //  authManagement  :
                             return $feathers.service('scheme').find({
                                 query: {
-                                    $populate: {
-                                        path: 'sectors antidotes',
-                                        select: 'name description _id',
-                                        options: {
-                                            limit: 5
-                                        }
-                                    }
+                                   
                                 }
                             }).then(function (schemes) {
                                 if (schemes.data.length) {
