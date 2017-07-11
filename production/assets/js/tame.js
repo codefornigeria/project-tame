@@ -2224,8 +2224,9 @@ angular.module('app.controllers')
                 var entityService = $feathers.service('entity')
                 var entityConfig;
                 console.log('showing organization type', user)
-                if(user.userType == 'independent-assessor'){
-                  entityconfig ={
+                console.log('params', $stateParams)
+                if($stateParams.ratingType == 'independent'){
+                  entityConfig ={
                         query:{
                       _id:user.independentEntities,
                       sectors : $scope.ratin.sectorId
@@ -2273,7 +2274,9 @@ angular.module('app.controllers')
 
                   var sectorService = $feathers.service('sector')
                   sectorService.find({
-
+                    query: {
+                        _id:"58ae8c5b561deb07e1dc1d37"
+                    }
                   }).then(function(sectors) {
 
                       if (sectors.data.length) {
@@ -2592,7 +2595,7 @@ angular.module('app.controllers')
   .controller('requestResultCtrl', function (requestStatus,
     $scope, $rootScope, $state, $stateParams,
     $feathers, $auth, AuthService, LocalService, $anchorScroll, $location, toastr) {
-
+      $scope.requestData =requestStatus
     console.log($stateParams)
   
         
