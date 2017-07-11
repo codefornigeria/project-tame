@@ -426,7 +426,31 @@ angular.module('app', [
                 .state('results', {
                     url: '/search?query',
                     templateUrl: 'modules/search-result.html',
-                    controller: 'resultCtrl'
+                    controller: 'resultCtrl',
+                    resolve:{
+                        schemes: function ($q, $feathers, $state, LocalService) {
+                            //  authManagement  :
+                            return $feathers.service('scheme').find({
+                                query: {
+                                    $populate: {
+                                        path: 'sectors antidotes',
+                                        select: 'name description _id',
+                                        options: {
+                                            limit: 5
+                                        }
+                                    }
+                                }
+                            }).then(function (schemes) {
+                                if (schemes.data.length) {
+                                    console.log('test schemes', schemes.data)
+                                    return schemes.data
+                                }
+                            }).catch(function (err) {
+                                console.log(err)
+                            })
+                        },
+                    }
+
                 })
                 .state('entity', {
                     url: '/entity?query',

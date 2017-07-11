@@ -429,7 +429,31 @@ angular.module('app', [
                 .state('results', {
                     url: '/search?query',
                     templateUrl: 'modules/search-result.html',
-                    controller: 'resultCtrl'
+                    controller: 'resultCtrl',
+                    resolve:{
+                        schemes: function ($q, $feathers, $state, LocalService) {
+                            //  authManagement  :
+                            return $feathers.service('scheme').find({
+                                query: {
+                                    $populate: {
+                                        path: 'sectors antidotes',
+                                        select: 'name description _id',
+                                        options: {
+                                            limit: 5
+                                        }
+                                    }
+                                }
+                            }).then(function (schemes) {
+                                if (schemes.data.length) {
+                                    console.log('test schemes', schemes.data)
+                                    return schemes.data
+                                }
+                            }).catch(function (err) {
+                                console.log(err)
+                            })
+                        },
+                    }
+
                 })
                 .state('entity', {
                     url: '/entity?query',
@@ -2228,8 +2252,7 @@ angular.module('app.controllers')
                 if($stateParams.ratingType == 'independent'){
                   entityConfig ={
                         query:{
-                      _id:user.independentEntities,
-                      sectors : $scope.ratin.sectorId
+                       sectors : $scope.ratin.sectorId
                         }
                    }
                 }else{
@@ -2657,18 +2680,20 @@ angular.module('app.controllers')
 
 
     })
-   angular.module('app.controllers').controller('resultCtrl', function($scope, Restangular, $state, $stateParams, $feathers) {
+   angular.module('app.controllers').controller('resultCtrl', function(schemes,$scope, Restangular, $state, $stateParams, $feathers) {
                
                $scope.searchKeyword={}
                $scope.searchKeyword.keyword = $stateParams.query;
+               $scope.allSchemes = schemes
                $scope.showRagResult = function(rating){
                  $state.go('entityrating',{
                    query: rating._id
                  })
                }
                $scope.search = function() {
+                   
                  $scope.schemes=[]
-
+                 
                      if ($scope.searchKeyword.keyword) {
                          //  $state.go('results', {query: $scope.searchKeyword})
                          $scope.searching = true;
@@ -2719,7 +2744,11 @@ angular.module('app.controllers')
                            }
                          }).then(function(entities){
                            console.log('showing search entities', entities)
+                            $scope.$apply(function(){
+                                 $scope.entities = entities.data
+                               })
                            if(entities.data.length){
+
                            var entityIds = _.pluck(entities.data , '_id')
                            console.log('entities ids',entityIds)
                              ratingService.find({
@@ -2727,9 +2756,11 @@ angular.module('app.controllers')
                                  entity : entityIds,
                                  
 
-                               }
+                               },
+                               $limit: 5
                              }).then(function(ratings){
                                console.log( 'show ratings', ratings)
+
                                $scope.$apply(function(){
                                  $scope.ratings = ratings.data
                                })
@@ -2769,7 +2800,15 @@ angular.module('app.controllers')
                }
 
                $scope.search();
-
+               $scope.publicRating= function(entity){
+                $scope.currentEntity = entity
+                console.log('show entity', $scope)
+                       
+            $scope.showRater=true
+        }
+        $scope.toResult = function(){
+            $scope.showRater=false
+        }
                $scope.showResult = function(person) {
                  console.log(person);
                    $state.go('entity', {
@@ -2802,7 +2841,23 @@ angular.module('app.controllers')
                   
                    }
                }
-
+                $scope.submitRating= function(valid){
+            if(!valid){
+                return
+            }
+              $scope.showRater=false
+                  var ratingService = $feathers.service('rating')
+                
+                      ratingService.create($scope.ratin).then(function(ratinResult) {
+                          $scope.$apply(function() {
+                             $scope.ratingFunc()
+                            
+                          })
+                      }).catch(function(err) {
+                          console.log('ratin error', err)
+                      })
+                
+        }
                $scope.viewEntity = function() {
                    if ($scope.searchedEntity) {
                        $scope.searching = true;
@@ -2832,17 +2887,7 @@ angular.module('app.controllers')
 
                            })
                        })
-                       // Restangular.one('person', $scope.searchedEntity).get().then(function(response){
-                       //     $scope.searching = false;
-                       //     $scope.entity = response;
-                       //     $scope.searchKeyword = response.name;
-                       //     $scope.contracts = response.projects;
-                       //     $scope.total =  $scope.contracts.length;
-                       //  }, function(error){
-                       //     $scope.searching = false;
-                       //     $scope.error = error;
-                       //     console.log(error)
-                       // });
+                      
                    }
                }
              })

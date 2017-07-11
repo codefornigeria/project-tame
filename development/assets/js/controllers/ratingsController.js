@@ -77,8 +77,7 @@
                 if($stateParams.ratingType == 'independent'){
                   entityConfig ={
                         query:{
-                      _id:user.independentEntities,
-                      sectors : $scope.ratin.sectorId
+                       sectors : $scope.ratin.sectorId
                         }
                    }
                 }else{
