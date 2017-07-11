@@ -2268,8 +2268,7 @@ angular.module('app.controllers')
               var inputMin = 1;
                 $scope.sectorsearching = true;
                    $scope.orgsearching = false;
-              console.log('search sector called')
-              if ($scope.ratin.sector && $scope.ratin.sector.length >= inputMin) {
+                 if ($scope.ratin.sector && $scope.ratin.sector.length >= inputMin) {
                   $scope.ratin.sectorSelected = false
 
                   var sectorService = $feathers.service('sector')
