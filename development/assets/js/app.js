@@ -345,7 +345,8 @@ angular.module('app', [
                     resolve:{
                         requestStatus:function($q,$feathers, $state, $stateParams){
                             console.log('state params',$stateParams )
-                            return $feathers.service('request').get().then(result =>{
+                            return $feathers.service('request').get($stateParams.requestId ,{action:$stateParams.action}).then(result =>{
+                                console.log('the result',result)
                                 return result
                                     
                             })
