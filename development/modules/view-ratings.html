@@ -8,14 +8,16 @@
 			<div class="row scheme-thumb-wrap">
 				<div class="col-md-4 col-sm-6" ng-repeat="rating in ratings">
 					<div class="scheme-thumb">
-						<p class="update">updated 4 days ago</p>
+						<p class="update">RAG</p>
 						<h4>{{scheme.name}}</h4>
 						<h5><strong>Sector: </strong> Education</h5>
-						<h5><strong>Subsceptible Areas: </strong> Admission, RegistraIon, ExaminaIon/ CerIﬁcaIon...</h5>
-						<h5><strong>Scheme Operators: </strong> AdministraIve Staﬀ, NonAcademic Staﬀ ...</h5>
-						<h5><strong>Antidotes: </strong> {{scheme.antidotes.length}}</h5>
-								
+              <h5><strong>Entity: </strong> {{rating.entity[0].name}} ,  {{rating.entity[0].city}} </h5>  
+						<h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>  
+						<h5><strong><a href=#>{{rating.ratingData.length}} Antidotes </a> </strong></h5>
+					
+					<a class="update">view more.. </a>
 					</div>
+          
 				</div>
 				<!-- End scheme thumb -->
 			</div>

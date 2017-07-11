@@ -2211,12 +2211,21 @@ angular.module('app.controllers')
                 console.log('showing organization type', user)
                 if(user.userType == 'independent-assessor'){
                   entityconfig ={
+                        query:{
+                      _id:user.independentEntities,
+                      sectors : $scope.ratin.sectorId
+                        }
                    }
                 }else{
                   entityConfig ={
-                
+                      query:{
+                         _id: user.selfEntities,
+                         sectors : $scope.ratin.sectorId
+                      }
+                   
                   }
                 }
+                console.log('entity config',entityConfig)
                   entityService.find(entityConfig).then(function(entities) {
                       console.log('returnd entit', entities)
                       if (entities.data.length) {
