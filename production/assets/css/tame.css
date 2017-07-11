@@ -1340,6 +1340,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     background: #93bcec;
     color: #fff
 }
+
+.ng-hide         { animation:0.2s; transition-timing-function: ease-out }
+
+/* when showing the picture */
+.ng-hide-remove      { animation:0.5s; transition-timing-function: ease-out }
 @media(max-width: 1199px){
 
 	.footer-area ul.social-link li {
@@ -1690,6 +1695,31 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
   	display: none;
   }
 
+.recent-ratings table {
+		width: 320px;
+	}
+   
+.recent-ratings table tr td:last-child, .recent-ratings table tr th:last-child {
+    padding-right: 33px;
+}
+
+.rate-now {
+    float: right;
+    padding: 3px 23px;
+    border: 1px solid #d7d7d7;
+    border-radius: 5px;
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: -5px;
+}
+.recent-ratings table h5 {
+    font-size: 12px;
+    margin: 0;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 3px;
+}
   .join-area h2{
   	padding-top: 50px;
   }

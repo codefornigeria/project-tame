@@ -1340,3 +1340,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     background: #93bcec;
     color: #fff
 }
+
+.ng-hide         { animation:0.2s; transition-timing-function: ease-out }
+
+/* when showing the picture */
+.ng-hide-remove      { animation:0.5s; transition-timing-function: ease-out }

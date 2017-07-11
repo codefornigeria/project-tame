@@ -1068,7 +1068,9 @@ angular.module('app.controllers')
   })
           }
        
-     
+      $scope.toResult = function(){
+            $scope.showRater=false
+        }
    $scope.ratingFunc =function(){
             var ratingsService = $feathers.service('rating')
         ratingsService.find({

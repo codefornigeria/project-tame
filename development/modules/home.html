@@ -66,6 +66,7 @@
 				<div class="table-responsive">
 					<table class="table ">
 						<tr>
+							<th></th>
 							<th>Institutions</th>
 							<th>Sectors</th>
 							<th></th>
@@ -89,7 +90,6 @@
 			<div class="row scheme-thumb-wrap">
 				<div class="col-md-4 col-sm-6" ng-repeat="scheme in schemes">
 					<div class="scheme-thumb">
-						<p class="update">updated 4 days ago</p>
 						<h4>{{scheme.name}}</h4>
 						<h5><strong>Sector: </strong> {{scheme.sectors[0].name}}</h5>
 						<h5><strong>Focus Areas: </strong> {{scheme.focus}}</h5>
@@ -121,6 +121,8 @@
 <section class="clearfix content-area" ng-show="showRater">
 
 	<div class="rating-area">
+		<div><a class="update" ng-click="toResult()">back to search results</a></div>
+		
 		<form name="ratingForm" ng-submit="submitRating(ratingForm.$valid)" novalidate>
 			<h1>Rate {{currentEntity.name}} <a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h1>
 			<div class="rating-inwrap">
