@@ -14,7 +14,8 @@ angular.module('app', [
     'angular-carousel',
     'angular-loading-bar',
     'toastr',
-    'satellizer'
+    'satellizer',
+    'yaru22.angular-timeago'
 ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
         $rootScope.currentUser = {
@@ -321,7 +322,19 @@ angular.module('app', [
                                     console.error('Error authenticating!', error);
                                 });
 
+                        },
+                        departments:function ($q, $feathers, $state, LocalService){
+                            return $feathers.service('department').find().then(result =>{
+                                return result
+                            })
+                        },
+                        groups: function ($q, $feathers, $state, LocalService){
+                            return $feathers.service('group').find().then(result =>{
+                                return result
+                            })
                         }
+
+
                     },
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'

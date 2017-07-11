@@ -4,7 +4,7 @@
 									E
 								</div>
 								<h5>{{rating.entity[0].name}}</h5>
-								<p class="time">Last report 20 days ago</p>
+								<p class="time"><time-ago from-time='{{ rating.updatedAt }}'></time-ago></p>
 							</td>
 							<td>{{rating.schemes.length}}</td>
 							<td> Education </td>

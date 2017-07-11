@@ -1,11 +1,13 @@
   angular.module('app.controllers')
-     .controller('ratingsCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
+     .controller('ratingsCtrl', function(user,departments,groups, $rootScope, $scope, $state, $stateParams, $feathers) {
 
          if(!user){
              $state.go('login')
          }
+         console.log('departments', departments)
+          $scope.departments = departments.data
           $rootScope.user = user
-          $scope.schemerater =[]
+           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
          $scope.showRatingPage =false
          $schemeLoaded=false
@@ -81,6 +83,7 @@
                         }
                    }
                 }else{
+
                   entityConfig ={
                       query:{
                          _id: user.selfEntities,
@@ -164,6 +167,13 @@
               $scope.orgsearching=false
 
           }
+          $scope.loadDepartments = function(orgData){
+              if(!orgData){
+                  return
+              }
+              $scope.showAssessment =false;
+              $scope.showDepartment  = true
+          }
           $scope.loadSchemes = function(assessmentData) {
               // load schemes based on assessment data
               console.log('assess', assessmentData)
@@ -173,7 +183,7 @@
               console.log('show ratin', $scope.ratin)
              console.log('show user', user)
               $scope.showAssessment = true
-             
+             $scope.showDepartment = false
               if(user.userType =='independent-assessor'){
                   //find  organization  rating ,
                 console.log('showing assessor type', user)
@@ -199,13 +209,7 @@
                 var schemeService = $feathers.service('scheme')
                 schemeService.find({
                     query: {
-                        $populate: {
-                            path: 'sectors antidotes',
-                            select: 'name description _id',
-                            options: {
-                                limit: 10
-                            }
-                        },
+                        'department':$scope.ratin.department,
                         'sectors': $scope.ratin.sectorId,
 
                     }

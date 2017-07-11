@@ -17,7 +17,8 @@ angular.module('app', [
     'angular-carousel',
     'angular-loading-bar',
     'toastr',
-    'satellizer'
+    'satellizer',
+    'yaru22.angular-timeago'
 ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
         $rootScope.currentUser = {
@@ -324,7 +325,19 @@ angular.module('app', [
                                     console.error('Error authenticating!', error);
                                 });
 
+                        },
+                        departments:function ($q, $feathers, $state, LocalService){
+                            return $feathers.service('department').find().then(result =>{
+                                return result
+                            })
+                        },
+                        groups: function ($q, $feathers, $state, LocalService){
+                            return $feathers.service('group').find().then(result =>{
+                                return result
+                            })
                         }
+
+
                     },
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
@@ -865,11 +878,11 @@ angular.module('app.directives', [])
     return {
         restrict: 'EA',
         template:'<div class="rating-point">'+
-                 '<button type="button"  ng-click=setValue(1)>1</button>'+
-                 '<button type="button" ng-click=setValue(2)>2</button>'+
-                 '<button type="button" ng-click=setValue(3)>3</button>'+
-                 '<button type="button"  ng-click=setValue(4)>4</button>'+
-                 '<button type="button" ng-click=setValue(5)>5</button>'+
+                 '<button class="button" type="button"  ng-click=setValue(1)>1</button>'+
+                 '<button class="button" type="button" ng-click=setValue(2)>2</button>'+
+                 '<button class="button" type="button" ng-click=setValue(3)>3</button>'+
+                 '<button class="button" type="button"  ng-click=setValue(4)>4</button>'+
+                 '<button class="button" type="button" ng-click=setValue(5)>5</button>'+
                '</div>',
       
        
@@ -1061,14 +1074,7 @@ angular.module('app.controllers')
             var ratingsService = $feathers.service('rating')
         ratingsService.find({
             query: {
-                $populate: {
-                    path: 'scheme entity',
-                    select: 'name  _id',
-                    options: {
-                        limit: 5
-                    },
-            
-                },
+
                       $limit:5  
             }
         }).then(function (ratings) {
@@ -1116,13 +1122,21 @@ angular.module('app.controllers')
             if(!valid){
                 return
             }
-              $scope.showRater=false
+            var ratinData = {
+                comments: $scope.ratin.comments,
+                ratingType:$scope.ratin.ratingType,
+                entity:$scope.currentEntity._id,
+                schemes: [$scope.ratin.scheme._id],
+                score:$scope.ratin.score,
+                sectors:[$scope.ratin.scheme.sectors[0]._id]
+            }
+                console.log('rating data', $scope.ratin)
                   var ratingService = $feathers.service('rating')
                 
-                      ratingService.create($scope.ratin).then(function(ratinResult) {
+                      ratingService.create(ratinData).then(function(ratinResult) {
                           $scope.$apply(function() {
                              $scope.ratingFunc()
-                            
+                             $scope.showRater=false
                           })
                       }).catch(function(err) {
                           console.log('ratin error', err)
@@ -2162,13 +2176,15 @@ angular.module('app.controllers')
           }
       })
   angular.module('app.controllers')
-     .controller('ratingsCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
+     .controller('ratingsCtrl', function(user,departments,groups, $rootScope, $scope, $state, $stateParams, $feathers) {
 
          if(!user){
              $state.go('login')
          }
+         console.log('departments', departments)
+          $scope.departments = departments.data
           $rootScope.user = user
-          $scope.schemerater =[]
+           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
          $scope.showRatingPage =false
          $schemeLoaded=false
@@ -2244,6 +2260,7 @@ angular.module('app.controllers')
                         }
                    }
                 }else{
+
                   entityConfig ={
                       query:{
                          _id: user.selfEntities,
@@ -2327,6 +2344,13 @@ angular.module('app.controllers')
               $scope.orgsearching=false
 
           }
+          $scope.loadDepartments = function(orgData){
+              if(!orgData){
+                  return
+              }
+              $scope.showAssessment =false;
+              $scope.showDepartment  = true
+          }
           $scope.loadSchemes = function(assessmentData) {
               // load schemes based on assessment data
               console.log('assess', assessmentData)
@@ -2336,7 +2360,7 @@ angular.module('app.controllers')
               console.log('show ratin', $scope.ratin)
              console.log('show user', user)
               $scope.showAssessment = true
-             
+             $scope.showDepartment = false
               if(user.userType =='independent-assessor'){
                   //find  organization  rating ,
                 console.log('showing assessor type', user)
@@ -2362,13 +2386,7 @@ angular.module('app.controllers')
                 var schemeService = $feathers.service('scheme')
                 schemeService.find({
                     query: {
-                        $populate: {
-                            path: 'sectors antidotes',
-                            select: 'name description _id',
-                            options: {
-                                limit: 10
-                            }
-                        },
+                        'department':$scope.ratin.department,
                         'sectors': $scope.ratin.sectorId,
 
                     }

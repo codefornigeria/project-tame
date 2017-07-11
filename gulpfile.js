@@ -76,6 +76,7 @@ gulp.task('vendorjs', ['clean:production'], function(){
       './development/assets/vendor/angular/underscore/underscore-min.js',
       './development/assets/vendor/angular/angular-chart/Chart.js',
       './development/assets/vendor/angular/angular-chart/angular-chart.min.js',
+       './development/assets/vendor/angular/angular-timeago/timeago.js',
       './development/assets/vendor/angular/dirDisqus.js',
     './development/assets/vendor/angular/angular-sanitize.min.js',
     './development/assets/vendor/angular/tv4.js',

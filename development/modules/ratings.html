@@ -1,8 +1,8 @@
-<section class="clearfix content-area" ng-show="!showAssessment">
+<section class="clearfix content-area" ng-show="!showAssessment && !showDepartment">
 
   <div class="container">
     <div class="rating-area organization auto-suggetion">
-      <form name="ratingForm" ng-submit="loadSchemes(ratingForm.$valid)">
+      <form name="ratingForm" ng-submit="loadDepartments(ratingForm.$valid)">
         <h1>Rate an organization</a>
         </h1>
         <div class="rating-inwrap auto-suggetion">
@@ -28,7 +28,7 @@
               </ul>
             </div>
             <div class="bottom-area">
-              Yes, this information is accurate <button class="btn " type="submit">Rate organization</button>
+              Yes, this information is accurate <button class="btn " type="submit">Select Specialization</button>
             </div>
           </div>
       </form>
@@ -36,8 +36,35 @@
     </div>
 </section>
 
+<section  ng-show="!showAssessment && showDepartment">
+  <div class="rating-area organization auto-suggetion">
+  <form name="categoryForm" ng-submit="loadSchemes(ratingForm.$valid)">
+    <h1>Select Specialization</a>
+    </h1>
+    <div class="rating-inwrap auto-suggetion">
 
-<section class="clearfix content-area" ng-show="showAssessment">
+      <div >
+
+        <div class="label-group" ng-repeat="department in departments track by department._id">
+          <label class="custom-control custom-radio">
+                                      <input  name="specialization" id="{{department.name}}" type="radio" value={{department._id}} class="custom-control-input" ng-model="ratin.department">
+                                      <span class="custom-control-indicator"></span>
+                                      <span class="custom-control-description">{{department.name}}</span>
+                                    </label>
+       
+
+        </div>
+
+        <div class="bottom-area">
+          Yes, this information is accurate <button class="btn " type="submit">Rate organization</button>
+        </div>
+      </div>
+  </form>
+  </div>
+</div>
+</section>
+
+<section class="clearfix content-area" ng-show="showAssessment && !showDepartment">
   <div class="rating-area organization progress-wrap">
     <section class="f-w quiz-wrap">
       <!--==================End quiz single sectin =============== -->

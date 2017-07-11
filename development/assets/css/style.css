@@ -677,7 +677,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
 
 }
 
-.rating-point  button{
+.rating-point  .button{
     width: 40px;
     height: 40px;
     border:1px solid #d7d7d7;
@@ -689,9 +689,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     font-size: 14px;
 
 }
-.rating-point  button:hover,
-.rating-point  button.active,
-.encount .btn-group button:hover{
+.rating-point  .button:hover,
+.rating-point  .button:active,
+.encount .btn-group .button:hover{
      text-decoration: none;
      color: #fff;
      border:1px solid #14a972;
@@ -949,6 +949,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     padding: 5px 20px;
     margin-top: 30px;
     padding-top: 10px;
+    margin-left:5px;
 }
 
 

@@ -44,14 +44,7 @@ angular.module('app.controllers')
             var ratingsService = $feathers.service('rating')
         ratingsService.find({
             query: {
-                $populate: {
-                    path: 'scheme entity',
-                    select: 'name  _id',
-                    options: {
-                        limit: 5
-                    },
-            
-                },
+
                       $limit:5  
             }
         }).then(function (ratings) {
@@ -99,13 +92,21 @@ angular.module('app.controllers')
             if(!valid){
                 return
             }
-              $scope.showRater=false
+            var ratinData = {
+                comments: $scope.ratin.comments,
+                ratingType:$scope.ratin.ratingType,
+                entity:$scope.currentEntity._id,
+                schemes: [$scope.ratin.scheme._id],
+                score:$scope.ratin.score,
+                sectors:[$scope.ratin.scheme.sectors[0]._id]
+            }
+                console.log('rating data', $scope.ratin)
                   var ratingService = $feathers.service('rating')
                 
-                      ratingService.create($scope.ratin).then(function(ratinResult) {
+                      ratingService.create(ratinData).then(function(ratinResult) {
                           $scope.$apply(function() {
                              $scope.ratingFunc()
-                            
+                             $scope.showRater=false
                           })
                       }).catch(function(err) {
                           console.log('ratin error', err)

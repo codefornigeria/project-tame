@@ -41,7 +41,7 @@
 					<li> <span class="bullet sec"></span> 1 sector</li>
 				</ul>
 	</div>
-			<div class="recent-ratings">
+			<div class="recent-ratings" ng-show="ratings.length> 0">
 				<h4>Recent Ratings</h4>
 				<a class="rate-now" ng-click="publicRating(entity)"> RATE NOW</a>
 				<div class="table-responsive">
@@ -61,7 +61,7 @@
 					</table>
 				</div>
 			</div>
-			<div class="recent-ratings">
+			<div class="recent-ratings" ng-show="entities.length">
 				<h4>Recent Entities</h4>
 				<div class="table-responsive">
 					<table class="table ">
