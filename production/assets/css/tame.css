@@ -475,7 +475,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     background: #9dde24;
 }
 .recent-ratings table tr.red .badge{
-    background: #fc6e50;
+    background: #ff0042;
 }
 
 .schemes{
@@ -512,6 +512,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     float: right;
 }
 
+.update.red {
+   
+    background: #ff0042;
+}
+.update.amber {
+   
+    background: #fdcf2f;
+}
+.update.green {
+   
+    background: #9dde24;
+  
+}
+a.update {
+      color: #fff !important;
+}
 .scheme-thumb h5 {
     font-size: 13px;
     color: #949494;
