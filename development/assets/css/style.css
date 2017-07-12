@@ -359,6 +359,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
    padding: 15px 30px
 }
 
+.rating-area.organization .rating-inwrap {
+  margin-bottom: 20px;
+}
 .recent-ratings h4,
 .schemes h2{
     display: inline-block;

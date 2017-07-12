@@ -15,7 +15,8 @@
 						<h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>  
 						<h5><strong><a href=#>{{rating.ratingData.length}} Antidotes </a> </strong></h5>
 					
-					<a class="update">view more.. </a>
+					<a data-toggle="modal"
+                  data-target="#success" class="update" ng-click="setRating(rating)">view more.. </a>
 					</div>
           
 				</div>
@@ -41,4 +42,80 @@
 	</div>
 	
 	<!-- End schemes -->
+
+	<!-- Modal -->
+  <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="success">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <button type="button" class="close right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+         <section class="clearfix content-area" class="modal-body">
+        <div class="container">
+        <div class="form-group"></div>
+         <a class="prev" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to search result</a> 
+          <div class="clearfix"></div>
+           <div class="rating-area organization details">
+              <form method="post" action="">
+                <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ theRating.updatedAt }}'></time-ago></p></h1> 
+               <h5> Schemes </h5>
+			    <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
+                   <div class="rating-single">
+                      <h3>{{scheme.name}}</h3>
+                       <div class="row">
+                          <div class="col-md-9">
+                             
+                               <article>
+                                 <h6>Sector:</h6>
+                                  <p>Education</p>
+                               </article>
+
+                               <article>
+                                 <h6>Focus</h6>
+                                  <p> {{scheme.focus}}</p>
+                               </article>
+
+                               <article>
+                                 <h6>Level</h6>
+                                  <p>{{scheme.level}} </p>
+                               </article>
+
+                               <article>
+                                 <h6>Antidote</h6>
+                                  <p> {{scheme.antidotes.length}}</p>
+                               </article>
+
+                          </div>
+                          <div class="col-md-3">
+                              <div class="progress-area row">
+                                    <div class="col-sm-12">
+                                       <h3>Medium</h3>
+                                       <p>Likelihood of Occurence </p>
+                                       <div class="progress">
+                                          <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                                       </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                       <h3>High</h3>
+                                       <p>Frequency of Occurence  </p>
+                                       <div class="progress">
+                                          <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuemin="0" aria-valuemax="100"></div>
+                                       </div>
+                                    </div>
+                                </div>
+                          </div>
+                       </div>
+                    
+                   </div>
+                </div>
+                <div class="bottom-area">
+                    
+                   </div>
+              </form>
+           </div>
+       </div>
+    </section>
+      </div>
+    </div>
+  </div>
 </section>

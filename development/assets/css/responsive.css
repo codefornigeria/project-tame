@@ -344,6 +344,12 @@
 
 @media(max-width: 475px){
 
+.rating-single h3 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
   .join-area h2:after{
   	display: none;
   }

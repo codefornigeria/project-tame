@@ -12,6 +12,9 @@
 
             });
         }
-        
+        $scope.setRating= function(rating){
+          console.log('the rating', rating)
+          $scope.theRating = rating
+        }
 
       })

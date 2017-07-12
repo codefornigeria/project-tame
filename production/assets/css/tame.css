@@ -359,6 +359,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
    padding: 15px 30px
 }
 
+.rating-area.organization .rating-inwrap {
+  margin-bottom: 20px;
+}
 .recent-ratings h4,
 .schemes h2{
     display: inline-block;
@@ -1729,6 +1732,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
 
 @media(max-width: 475px){
 
+.rating-single h3 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
   .join-area h2:after{
   	display: none;
   }
