@@ -18,12 +18,12 @@
                       <div class="thum-inner">
                         <h4>Ratings </h4>
                        <ul>
-                           <li>   
+                           <li ng-show="user.selfEntities.length>0">   
                                <a ui-sref="ratings({
                                    ratingType:'self'
                                })">Create self rating</a>
                      </li>
-                          <li>   
+                          <li ng-show="user.independentEntities.length>0">   
                                <a ui-sref="ratings({
                                    ratingType:'independent'
                                })">Create independent rating</a>
