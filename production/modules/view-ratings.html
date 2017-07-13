@@ -12,6 +12,7 @@
 					
 						<p class="update" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">RAG</p>
 						<h4>{{scheme.name}}</h4>
+            	<h5><strong>Specialization: </strong> {{rating.schemes[0].department[0].name}}</h5>
 						<h5><strong>Sector: </strong> Education</h5>
               <h5><strong>Entity: </strong> {{rating.entity[0].name}} ,  {{rating.entity[0].city}} </h5>  
 						<h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>  
@@ -55,7 +56,7 @@
          <section class="clearfix content-area" class="modal-body">
         <div class="container">
         <div class="form-group"></div>
-         <a class="prev" href="#"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to search result</a> 
+         <button class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to search result</button> 
           <div class="clearfix"></div>
            <div class="rating-area organization details">
               <form method="post" action="">
