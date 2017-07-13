@@ -40,7 +40,7 @@
 					<li> <span class="bullet cas"></span> 500 Antidotes </li>
 					<li> <span class="bullet sec"></span> 1 sector</li>
 				</ul>
-	</div>
+			</div>
 			<div class="recent-ratings" ng-show="ratings.length> 0">
 				<h4>Recent Ratings</h4>
 				<a class="rate-now" ng-click="publicRating(entity)"> RATE NOW</a>
@@ -50,6 +50,7 @@
 							<th>Institutions</th>
 							<th>No of schemes </th>
 							<th>Sector</th>
+							<th>Assessment Type</th>
 							<th></th>
 						</tr>
 
@@ -95,7 +96,7 @@
 						<h5><strong>Focus Areas: </strong> {{scheme.focus}}</h5>
 						<h5><strong>Level</strong> {{scheme.level}}</h5>
 						<h5><strong>Antidotes: </strong> {{scheme.antidotes.length}}</h5>
-					
+
 					</div>
 				</div>
 				<!-- End scheme thumb -->
@@ -122,12 +123,12 @@
 
 	<div class="rating-area">
 		<div><a class="update" ng-click="toResult()">back to search results</a></div>
-		
+
 		<form name="ratingForm" ng-submit="submitRating(ratingForm.$valid)" novalidate>
 			<h1>Rate {{currentEntity.name}} <a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i></a></h1>
 			<div class="rating-inwrap">
 				<div class="rating-point">
-				<div class="col-md-12">
+					<div class="col-md-12">
 						<div class="form-group">
 							<label>Entity</label>
 							<select name="mySelect" id="mySelect" class="custom-select form-control" ng-change="" ng-options="option.name for option in entities track by option._id"
@@ -154,13 +155,13 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-12">
+					<div class="col-md-12" ng-show="ratin.hasScheme=='YES'">
 						<div class="form-group">
 							<label>Schemes</label>
 							<select name="mySelect" id="mySelect" class="custom-select form-control" ng-change="" ng-options="option.name for option in schemes track by option._id"
 							 ng-model="ratin.scheme">
-	  <option value="">Select Corruption Scheme</option> <!-- not selected / blank option -->
-     </select>
+	 							 <option value="">Select Corruption Scheme</option> <!-- not selected / blank option -->
+     						</select>
 
 						</div>
 					</div>

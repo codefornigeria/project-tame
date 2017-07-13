@@ -713,7 +713,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
 .encount .btn-group .button:hover{
      text-decoration: none;
      color: #fff;
-     border:1px solid #14a972;
+    
      background: #1B75BC;
 }
 
