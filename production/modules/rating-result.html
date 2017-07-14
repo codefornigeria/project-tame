@@ -12,21 +12,25 @@
                     <div class="thum-inner">
                       <h4>Schemes</h4>
                       <p>{{rating.schemes.length}}</p>
-                      <a href="#">view More ?</a>
+                    	<button data-toggle="modal"
+                  data-target="#success" class="btn btn-link" >view more</button>
                     </div>
                   </div>
                   <div class="col-md-4">
                       <div class="thum-inner">
                         <h4>Antidotes </h4>
                         <p>{{rating.ratingData.length}}</p>
-                        <a href="#">view more ?</a>
+                     	<button data-toggle="modal"
+                  data-target="#success" class="btn btn-link" ">view more</button>
                       </div>
                   </div>
                   <div class="col-md-4">
                       <div class="thum-inner">
                         <h4>Effects</h4>
                         <p>5</p>
-                        <a href="#">view more ?</a>
+                     <button data-toggle="modal"
+                  data-target="#effects" class="btn btn-link">view more</button>
+                
                       </div>
                   </div>
               </div>
@@ -35,3 +39,80 @@
            </div>
        </div>
     </section>
+
+
+    	<!-- Modal -->
+  <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="success">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <button type="button" class="close right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+         <section class="clearfix content-area" class="modal-body">
+        <div class="container">
+        <div class="form-group"></div>
+         <button   data-dismiss="modal" class="prev btn btn-link"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to search result</button> 
+          <div class="clearfix"></div>
+           <div class="rating-area organization details">
+              <form method="post" action="">
+                <h1>{{rating.entity[0].name}}, {{rating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ rating.updatedAt }}'></time-ago></p></h1> 
+               <h5> Schemes </h5>
+			    <div class="rating-inwrap" ng-repeat="scheme in rating.schemes">
+                   <div class="rating-single">
+                      <h3>{{scheme.name}}</h3>
+                       <div class="row">
+                          <div class="col-md-9">
+                             
+                               <article>
+                                 <h6>Sector:</h6>
+                                  <p>Education</p>
+                               </article>
+
+                               <article>
+                                 <h6>Focus</h6>
+                                  <p> {{scheme.focus}}</p>
+                               </article>
+
+                               <article>
+                                 <h6>Level</h6>
+                                  <p>{{scheme.level}} </p>
+                               </article>
+
+                               <article>
+                                 <h6>Antidote</h6>
+                                  <p> {{scheme.antidotes.length}}</p>
+                               </article>
+
+                          </div>
+                          <div class="col-md-3">
+                              <div class="progress-area row">
+                                    <div class="col-sm-12">
+                                       <h3>Medium</h3>
+                                       <p>Likelihood of Occurence </p>
+                                       <div class="progress">
+                                          <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                                       </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                       <h3>High</h3>
+                                       <p>Frequency of Occurence  </p>
+                                       <div class="progress">
+                                          <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuemin="0" aria-valuemax="100"></div>
+                                       </div>
+                                    </div>
+                                </div>
+                          </div>
+                       </div>
+                    
+                   </div>
+                </div>
+                <div class="bottom-area">
+                    
+                   </div>
+              </form>
+           </div>
+       </div>
+    </section>
+      </div>
+    </div>
+  </div>

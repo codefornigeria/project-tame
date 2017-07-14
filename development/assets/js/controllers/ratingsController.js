@@ -247,7 +247,7 @@
                   }
 
           $scope.submitRating = function() {
-
+            console.log('all rating value', $scope.ratin)
               var ratingService = $feathers.service('rating')
                 if(user.userType =='independent-assessor'){
                   ratingService.create($scope.ratin).then(function(ratinResult) {

@@ -2,6 +2,7 @@
      .controller('ratingsResultCtrl', function(user,rating, $rootScope, $scope, $state, $stateParams, $feathers) {
           
            $scope.rating = rating
+           console.log('show rating', rating)
           $rootScope.user = user
           $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
