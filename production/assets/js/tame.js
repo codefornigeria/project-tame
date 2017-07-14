@@ -1146,11 +1146,12 @@ angular.module('app.controllers')
             if(!valid){
                 return
             }
+            console.log('current', $scope.ratin)
             var ratinData = {
                 comments: $scope.ratin.comments,
                 ratingType:$scope.ratin.ratingType,
                 entity:$scope.currentEntity._id,
-                schemes: [$scope.ratin.scheme._id],
+                schemes:$scope.ratin.hasScheme=='YES'? [$scope.ratin.scheme._id]: null,
                 score:$scope.ratin.score,
                 sectors:[$scope.ratin.scheme.sectors[0]._id]
             }
@@ -2599,14 +2600,15 @@ angular.module('app.controllers')
     $feathers, $auth, AuthService, LocalService, $anchorScroll, $location, toastr) {
 
     console.log($stateParams)
+     if(!user){
+             $state.go('login')
+         }
     $scope.requestType = $stateParams.type
     $scope.request = {assessorType:$stateParams.type , user: user._id}
 
   
     
-    if(!user){
-             $state.go('login')
-         }
+   
           $rootScope.user = user
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
     $scope.entities = entities

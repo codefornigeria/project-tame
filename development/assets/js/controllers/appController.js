@@ -94,11 +94,12 @@ angular.module('app.controllers')
             if(!valid){
                 return
             }
+            console.log('current', $scope.ratin)
             var ratinData = {
                 comments: $scope.ratin.comments,
                 ratingType:$scope.ratin.ratingType,
                 entity:$scope.currentEntity._id,
-                schemes: [$scope.ratin.scheme._id],
+                schemes:$scope.ratin.hasScheme=='YES'? [$scope.ratin.scheme._id]: null,
                 score:$scope.ratin.score,
                 sectors:[$scope.ratin.scheme.sectors[0]._id]
             }

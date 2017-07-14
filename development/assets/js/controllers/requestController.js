@@ -4,14 +4,15 @@ angular.module('app.controllers')
     $feathers, $auth, AuthService, LocalService, $anchorScroll, $location, toastr) {
 
     console.log($stateParams)
+     if(!user){
+             $state.go('login')
+         }
     $scope.requestType = $stateParams.type
     $scope.request = {assessorType:$stateParams.type , user: user._id}
 
   
     
-    if(!user){
-             $state.go('login')
-         }
+   
           $rootScope.user = user
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
     $scope.entities = entities
