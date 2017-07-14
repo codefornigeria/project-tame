@@ -127,6 +127,9 @@
         $scope.toResult = function(){
             $scope.showRater=false
         }
+          $scope.setScheme = function(scheme){
+            $scope.theScheme = scheme
+                }
                $scope.showResult = function(person) {
                  console.log(person);
                    $state.go('entity', {

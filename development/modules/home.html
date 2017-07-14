@@ -96,7 +96,8 @@
 						<h5><strong>Focus Areas: </strong> {{scheme.focus}}</h5>
 						<h5><strong>Level</strong> {{scheme.level}}</h5>
 						<h5><strong>Antidotes: </strong> {{scheme.antidotes.length}}</h5>
-							<button class="btn btn-link read-more">Read More</button>
+						<button data-toggle="modal"
+                  data-target="#schemeDetail" class="btn btn-link read-more" ng-click="setScheme(scheme)">Read More</button>
 					</div>
 				</div>
 				<!-- End scheme thumb -->
@@ -180,3 +181,85 @@
 	</form>
 	</div>
 </section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="schemeDetail" tabindex="-1" role="dialog" aria-labelledby="success">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content ">
+			<div class="modal-header">
+				<button type="button" class="close right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			  <section class="clearfix content-area modal-body">
+        <div class="container">
+        <div class="form-group"></div>
+          <div class="clearfix"></div>
+           <div class="rating-area organization details">
+              <form method="post" action="">
+                <h1> Scheme  <p class="update right">updated: 4 days ago</p></h1> 
+                <div class="rating-inwrap">
+                   <div class="rating-single">
+                      <h3>{{theScheme.name}}</h3>
+                       <div class="row">
+                          <div class="col-md-9">
+                             
+                               <article>
+                                 <h6>Sector:</h6>
+                                  <p>Education</p>
+                               </article>
+
+                               <article>
+                                 <h6>Focus</h6>
+                                  <p> {{theScheme.focus}}</p>
+                               </article>
+
+                               <article>
+                                 <h6>Level</h6>
+                                  <p>{{theScheme.level}} </p>
+                               </article>
+
+                               <article>
+                                 <h6>Antidote</h6>
+                                  <p> 5</p>
+                               </article>
+
+                          </div>
+                          <div class="col-md-3">
+                              <div class="progress-area row">
+                                    <div class="col-sm-12">
+                                       <h3>{{theScheme.likelihood}}</h3>
+                                       <p>Likelihood of Occurence </p>
+                                       <div class="progress">
+                                          <div class="progress-bar" ng-class="{'bg-success':theScheme.likelihood=='low' , 'bg-warning':theScheme.likelihood=='medium','bg-danger':theScheme.likelihood=='high'}" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                       </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                       <h3>{{theScheme.frequency}}</h3>
+                                       <p>Frequency of Occurence  </p>
+                                       <div class="progress">
+                                          <div class="progress-bar" ng-class="{'bg-success':theScheme.frequency=='low' , 'bg-warning':theScheme.frequency=='medium','bg-danger':theScheme.frequency=='high'}" role="progressbar"  aria-valuemin="0" aria-valuemax="100"></div>
+                                       </div>
+                                    </div>
+                                </div>
+                          </div>
+                       </div>
+                      <article>
+                       <h6> Antidotes Detail</h6>
+					   <ul>
+                        <li ng-repeat="antidote in theScheme.antidotes"> 
+							{{antidote.name}}
+                        </li>
+						<ul>
+                     </article>
+                   </div>
+                </div>
+                <div class="bottom-area">
+                    
+                   </div>
+              </form>
+           </div>
+       </div>
+    </section>
+		</div>
+	</div>
+</div>

@@ -1139,7 +1139,9 @@ angular.module('app.controllers')
                        
             $scope.showRater=true
         }
-     
+        $scope.setScheme = function(scheme){
+            $scope.theScheme = scheme
+                }
         $scope.submitRating= function(valid){
             if(!valid){
                 return
@@ -2837,6 +2839,9 @@ angular.module('app.controllers')
         $scope.toResult = function(){
             $scope.showRater=false
         }
+          $scope.setScheme = function(scheme){
+            $scope.theScheme = scheme
+                }
                $scope.showResult = function(person) {
                  console.log(person);
                    $state.go('entity', {

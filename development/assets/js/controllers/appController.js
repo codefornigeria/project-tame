@@ -87,7 +87,9 @@ angular.module('app.controllers')
                        
             $scope.showRater=true
         }
-     
+        $scope.setScheme = function(scheme){
+            $scope.theScheme = scheme
+                }
         $scope.submitRating= function(valid){
             if(!valid){
                 return
