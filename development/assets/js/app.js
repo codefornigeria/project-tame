@@ -8,6 +8,7 @@ angular.module('app', [
     'app.services',
     'app.config',
     'app.directives',
+    'app.filters',
     'chart.js',
     'angularUtils.directives.dirDisqus',
     'angular.filter',

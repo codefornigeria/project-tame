@@ -66,6 +66,7 @@
 							<th>Institutions</th>
 							<th>No of schemes </th>
 							<th>Sector</th>
+							<th>Assessment Type </th>
 							<th></th>
 						</tr>
 
@@ -88,13 +89,14 @@
 			<div class="row scheme-thumb-wrap">
 				<div class="col-md-4 col-sm-6" ng-repeat="scheme in schemes">
 					<div class="scheme-thumb">
-						<p class="update">updated 4 days ago</p>
 						<h4>{{scheme.name}}</h4>
 						<h5><strong>Sector: </strong> Education</h5>
+						<h5><strong>Specialization: </strong> {{scheme.department[0].name}}</h5>
 						<h5><strong>Focus: </strong> {{scheme.focus}}</h5>
 						<h5><strong>Level: </strong> {{scheme.level}}</h5>
 						<h5><strong>Antidotes: </strong> {{scheme.antidotes.length}}</h5>
-
+						<button class="btn btn-link read-more">Read More</button>
+		
 					</div>
 				</div>
 				<!-- End scheme thumb -->

@@ -11,6 +11,7 @@ angular.module('app', [
     'app.services',
     'app.config',
     'app.directives',
+    'app.filters',
     'chart.js',
     'angularUtils.directives.dirDisqus',
     'angular.filter',
@@ -989,6 +990,27 @@ angular.module('app.directives', [])
 		template: '<div class="overlay" ng-if="searching"><div class="spinner"><div class="spinner__item1"></div><div class="spinner__item2"></div><div class="spinner__item3"></div><div class="spinner__item4"></div></div></div>'
 	}
 })
+
+angular.module('app.filters', [])
+
+.filter('asessorType', function () {
+    return function (assessor) {
+        var txt = 'Public Assessment';
+        switch (assessor){
+            case 'public-assessor':
+            txt = 'Public Assessment'
+            break;
+             case 'self-assessor':
+            txt = 'Self Assessment'
+            break;
+             case 'independent-assessor':
+            txt = 'Independent Assessment'
+            break;
+        }
+        return txt;
+    };
+})
+
 
   angular.module('app.services', [])
   .factory('AuthService', function($q, $feathers, $rootScope){

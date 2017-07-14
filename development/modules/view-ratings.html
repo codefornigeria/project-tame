@@ -8,7 +8,7 @@
 			<div class="row scheme-thumb-wrap">
 				<div class="col-md-4 col-sm-6" ng-repeat="rating in ratings">
 					<div class="scheme-thumb">
-            	<p class="update left" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">{{rating.ratingType}}</p>
+            	<p class="update left" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">{{rating.ratingType | asessorType}}</p>
 					
 						<p class="update" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">RAG</p>
 						<h4>{{scheme.name}}</h4>
