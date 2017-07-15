@@ -1,6 +1,7 @@
 angular.module('app.controllers')
-    .controller('appCtrl', function (user,schemes,entities, ratings ,$scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
+    .controller('appCtrl', function (user,schemes,entities, ratings ,groups,$scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
          $scope.showRater=false
+         $scope.groups = groups
          $scope.ratin={ratingType:'public-assessor'}
          $rootScope.user = user
          $scope.searchKeyword ={};

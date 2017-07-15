@@ -181,6 +181,15 @@ angular.module('app', [
                             })
 
                         },
+                        groups :function($q,$feathers,$state,LocalService){
+                            return $feathers.service('group').find({
+
+                            }).then(groups=>{
+                                return groups.data
+                            }).catch(err =>{
+                                return false
+                            })
+                        },
 
                         ratings: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('rating').find({
@@ -265,7 +274,15 @@ angular.module('app', [
                             })
 
                         },
+                        groups :function($q,$feathers,$state,LocalService){
+                            return $feathers.service('group').find({
 
+                            }).then(groups=>{
+                                return groups.data
+                            }).catch(err =>{
+                                return false
+                            })
+                        },
                         ratings: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('rating').find({
                                 query: {
@@ -1051,8 +1068,9 @@ angular.module('app.filters', [])
 })
 
 angular.module('app.controllers')
-    .controller('appCtrl', function (user,schemes,entities, ratings ,$scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
+    .controller('appCtrl', function (user,schemes,entities, ratings ,groups,$scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
          $scope.showRater=false
+         $scope.groups = groups
          $scope.ratin={ratingType:'public-assessor'}
          $rootScope.user = user
          $scope.searchKeyword ={};

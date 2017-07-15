@@ -11,11 +11,12 @@
             	<p class="update left" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">{{rating.ratingType | asessorType}}</p>
 					
 						<p class="update" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">RAG</p>
-						<h4>{{scheme.name}}</h4>
+						<h4></h4>
+              <h4><strong>Entity: </strong> {{rating.entity[0].name}} ,  {{rating.entity[0].city}} </h4>  
+						
             	<h5><strong>Specialization: </strong> {{rating.schemes[0].department[0].name}}</h5>
 						<h5><strong>Sector: </strong> Education</h5>
-              <h5><strong>Entity: </strong> {{rating.entity[0].name}} ,  {{rating.entity[0].city}} </h5>  
-						<h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>  
+            <h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>  
 						<h5><strong><a href=#>{{rating.ratingData.length}} Antidotes </a> </strong></h5>
 					
 					<a data-toggle="modal"
@@ -62,6 +63,31 @@
            <div class="rating-area organization details">
               <form method="post" action="">
                 <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ theRating.updatedAt }}'></time-ago></p></h1> 
+                     <h5> Rating </h5>
+			    <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
+                   <div class="rating-single">
+                      <h3>{{scheme.name}}</h3>
+                       <div class="row">
+                          <div class="col-md-9">
+                             
+                              
+                               <article>
+                                 <h6>Antidote</h6>
+                                  <p> {{scheme.antidotes.length}}</p>
+                               </article>
+
+                          </div>
+                     
+                       </div>
+                    
+                   </div>
+                </div>
+                <div class="bottom-area">
+                    
+                   </div>
+              </form>
+           </div>
+   
                <h5> Schemes </h5>
 			    <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
                    <div class="rating-single">

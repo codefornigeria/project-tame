@@ -51,28 +51,28 @@
               
             </li>-->
               <li class="nav-item">
-                      <a class="nav-link" ui-sref="home">Home</a>
+                      <a class="nav-link" data-toggle="collapse" data-target="#main_nav" ui-sref="home">Home</a>
            
                  </li>
                    <li class="nav-item">
-                      <a class="nav-link" ui-sref="view-ratings">Ratings</a>
+                      <a class="nav-link" data-toggle="collapse" data-target="#main_nav" ui-sref="view-ratings">Ratings</a>
            
                  </li>
               <li class="nav-item">
-                      <a class="nav-link" ui-sref="dashboard" ng-show="isLoggedIn">Dashboard</a>
+                      <a class="nav-link" data-toggle="collapse" data-target="#main_nav"ui-sref="dashboard" ng-show="isLoggedIn">Dashboard</a>
            
                  </li>
         
                <!--<li class="nav-item">
-             <a class="nav-link" ui-sref="reports" ng-show="isLoggedIn">Reports</a>
+             <a class="nav-link" data-toggle="collapse" data-target="#main_nav" ui-sref="reports" ng-show="isLoggedIn">Reports</a>
            
               </li>-->
                <li class="nav-item">
-              <a class="nav-link" ui-sref="login({action:0})" ng-show="!isLoggedIn">Login</a>
+              <a class="nav-link" data-toggle="collapse" data-target="#main_nav" ui-sref="login({action:0})" ng-show="!isLoggedIn">Login</a>
                
-              <a class="nav-link" ng-click="logout()" ng-show="isLoggedIn">LOGOUT</a>
+              <a class="nav-link" data-toggle="collapse" data-target="#main_nav" ng-click="logout()" ng-show="isLoggedIn">LOGOUT</a>
             </li>
-            <li class="nav-item join-us" ng-show="!isLoggedIn">
+            <li class="nav-item join-us"  data-toggle="collapse" data-target="#main_nav" ng-show="!isLoggedIn">
                 <a ui-sref="login({action:1})">Join us</a>
               
             </li>

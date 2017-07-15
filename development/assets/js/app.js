@@ -178,6 +178,15 @@ angular.module('app', [
                             })
 
                         },
+                        groups :function($q,$feathers,$state,LocalService){
+                            return $feathers.service('group').find({
+
+                            }).then(groups=>{
+                                return groups.data
+                            }).catch(err =>{
+                                return false
+                            })
+                        },
 
                         ratings: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('rating').find({
@@ -262,7 +271,15 @@ angular.module('app', [
                             })
 
                         },
+                        groups :function($q,$feathers,$state,LocalService){
+                            return $feathers.service('group').find({
 
+                            }).then(groups=>{
+                                return groups.data
+                            }).catch(err =>{
+                                return false
+                            })
+                        },
                         ratings: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('rating').find({
                                 query: {
