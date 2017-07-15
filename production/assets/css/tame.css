@@ -430,7 +430,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     width: 50px;
     height: 50px;
     border-radius: 5px;
-    background: #613f95;
     display: inline-block;
     line-height: 50px;
     color: #fff;
@@ -438,7 +437,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     float: left;
     margin-right: 15px;
 }
-.recent-ratings table tr.yellow .logo-area{
+.recent-ratings table tr.amber .logo-area{
     background: #fdcf2f;
 }
 .recent-ratings table tr.green .logo-area{
@@ -464,14 +463,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
 }
 
  .badge{
-    background: #613f95;
     border-radius: 3px;
     padding: 4px 10px;
     font-size: 10px;
 }
 
 
-.recent-ratings table tr.yellow .badge{
+.recent-ratings table tr.amber .badge{
     background: #fdcf2f;
 }
 .recent-ratings table tr.green .badge{
