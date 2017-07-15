@@ -2226,6 +2226,7 @@ angular.module('app.controllers')
          }
          console.log('departments', departments)
           $scope.departments = departments.data
+            $scope.groups = groups.data
           $rootScope.user = user
            $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false
@@ -2429,7 +2430,7 @@ angular.module('app.controllers')
                 var schemeService = $feathers.service('scheme')
                 schemeService.find({
                     query: {
-                        'department':$scope.ratin.department,
+                        'group':$scope.ratin.department,
                         'sectors': $scope.ratin.sectorId,
 
                     }

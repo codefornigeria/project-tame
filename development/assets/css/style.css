@@ -434,7 +434,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     line-height: 50px;
     color: #fff;
     text-align: center;
-    float: left;
+    float:left;
     margin-right: 15px;
 }
 .recent-ratings table tr.amber .logo-area{
