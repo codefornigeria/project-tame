@@ -223,7 +223,8 @@
                              schemeId: scheme._id ,
                              antidoteName: antidote.name,
                              antidoteDesc : antidote.description,
-                             antidoteId:antidote._id
+                             antidoteId:antidote._id,
+                             score:antidote.score
                            }
                            raterArray.push(rateData)
                          })
@@ -241,9 +242,11 @@
 
           }
           $scope.rateScheme = function(item, type) {
-
-                      (type) ? item.score = 3: item.score = 0
-                      console.log('current item', item)
+                    
+                     if(!type){
+                         item.score = 0;
+                     }
+                    
                   }
 
           $scope.submitRating = function() {

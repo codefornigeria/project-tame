@@ -109,12 +109,12 @@
                   <div class="col-md-5">
                     <div class="label-group">
                       <label class="custom-control custom-radio">
-                                      <input  name="{{scheme.schemeId}}{{antidote.antidoteId}}" id="{{antidote.antidoteId}}Yes" type="radio" class="custom-control-input" ng-click="rateScheme(scheme , true)">
+                                      <input  name="{{scheme.schemeId}}{{scheme.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(scheme , true)">
                                       <span class="custom-control-indicator"></span>
                                       <span class="custom-control-description">Yes</span>
                                     </label>
                       <label class="custom-control custom-radio">
-                                    <input name="{{scheme.schemeId}}{{antidote.antidoteId}}" id="{{antidote.antidoteId}}No" type="radio" class="custom-control-input" ng-click="rateScheme(scheme , false)">
+                                    <input name="{{scheme.schemeId}}{{scheme.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(scheme , false)" >
                                     <span class="custom-control-indicator"></span>
                                     <span class="custom-control-description">No</span>
                                   </label>
