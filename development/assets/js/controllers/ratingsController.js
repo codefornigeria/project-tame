@@ -217,6 +217,24 @@
                 }).then(function(schemes) {
                     console.log('testq schemes', schemes)
                     var raterArray =[]
+                    $scope.schemerater= schemes.data.map(function(scheme){
+                          scheme.schemerater = []
+                          scheme.antidotes.map(function(antidote){
+                           var rateData ={
+                             scheme: scheme.name,
+                             schemeId: scheme._id ,
+                             antidoteName: antidote.name,
+                             antidoteDesc : antidote.description,
+                             antidoteId:antidote._id,
+                             score:antidote.score
+                           }
+                           scheme.schemerater.push(rateData)
+                         
+                        
+                         })
+                         return scheme
+                    })
+                    console.log('rater schemes', $scope.raterSchemes)
                      schemes.data.map(function (scheme){
                          scheme.antidotes.map(function(antidote){
                            var rateData ={
@@ -232,7 +250,7 @@
                      })
                     $scope.$apply(function() {
                     
-                    $scope.schemerater = raterArray
+                   // $scope.schemerater = raterArray
                        $scope.ratin.schemes = schemes.data
                     })
                 }).catch(function(err) {
@@ -252,8 +270,11 @@
 
           $scope.submitRating = function() {
             console.log('all rating value', $scope.ratin)
+            
+            
               var ratingService = $feathers.service('rating')
                 if(user.userType =='independent-assessor'){
+
                   ratingService.create($scope.ratin).then(function(ratinResult) {
                       $scope.$apply(function() {
                           console.log('result from rating', ratinResult)

@@ -17,4 +17,19 @@ angular.module('app.filters', [])
         return txt;
     };
 })
+.filter('countAntidotes', function () {
+    return function (data) {
+        var antidoteCount = 0
+        console.log('data',data)
+        data.map(rating=>{
+            rating.antidotes.map(antidote =>{
+                antidoteCount++
+            })
+        })
+
+        return antidoteCount
+      
+    };
+})
+
 

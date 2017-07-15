@@ -15,36 +15,34 @@
                    </div>
                   </div><!--/ End progress bar -->
               </div>
-               <h1>Rate an organization</a></h1> 
+              <h1>Rate an organization: {{ratin.organization}}</h1>
+       
               <div class="tab-content quiz-tab-content">
                   <div class="tab-pane  " id="tab{{$index+1}}" ng-repeat="scheme in  schemerater track by $index" ng-class="{'active': $first }" >
                       <div class="rating-inwrap">
                          <div class="rating-single">
 
                       
-                            <h3>{{scheme.scheme}}</h3>
-                             <div class="row">
-                                <div class="col-md-7">
-                                    <h4>Antidotes </h4>
+                            <h3>Scheme: {{scheme.name}}</h3>
+                             <h4>Antidotes </h4>
+                             <div class="row" ng-repeat="rater in scheme.schemerater">
+                                <div class="col-sm-12 col-md-7">
+                                   
                                      <article>
                                        <h6>Title: </h6>
-                                        <p>{{scheme.antidoteName}}</p>
+                                        <p>{{rater.antidoteName}}</p>
                                      </article>
-
-                                     <article>
-                                       <h6>Description: </h6>
-                                        <p>{{scheme.antidoteDesc}}</p>
-                                     </article>
+              
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-sm-12 col-md-5">
                                     <div class="label-group">
             		     <label class="custom-control custom-radio">
-                                      <input  name="{{scheme.schemeId}}{{scheme.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(scheme , true)">
+                                      <input  name="{{rater.schemeId}}{{rater.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(rater , true)">
                                       <span class="custom-control-indicator"></span>
                                       <span class="custom-control-description">Yes</span>
                                     </label>
                                   <label class="custom-control custom-radio">
-                                    <input name="{{scheme.schemeId}}{{scheme.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(scheme , false)">
+                                    <input name="{{rater.schemeId}}{{rater.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(rater , false)">
                                     <span class="custom-control-indicator"></span>
                                     <span class="custom-control-description">No</span>
                                   </label>
