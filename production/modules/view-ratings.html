@@ -62,31 +62,14 @@
           <div class="clearfix"></div>
            <div class="rating-area organization details">
               <form method="post" action="">
-                <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ theRating.updatedAt }}'></time-ago></p></h1> 
-                     <h5> Rating </h5>
-			    <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
-                   <div class="rating-single">
-                      <h3>{{scheme.name}}</h3>
-                       <div class="row">
-                          <div class="col-md-9">
-                             
-                              
-                               <article>
-                                 <h6>Antidote</h6>
-                                  <p> {{scheme.antidotes.length}}</p>
-                               </article>
-
-                          </div>
+                <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a> <p class="update" ng-class="{red: theRating.score < 2.5, amber:theRating.score> 2.5 && theRating.score< 4, green: theRating.score> 4}">RAG</p>
+					 </h1> 
+                    
                      
-                       </div>
-                    
-                   </div>
-                </div>
-                <div class="bottom-area">
-                    
-                   </div>
-              </form>
-           </div>
+			      <article ng-show="theRating.comments">
+                                 <h6>Comments</h6>
+                                  <p> {{theRating.comments}}</p>
+                               </article>
    
                <h5> Schemes </h5>
 			    <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
