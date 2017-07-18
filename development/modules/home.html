@@ -220,8 +220,8 @@
                                </article>
 
                                <article>
-                                 <h6>Antidote</h6>
-                                  <p> 5</p>
+                                 <h6>Antidotes({{theScheme.antidotes.length}})</h6>
+                                 
                                </article>
 
                           </div>
@@ -244,14 +244,16 @@
                                 </div>
                           </div>
                        </div>
-                      <article>
-                       <h6> Antidotes Detail</h6>
-					   <ul>
-                        <li ng-repeat="antidote in theScheme.antidotes"> 
-							{{antidote.name}}
-                        </li>
-						<ul>
-                     </article>
+					   <div class="collapse hide" id="collapseExample{{scheme._id}}">
+                        <div class="card card-block">
+
+                          <p ng-repeat="antidote in theScheme.antidotes">
+                            {{antidote.name}}
+                          </p>
+
+                        </div>
+                      </div>
+                   
                    </div>
                 </div>
                 <div class="bottom-area">
