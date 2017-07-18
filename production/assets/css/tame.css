@@ -1382,6 +1382,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
    color: #adadaf
 }
 
+.thum-inner li {
+    list-style: none;
+}
 .start-rating{
     float: right;
     border:1px solid #93bcec;

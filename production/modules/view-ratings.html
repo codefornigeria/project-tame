@@ -1,133 +1,144 @@
 <section class="clearfix content-area">
 
 
-	<div class="schemes" ng-show="ratings.length">
-		<div class="container" >
-			<h2> Ratings</h2>
+  <div class="schemes" ng-show="ratings.length">
+    <div class="container">
+      <h2> Ratings</h2>
 
-			<div class="row scheme-thumb-wrap">
-				<div class="col-md-4 col-sm-6" ng-repeat="rating in ratings">
-					<div class="scheme-thumb">
-            	<p class="update left" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">{{rating.ratingType | asessorType}}</p>
-					
-						<p class="update" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">RAG</p>
-						<h4></h4>
-              <h4><strong>Entity: </strong> {{rating.entity[0].name}} ,  {{rating.entity[0].city}} </h4>  
-						
-            	<h5><strong>Specialization: </strong> {{rating.schemes[0].department[0].name}}</h5>
-						<h5><strong>Sector: </strong> Education</h5>
-            <h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>  
-						<h5><strong><a href=#>{{rating.ratingData.length}} Antidotes </a> </strong></h5>
-					
-					<a data-toggle="modal"
-                  data-target="#success" class="update" ng-click="setRating(rating)">view more.. </a>
-					</div>
-          
-				</div>
-				<!-- End scheme thumb -->
-			</div>
-		</div>
-	</div>
-	
-	<!-- End schemes -->
+      <div class="row scheme-thumb-wrap">
+        <div class="col-md-4 col-sm-6" ng-repeat="rating in ratings">
+          <div class="scheme-thumb">
+            <p class="update left" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">{{rating.ratingType | asessorType}}</p>
+
+            <p class="update" ng-class="{red: rating.score < 2.5, amber:rating.score> 2.5 && rating.score< 4, green: rating.score> 4}">RAG</p>
+            <h4></h4>
+            <h4><strong>Entity: </strong> {{rating.entity[0].name}} , {{rating.entity[0].city}} </h4>
+
+            <h5><strong>Specialization: </strong> {{rating.schemes[0].department[0].name}}</h5>
+            <h5><strong>Sector: </strong> Education</h5>
+            <h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>
+            <h5><strong><a href=#>{{rating.ratingData.length}} Antidotes </a> </strong></h5>
+
+            <a data-toggle="modal" data-target="#success" class="update" ng-click="setRating(rating)">view more.. </a>
+          </div>
+
+        </div>
+        <!-- End scheme thumb -->
+      </div>
+    </div>
+  </div>
+
+  <!-- End schemes -->
 
 
-	<div class="schemes" ng-show="!ratings.length">
-		<div class="container" >
-			<h2> No search result found</h2>
+  <div class="schemes" ng-show="!ratings.length">
+    <div class="container">
+      <h2> No search result found</h2>
 
-			<div class="row scheme-thumb-wrap">
-				<div class="col-md-4 col-sm-6">
-					<p>Ooops!!, we couldn't match your search criteria. please try again.</p>
-				</div>
-				<!-- End scheme thumb -->
-			</div>
-		</div>
-	</div>
-	
-	<!-- End schemes -->
+      <div class="row scheme-thumb-wrap">
+        <div class="col-md-4 col-sm-6">
+          <p>Ooops!!, we couldn't match your search criteria. please try again.</p>
+        </div>
+        <!-- End scheme thumb -->
+      </div>
+    </div>
+  </div>
 
-	<!-- Modal -->
+  <!-- End schemes -->
+
+  <!-- Modal -->
   <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="success">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content ">
         <div class="modal-header">
           <button type="button" class="close right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
-         <section class="clearfix content-area" class="modal-body">
-        <div class="container">
-        <div class="form-group"></div>
-         <button   data-dismiss="modal" class="prev btn btn-link"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to search result</button> 
- 
-          <div class="clearfix"></div>
-           <div class="rating-area organization details">
+        <section class="clearfix content-area" class="modal-body">
+          <div class="container">
+            <div class="form-group"></div>
+            <button data-dismiss="modal" class="prev btn btn-link"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to search result</button>
+
+            <div class="clearfix"></div>
+            <div class="rating-area organization details">
               <form method="post" action="">
-                <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a> <p class="update" ng-class="{red: theRating.score < 2.5, amber:theRating.score> 2.5 && theRating.score< 4, green: theRating.score> 4}">RAG</p>
-					 </h1> 
-                    
-                     
-			      <article ng-show="theRating.comments">
-                                 <h6>Comments</h6>
-                                  <p> {{theRating.comments}}</p>
-                               </article>
-   
-               <h5> Schemes </h5>
-			    <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
-                   <div class="rating-single">
-                      <h3>{{scheme.name}}</h3>
-                       <div class="row">
-                          <div class="col-md-9">
-                             
-                               <article>
-                                 <h6>Sector:</h6>
-                                  <p>Education</p>
-                               </article>
+                <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a>
+                  <p class="update" ng-class="{red: theRating.score < 2.5, amber:theRating.score> 2.5 && theRating.score< 4, green: theRating.score> 4}">RAG</p>
+                </h1>
 
-                               <article>
-                                 <h6>Focus</h6>
-                                  <p> {{scheme.focus}}</p>
-                               </article>
 
-                               <article>
-                                 <h6>Level</h6>
-                                  <p>{{scheme.level}} </p>
-                               </article>
+                <article ng-show="theRating.comments">
+                  <h6>Comments</h6>
+                  <p> {{theRating.comments}}</p>
+                </article>
 
-                               <article>
-                                 <h6>Antidote</h6>
-                                  <p> {{scheme.antidotes.length}}</p>
-                               </article>
+                <h5> Schemes </h5>
+                <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
+                  <div class="rating-single">
+                    <h3>{{scheme.name}}</h3>
+                    <div class="row">
+                      <div class="col-md-9">
 
+                        <article>
+                          <h6>Sector:</h6>
+                          <p>Education</p>
+                        </article>
+
+                        <article>
+                          <h6>Focus</h6>
+                          <p> {{scheme.focus}}</p>
+                        </article>
+
+                        <article>
+                          <h6>Level</h6>
+                          <p>{{scheme.level}} </p>
+                        </article>
+
+                        <article>
+                          <h6>Antidotes ({{scheme.antidotes.length}})
+                            <!--<button class="btn btn-link"  type="button" data-toggle="collapse" data-target="#collapseExample{{scheme._id}}" aria-expanded="false" aria-controls="collapseExample{{scheme._id}}">view more.. </button>
+                            -->
+                         </h6>
+                        </article>
+
+                      </div>
+                      <div class="col-md-3">
+                        <div class="progress-area row">
+                          <div class="col-sm-12">
+                            <h3>Medium</h3>
+                            <p>Likelihood of Occurence </p>
+                            <div class="progress">
+                              <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                           </div>
-                          <div class="col-md-3">
-                              <div class="progress-area row">
-                                    <div class="col-sm-12">
-                                       <h3>Medium</h3>
-                                       <p>Likelihood of Occurence </p>
-                                       <div class="progress">
-                                          <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
-                                       </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                       <h3>High</h3>
-                                       <p>Frequency of Occurence  </p>
-                                       <div class="progress">
-                                          <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuemin="0" aria-valuemax="100"></div>
-                                       </div>
-                                    </div>
-                                </div>
+                          <div class="col-sm-12">
+                            <h3>High</h3>
+                            <p>Frequency of Occurence </p>
+                            <div class="progress">
+                              <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                           </div>
-                       </div>
-                    
-                   </div>
+                        </div>
+                      </div>
+                       <div class="collapse hide" id="collapseExample{{scheme._id}}">
+                            <div class="card card-block">
+                              
+                                <p ng-repeat="antidote in scheme.antidotes">
+                                  {{antidote.name}}
+                                </p>
+                              
+                            </div>
+                          </div>
+                    </div>
+
+                  </div>
                 </div>
                 <div class="bottom-area">
-                    
-                   </div>
+
+                </div>
               </form>
-           </div>
-       </div>
-    </section>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>
