@@ -176,6 +176,7 @@
               if(!orgData){
                   return
               }
+              console.log('rating data',$scope.ratin)
               $scope.showAssessment =false;
               $scope.showDepartment  = true
           }

@@ -215,6 +215,8 @@ angular.module('app', [
                                         },
 
                                     },
+                                      $sort: { createdAt: 1 },
+                                
                                     $limit: 5
                                 }
                             }).then(function (ratings) {
@@ -261,9 +263,7 @@ angular.module('app', [
                         schemes: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             return $feathers.service('scheme').find({
-                                query: {
-
-                                }
+                               
                             }).then(function (schemes) {
                                 if (schemes.data.length) {
                                     console.log('test schemes', schemes.data)
@@ -306,10 +306,13 @@ angular.module('app', [
                                         path: 'scheme entity',
                                         select: 'name  _id',
                                         options: {
-                                            limit: 5
+                                            limit: 15
                                         },
 
                                     },
+                                  
+                                    $sort: { createdAt: -1 },
+                                
                                     $limit: 5
                                 }
                             }).then(function (ratings) {
@@ -448,7 +451,9 @@ angular.module('app', [
 
                         ratings: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('rating').find({
-
+                                query:{
+                                       $sort: { createdAt: -1 },
+                                }
                             }).then(function (ratings) {
                                 if (ratings.data.length) {
                                     console.log('view ratings', ratings.data)
@@ -2482,6 +2487,7 @@ angular.module('app.controllers')
               if(!orgData){
                   return
               }
+              console.log('rating data',$scope.ratin)
               $scope.showAssessment =false;
               $scope.showDepartment  = true
           }
