@@ -12,16 +12,15 @@
                     <div class="thum-inner">
                       <h4>Schemes</h4>
                       <p>{{rating.schemes.length}}</p>
-                    	<button data-toggle="modal"
-                  data-target="#success" class="btn btn-link" >view more</button>
+                    
                     </div>
                   </div>
                   <div class="col-md-6">
                       <div class="thum-inner">
                         <h4>Antidotes </h4>
                         <p>{{rating.ratingData | countAntidotes}}</p>
-                     	<button data-toggle="modal"
-                  data-target="#success" class="btn btn-link" ">view more</button>
+                     	<!--<button data-toggle="modal"
+                  data-target="#success" class="btn btn-link" ">view more</button>-->
                       </div>
                   </div>
                   <!--<div class="col-md-4">
@@ -34,7 +33,9 @@
                       </div>
                   </div>-->
               </div>
-
+  	<button data-toggle="modal"  class="start-rating btn-link" style="float:left;"
+                  data-target="#success" class="btn btn-link" >view more</button>            
+ <!--<a class="start-rating" ui-sref="ratings" style="float:left;">View More</a>-->
                 <a class="start-rating" ui-sref="ratings">Start new rating</a>
            </div>
        </div>
@@ -64,7 +65,7 @@
                           <div class="col-md-9">
                              
                                <article>
-                                 <h6>Sector:</h6>
+                                 <h6>Sector</h6>
                                   <p>Education</p>
                                </article>
 
@@ -79,29 +80,39 @@
                                </article>
 
                                <article>
-                                 <h6>Antidote</h6>
-                                  <p> {{scheme.antidotes.length}}</p>
+                                 <h6>Antidote ({{scheme.antidotes.length}})</h6>
+                                
                                </article>
 
                           </div>
                           <div class="col-md-3">
                               <div class="progress-area row">
                                     <div class="col-sm-12">
-                                       <h3>Medium</h3>
+                                       <h3>{{scheme.likelihood}}</h3>
                                        <p>Likelihood of Occurence </p>
                                        <div class="progress">
-                                          <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
-                                       </div>
+                                           <div class="progress-bar" ng-class="{'bg-success':scheme.likelihood=='Low' , 'bg-warning':scheme.likelihood=='Medium','bg-danger':scheme.likelihood=='High'}" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                      </div>
                                     </div>
                                     <div class="col-sm-12">
-                                       <h3>High</h3>
+                                       <h3>{{scheme.frequency}}</h3>
                                        <p>Frequency of Occurence  </p>
                                        <div class="progress">
-                                          <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuemin="0" aria-valuemax="100"></div>
-                                       </div>
+                                             <div class="progress-bar" ng-class="{'bg-success':scheme.frequency=='low' , 'bg-warning':scheme.frequency=='
+                                             Medium','bg-danger':scheme.frequency=='high'}" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                      </div>
                                     </div>
                                 </div>
                           </div>
+                           <div class="" id="collapseExample{{scheme._id}}">
+                        <div class="card card-block">
+
+                          <p ng-repeat="antidote in scheme.antidotes">
+                            {{antidote.name}}
+                          </p>
+
+                        </div>
+                      </div>
                        </div>
                     
                    </div>
