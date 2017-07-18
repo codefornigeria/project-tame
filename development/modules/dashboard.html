@@ -49,9 +49,9 @@
                       <div class="thum-inner">
                         <h4>Settings</h4>
                          <ul>
-                           <li>   <a ui-sref="request-assessor({type:'self'})">Become self assessor.</a>
+                           <li ng-hide="user.selfEntities.length>0">   <a ui-sref="request-assessor({type:'self'})">Become self assessor.</a>
                      </li>
-                        <li>   <a ui-sref="request-assessor({type:'independent'})">Become independent assessor.</a>
+                        <li ng-hide="user.independentEntities.length>0">   <a ui-sref="request-assessor({type:'independent'})">Become independent assessor.</a>
                      </li>
                         <!--<li>   <a href="#">Change your password.</a>
                       

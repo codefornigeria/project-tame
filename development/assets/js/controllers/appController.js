@@ -39,6 +39,7 @@ angular.module('app.controllers')
           }
        
       $scope.toResult = function(){
+          
             $scope.showRater=false
         }
    $scope.ratingFunc =function(){

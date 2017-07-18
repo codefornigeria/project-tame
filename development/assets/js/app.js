@@ -20,8 +20,8 @@ angular.module('app', [
 ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
 
-         $rootScope.$on('$routeChangeStart', function(evt, absNewUrl, absOldUrl){
-             })
+        $rootScope.$on('$routeChangeStart', function (evt, absNewUrl, absOldUrl) {
+        })
         $rootScope.currentUser = {
             isLoggedIn: LocalService.get('feathers-jwt')
         }
@@ -39,12 +39,12 @@ angular.module('app', [
             //             $state.go(toState.redirectTo, params);
             //             return;
             //         }
-              //scroll to top of page after each route change
-  
+            //scroll to top of page after each route change
+
         })
         $rootScope.$on('$stateChangeSuccess', function () {
             //  $(".page-preloading").addClass('hidden');
-               $window.scrollTo(0,0); 
+            $window.scrollTo(0, 0);
         });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
             event.preventDefault();
@@ -68,12 +68,12 @@ angular.module('app', [
             preventOpenDuplicates: true,
             target: 'div.login-wrap'
         });
-    }).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    }).config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
         console.log('loader configured')
-   cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+        cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+        cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
 
-  }]).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
+    }]).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
         function ($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
             // cfpLoadingBarProvider.includeBar = true;
             cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
@@ -157,14 +157,14 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                   return false
+                                    return false
                                 });
 
                         },
                         schemes: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             return $feathers.service('scheme').find({
-                              
+
                             }).then(function (schemes) {
                                 if (schemes.data.length) {
                                     console.log('test schemes', schemes.data)
@@ -191,12 +191,12 @@ angular.module('app', [
                             })
 
                         },
-                        groups :function($q,$feathers,$state,LocalService){
+                        groups: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('group').find({
 
-                            }).then(groups=>{
+                            }).then(groups => {
                                 return groups.data
-                            }).catch(err =>{
+                            }).catch(err => {
                                 return false
                             })
                         },
@@ -250,8 +250,8 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                   console.log(err)
-                                   return false
+                                    console.log(err)
+                                    return false
                                 });
 
                         },
@@ -259,7 +259,7 @@ angular.module('app', [
                             //  authManagement  :
                             return $feathers.service('scheme').find({
                                 query: {
-                                   
+
                                 }
                             }).then(function (schemes) {
                                 if (schemes.data.length) {
@@ -287,12 +287,12 @@ angular.module('app', [
                             })
 
                         },
-                        groups :function($q,$feathers,$state,LocalService){
+                        groups: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('group').find({
 
-                            }).then(groups=>{
+                            }).then(groups => {
                                 return groups.data
-                            }).catch(err =>{
+                            }).catch(err => {
                                 return false
                             })
                         },
@@ -354,49 +354,98 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                   console.log(err)
-                                   return false
+                                    console.log(err)
+                                    return false
                                 });
 
                         },
-                        departments:function ($q, $feathers, $state, LocalService){
-                            return $feathers.service('department').find().then(result =>{
+                        departments: function ($q, $feathers, $state, LocalService) {
+                            return $feathers.service('department').find().then(result => {
                                 return result
                             })
                         },
-                        groups: function ($q, $feathers, $state, LocalService){
-                            return $feathers.service('group').find().then(result =>{
+                        groups: function ($q, $feathers, $state, LocalService) {
+                            return $feathers.service('group').find().then(result => {
                                 return result
                             })
+                        },
+                        sectors: function ($q, $feathers, $state, LocalService) {
+                            return $feathers.service('sector').find({
+                                query: {
+                                    _id: "58ae8c5b561deb07e1dc1d37"
+                                }
+                            }).then(function (sectors) {
+
+                                if (sectors.data.length) {
+                                    console.log('showing sectors', sectors.data)
+                                    return sectors.data
+                                }
+                            }).catch(function (err) {
+                                console.log(err)
+                                return false;
+                            })
+                        },
+                        entities:function($q,$feathers,$state,$stateParams, user,sectors ){
+                          var entityConfig;
+                            console.log('showing organization type', user)
+                                 console.log('params', $stateParams)
+                             if ($stateParams.ratingType == 'independent') {
+                                entityConfig = {
+                                    query: {
+                                        sectors: sectors[0]._id,
+                                        isSelfRated:true
+                                    }
+                                }
+                             } else if ($stateParams.ratingType == 'self') {
+
+                                entityConfig = {
+                                    query: {
+                                        _id: user.selfEntities,
+                                        sectors: sectors[0]._id
+                                    }
+
+                                }
+                             }
+                             console.log('entityconfig',entityConfig)
+                            return $feathers.service('entity').find(entityConfig).then(function (entities) {
+                                console.log('returnd entit', entities)
+                                if (entities.data.length) {
+                                    return entities.data
+                                }else{
+                                    return []
+                                }
+                            }).catch(function (err) {
+                                console.log('entity err', err)
+                                 return [];
+                            })
                         }
-
-
+                   
                     },
                     templateUrl: 'modules/ratings.html',
                     controller: 'ratingsCtrl'
                 })
                 .state('request', {
                     url: '/request?action&requestId',
-                    resolve:{
-                        requestStatus:function($q,$feathers, $state, $stateParams){
-                            console.log('state params',$stateParams )
-                            return $feathers.service('request').get($stateParams.requestId ,{query:{action:$stateParams.action}}).then(result =>{
-                                console.log('the result',result)
+                    resolve: {
+                        requestStatus: function ($q, $feathers, $state, $stateParams) {
+                            console.log('state params', $stateParams)
+                            return $feathers.service('request').get($stateParams.requestId, { query: { action: $stateParams.action } }).then(result => {
+                                console.log('the result', result)
                                 return result
-                                    
+
                             })
                         }
                     },
-                    templateUrl:'modules/request-result.html',
+                    templateUrl: 'modules/request-result.html',
                     controller: 'requestResultCtrl'
                 })
-                 .state('view-ratings', {
+                .state('view-ratings', {
                     url: '/view-ratings',
                     resolve: {
-                        
+
                         ratings: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('rating').find({
-                               
+
                             }).then(function (ratings) {
                                 if (ratings.data.length) {
                                     console.log('view ratings', ratings.data)
@@ -407,7 +456,7 @@ angular.module('app', [
                                 console.log(err)
                                 return false
                             })
-                    }
+                        }
                     },
                     templateUrl: 'modules/view-ratings.html',
                     controller: 'viewRatingCtrl'
@@ -430,8 +479,8 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                   console.log(ero)
-                                   return false
+                                    console.log(ero)
+                                    return false
 
                                 });
 
@@ -465,7 +514,7 @@ angular.module('app', [
                     url: '/search?query',
                     templateUrl: 'modules/search-result.html',
                     controller: 'resultCtrl',
-                    resolve:{
+                    resolve: {
                         schemes: function ($q, $feathers, $state, LocalService) {
                             //  authManagement  :
                             return $feathers.service('scheme').find({

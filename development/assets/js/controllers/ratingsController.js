@@ -1,12 +1,16 @@
   angular.module('app.controllers')
-     .controller('ratingsCtrl', function(user,departments,groups, $rootScope, $scope, $state, $stateParams, $feathers) {
+     .controller('ratingsCtrl', function(user,departments,groups, sectors,entities, $rootScope, $scope, $state, $stateParams, $feathers) {
 
          if(!user){
              $state.go('login')
+            
          }
-         console.log('departments', departments)
+
+         console.log('entities', sectors)
           $scope.departments = departments.data
             $scope.groups = groups.data
+            $scope.sectors = sectors
+            $scope.entities = entities
           $rootScope.user = user
            $scope.schemerater =[]
          $rootScope.isLoggedIn  = $rootScope.user ? true:false

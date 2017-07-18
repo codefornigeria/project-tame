@@ -830,6 +830,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     padding-right: 125px;
 }
 
+.rating-area.organization .rating-inwrap select{
+    background: #fafbfc;
+    border-color: #eaf0f5;
+    font-size: 13px;
+    height: 50px;
+    font-weight: 600;
+    padding-right: 125px;
+}
+
+
 .rating-area.organization .bottom-area {
     background: transparent;
     text-align: right;

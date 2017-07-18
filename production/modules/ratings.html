@@ -7,24 +7,30 @@
         <div class="rating-inwrap auto-suggetion">
           <div class="form-group">
             <label>WHAT SECTOR IS THIS ORGANIZATION?</label>
-            <input type="text" class="form-control" id="organigation" placeholder="Education" ng-model="ratin.sector" ng-change="searchSector()"
+            <select class="form-control" ng-model="category" placeholder="Select a sector" required ng-options="option._id  as option.name for option in sectors track by option._id" ng-model="ratin.sector">
+					<option value="" disabled selected>Please Select a Sector</option>
+          </select>
+            <!--<input type="text" class="form-control" id="organigation" placeholder="Education" ng-model="ratin.sector" ng-change="searchSector()"
               required>
             <ul class="typeahead dropdown-menu" ng-show="sectorsearching">
               <li ng-repeat="result in results" ng-click="addSector(result)">
                 {{result.name}}
               </li>
-            </ul>
+            </ul>-->
           </div>
           <div>
             <div class="form-group">
-              <label>ENTER ORGANIZATION NAME</label>
-              <input type="text" class="form-control" id="organization-name" placeholder="Nnamdi Azikiwe Univeristy" ng-model="ratin.organization"
+              <label>SELECT ORGANIZATION </label>
+               <select class="form-control" ng-model="category"  required ng-options="option._id  as option.name for option in entities track by option._id" ng-model="ratin.organization">
+					<option value="" disabled selected>Please Select an organization</option>
+          </select>
+              <!--<input type="text" class="form-control" id="organization-name" placeholder="Nnamdi Azikiwe Univeristy" ng-model="ratin.organization"
                 ng-change="searchOrganization()" required>
               <ul class="typeahead dropdown-menu" ng-show="orgsearching">
                 <li ng-repeat="result in orgs" ng-click="addOrganization(result)">
                   {{result.name}}
                 </li>
-              </ul>
+              </ul>-->
             </div>
             <div class="bottom-area">
              <button class="btn " type="submit">Select Specialization</button>
