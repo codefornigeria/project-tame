@@ -1,5 +1,5 @@
 angular.module('app.controllers')
-    .controller('appCtrl', function (user,schemes,entities, ratings ,groups,$scope, $rootScope, Restangular, $state, $stateParams, $feathers) {
+    .controller('appCtrl', function (user,schemes,entities, ratings ,groups,$scope, $rootScope, $window, $state, $stateParams, $feathers) {
          $scope.showRater=false
          $scope.groups = groups
          $scope.ratin={ratingType:'public-assessor'}
@@ -84,7 +84,7 @@ angular.module('app.controllers')
         $scope.ratingValue={}
         $scope.publicRating= function(entity){
           
-        
+           $window.scrollTo(0,0); 
                        
             $scope.showRater=true
         }
