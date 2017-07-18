@@ -4,6 +4,7 @@ angular.module("app.config", [])
 angular.module('app', [
     'ui.router',
     'ngFeathers',
+    'angular-loading-bar',
     'ngAnimate',
     'restangular',
     'ui.bootstrap',
@@ -16,12 +17,14 @@ angular.module('app', [
     'angularUtils.directives.dirDisqus',
     'angular.filter',
     'angular-carousel',
-    'angular-loading-bar',
     'toastr',
     'satellizer',
     'yaru22.angular-timeago'
 ])
     .run(function ($rootScope, $state, $stateParams, $location, $window, LocalService) {
+
+         $rootScope.$on('$routeChangeStart', function(evt, absNewUrl, absOldUrl){
+             })
         $rootScope.currentUser = {
             isLoggedIn: LocalService.get('feathers-jwt')
         }
@@ -39,9 +42,12 @@ angular.module('app', [
             //             $state.go(toState.redirectTo, params);
             //             return;
             //         }
+              //scroll to top of page after each route change
+  
         })
         $rootScope.$on('$stateChangeSuccess', function () {
             //  $(".page-preloading").addClass('hidden');
+               $window.scrollTo(0,0); 
         });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
             event.preventDefault();
@@ -65,7 +71,12 @@ angular.module('app', [
             preventOpenDuplicates: true,
             target: 'div.login-wrap'
         });
-    }).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
+    }).config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+        console.log('loader configured')
+   cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+
+  }]).config(['$stateProvider', '$urlRouterProvider', 'RestangularProvider', 'ChartJsProvider', '$locationProvider', '$feathersProvider', 'Config', 'cfpLoadingBarProvider', '$authProvider',
         function ($stateProvider, $urlRouterProvider, RestangularProvider, ChartJsProvider, $locationProvider, $feathersProvider, Config, cfpLoadingBarProvider, $authProvider) {
             // cfpLoadingBarProvider.includeBar = true;
             cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
@@ -149,7 +160,7 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                    console.error('Error authenticating!', error);
+                                   return false
                                 });
 
                         },
@@ -164,6 +175,7 @@ angular.module('app', [
                                 }
                             }).catch(function (err) {
                                 console.log(err)
+                                return false
                             })
                         },
 
@@ -178,6 +190,7 @@ angular.module('app', [
                                 }
                             }).catch(function (err) {
                                 console.log(err)
+                                return false
                             })
 
                         },
@@ -240,7 +253,8 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                    console.error('Error authenticating!', error);
+                                   console.log(err)
+                                   return false
                                 });
 
                         },
@@ -257,6 +271,7 @@ angular.module('app', [
                                 }
                             }).catch(function (err) {
                                 console.log(err)
+                                return false
                             })
                         },
 
@@ -271,6 +286,7 @@ angular.module('app', [
                                 }
                             }).catch(function (err) {
                                 console.log(err)
+                                return false
                             })
 
                         },
@@ -304,6 +320,7 @@ angular.module('app', [
                                 }
                             }).catch(function (err) {
                                 console.log(err)
+                                return false
                             })
                         }
 
@@ -340,7 +357,8 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                    console.error('Error authenticating!', error);
+                                   console.log(err)
+                                   return false
                                 });
 
                         },
@@ -390,6 +408,7 @@ angular.module('app', [
                                 }
                             }).catch(function (err) {
                                 console.log(err)
+                                return false
                             })
                     }
                     },
@@ -414,7 +433,9 @@ angular.module('app', [
                                     return user
                                 })
                                 .catch(function (error) {
-                                    console.error('Error authenticating!', error);
+                                   console.log(ero)
+                                   return false
+
                                 });
 
                         },
@@ -862,7 +883,7 @@ angular.module('app.directives', [])
        templateUrl: "modules/directives/entitycard.html",
     
     link:function(scope, elem, attrs){
-        console.log('the scope',scope)
+        
     }
   }
 })
@@ -1102,7 +1123,7 @@ angular.module('app.controllers')
         $scope.checkUser = function () {
             console.log('checking if user is logged in')
         }
-         console.log('the scope', $scope)
+     
        
         $rootScope.logout = function () {
             console.log('logout clicked')

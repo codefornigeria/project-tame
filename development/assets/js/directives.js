@@ -58,7 +58,7 @@ angular.module('app.directives', [])
        templateUrl: "modules/directives/entitycard.html",
     
     link:function(scope, elem, attrs){
-        console.log('the scope',scope)
+        
     }
   }
 })

@@ -18,7 +18,7 @@ angular.module('app.controllers')
         $scope.checkUser = function () {
             console.log('checking if user is logged in')
         }
-         console.log('the scope', $scope)
+     
        
         $rootScope.logout = function () {
             console.log('logout clicked')

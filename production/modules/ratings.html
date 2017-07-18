@@ -3,8 +3,7 @@
   <div class="container">
     <div class="rating-area organization auto-suggetion">
       <form name="ratingForm" ng-submit="loadDepartments(ratingForm.$valid)">
-        <h1>Rate an organization</a>
-        </h1>
+        
         <div class="rating-inwrap auto-suggetion">
           <div class="form-group">
             <label>WHAT SECTOR IS THIS ORGANIZATION?</label>
@@ -28,7 +27,7 @@
               </ul>
             </div>
             <div class="bottom-area">
-              Yes, this information is accurate <button class="btn " type="submit">Select Specialization</button>
+             <button class="btn " type="submit">Select Specialization</button>
             </div>
           </div>
       </form>
@@ -84,7 +83,7 @@
           </div>
           <!--/ End progress bar -->
         </div>
-        <h1>Rate an organization {{ratin.organization}}</a>
+        <h1> {{ratin.organization}}
         </h1>
         <div class="tab-content quiz-tab-content">
           <div class="tab-pane  " id="tab{{$index+1}}" ng-repeat="scheme in  schemerater track by $index">
@@ -97,7 +96,7 @@
                   <div class="col-md-7">
                     <h4>Antidotes </h4>
                     <article>
-                      <h6>Title: </h6>
+                    
                       <p>{{scheme.antidoteName}}</p>
                     </article>
 
@@ -130,7 +129,7 @@
         <div class="quiz-control bottom-area">
           <ul class="pager wizard quiz-button-area">
             <li class="previous prev "><a><i class="fa fa-angle-left" aria-hidden="true"></i>  Previous</a> </li>
-            <li class="next"> <a class="nx">Next <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+            <li class="next"> <button class="nx btn btn-primary">Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
               <p class="submit">Yes, this information is accurate to the best of my knowledge <button class="btn " type="submit" data-toggle="modal"
                   data-target="#success" ng-click="submitRating()">SUBMIT</button></p>
             </li>
