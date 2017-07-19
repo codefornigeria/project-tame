@@ -1366,12 +1366,27 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
 }
 
 .rating-area.organization-rating .rag {
-    background: #fc6e50;
     border-radius: 5px;
     color: #fff;
     font-size: 12px;
     padding: 4px 9px;
     margin-top: 15px;
+}
+
+.rating-area.organization-rating .rag.green {
+    background: #008000;
+}
+.rating-area.organization-rating .rag.amber-green {
+    background: #9acd32;
+}
+.rating-area.organization-rating .rag.amber {
+    background: #ffff00;
+}
+.rating-area.organization-rating .rag.amber-red {
+    background: #ffa500;
+}
+.rating-area.organization-rating .rag.red {
+    background: #ff0000;
 }
 
 .rating-area.organization-rating h5{
