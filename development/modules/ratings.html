@@ -41,7 +41,7 @@
     </div>
 </section>
 
-<section  ng-show="!showAssessment && showDepartment">
+<section  ng-show="!showAssessment && showDepartment" class="fade" ng-class="{'in':!showAssessment && showDepartment}">
   <div class="rating-area organization auto-suggetion">
   <form name="categoryForm" ng-submit="loadSchemes(ratingForm.$valid)">
     <h1>Select Specialization</a>

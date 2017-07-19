@@ -37,7 +37,7 @@
 					<div class="col-md-12" ng-show="ratin.hasScheme=='YES'">
 						<div class="form-group">
 							<label>Scheme Class</label>
-							<select name="mySelect" id="mySelect" class="custom-select form-control" ng-change="" ng-options="option.name for option in groups track by option._id"
+							<select name="mySelect" id="mySelect" class="custom-select form-control"  ng-options=" option._id as option.name for option in groups track by option._id"
 							 ng-model="ratin.group">
 	 							 <option value="">Select Corruption Scheme Class</option> <!-- not selected / blank option -->
      						</select>

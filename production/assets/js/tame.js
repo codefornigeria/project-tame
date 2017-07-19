@@ -1260,9 +1260,9 @@ angular.module('app.controllers')
                 comments: $scope.ratin.comments,
                 ratingType:$scope.ratin.ratingType,
                 entity:$scope.currentEntity._id,
-                schemes:$scope.ratin.hasScheme=='YES'? [$scope.ratin.scheme._id]: null,
+                group:$scope.ratin.hasScheme=='YES'? [$scope.ratin.group]: null,
                 score:$scope.ratin.score,
-                sectors:[$scope.ratin.scheme.sectors[0]._id]
+             //   sectors:[$scope.ratin.scheme.sectors[0]._id]
             }
                 console.log('rating data', $scope.ratin)
                   var ratingService = $feathers.service('rating')
@@ -2310,7 +2310,7 @@ angular.module('app.controllers')
           }
       })
   angular.module('app.controllers')
-     .controller('ratingsCtrl', function(user,departments,groups, sectors,entities, $rootScope, $scope, $state, $stateParams, $feathers) {
+     .controller('ratingsCtrl', function(user,departments,groups, sectors,entities, $rootScope, $scope, $state, $stateParams, $feathers, $window ) {
 
          if(!user){
              $state.go('login')
@@ -2488,6 +2488,7 @@ angular.module('app.controllers')
                   return
               }
               console.log('rating data',$scope.ratin)
+               $window.scrollTo(0,0); 
               $scope.showAssessment =false;
               $scope.showDepartment  = true
           }
@@ -2499,6 +2500,7 @@ angular.module('app.controllers')
               }
               console.log('show ratin', $scope.ratin)
              console.log('show user', user)
+              $window.scrollTo(0,0); 
               $scope.showAssessment = true
              $scope.showDepartment = false
               if(user.userType =='independent-assessor'){
@@ -2634,6 +2636,7 @@ angular.module('app.controllers')
               // })
 
               console.log('rating data', ratin)
+               $window.scrollTo(0,0); 
               $scope.ratingCompleted = true
               $scope.showAssessment = false
           }

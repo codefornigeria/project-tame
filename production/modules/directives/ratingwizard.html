@@ -18,7 +18,31 @@
               <h1>{{ratin.organization}}</h1>
        
               <div class="tab-content quiz-tab-content">
-                  <div class="tab-pane  " id="tab{{$index+1}}" ng-repeat="scheme in  schemerater track by $index" ng-class="{'active': $first }" >
+                 <div class="tab-pane" id="tab0"  ng-class="{'active': $first }" >
+                      <div class="rating-inwrap">
+                         <div class="rating-single">
+
+                      
+                            <h3>Rating Information</h3>
+                             
+                             <div class="row" >
+                                <div class="col-sm-12 col-md-7">
+                                   
+                                     <article>
+                                     
+                                        <p>Before commencing this assessment it is important to note the followinf</p>
+                                        <ul>
+                                          <li>All questions provided for every scheme must be answered</li>
+                                        </ul>
+                                     </article>
+              
+                                </div>
+                               
+                             </div>
+                         </div>
+                      </div>
+                  </div>
+                  <div class="tab-pane  " id="tab{{$index+1}}" ng-repeat="scheme in  schemerater track by $index" >
                       <div class="rating-inwrap">
                          <div class="rating-single">
 
@@ -57,7 +81,7 @@
               </div>
               <div class="quiz-control bottom-area">
                 <ul class="pager wizard quiz-button-area">
-                  <li class="previous prev "><a ><i class="fa fa-angle-left" aria-hidden="true"></i>  Previous</a> </li>
+                  <li class="previous prev "><button class="btn btn-primary" ><i class="fa fa-angle-left" aria-hidden="true"></i>  Previous</button> </li>
                   <li class="next"> <button class="nx btn btn-primary" >Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
                   <p class="submit">Yes, this information is accurate to the best of my knowledge <button class="btn " type="submit" data-toggle="modal" data-target="#success" ng-click="submitRating()">SUBMIT</button></p>
                   </li>

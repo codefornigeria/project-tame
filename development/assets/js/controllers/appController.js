@@ -101,9 +101,9 @@ angular.module('app.controllers')
                 comments: $scope.ratin.comments,
                 ratingType:$scope.ratin.ratingType,
                 entity:$scope.currentEntity._id,
-                schemes:$scope.ratin.hasScheme=='YES'? [$scope.ratin.scheme._id]: null,
+                group:$scope.ratin.hasScheme=='YES'? [$scope.ratin.group]: null,
                 score:$scope.ratin.score,
-                sectors:[$scope.ratin.scheme.sectors[0]._id]
+             //   sectors:[$scope.ratin.scheme.sectors[0]._id]
             }
                 console.log('rating data', $scope.ratin)
                   var ratingService = $feathers.service('rating')

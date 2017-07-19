@@ -1,5 +1,5 @@
   angular.module('app.controllers')
-     .controller('ratingsCtrl', function(user,departments,groups, sectors,entities, $rootScope, $scope, $state, $stateParams, $feathers) {
+     .controller('ratingsCtrl', function(user,departments,groups, sectors,entities, $rootScope, $scope, $state, $stateParams, $feathers, $window ) {
 
          if(!user){
              $state.go('login')
@@ -177,6 +177,7 @@
                   return
               }
               console.log('rating data',$scope.ratin)
+               $window.scrollTo(0,0); 
               $scope.showAssessment =false;
               $scope.showDepartment  = true
           }
@@ -188,6 +189,7 @@
               }
               console.log('show ratin', $scope.ratin)
              console.log('show user', user)
+              $window.scrollTo(0,0); 
               $scope.showAssessment = true
              $scope.showDepartment = false
               if(user.userType =='independent-assessor'){
@@ -323,6 +325,7 @@
               // })
 
               console.log('rating data', ratin)
+               $window.scrollTo(0,0); 
               $scope.ratingCompleted = true
               $scope.showAssessment = false
           }
