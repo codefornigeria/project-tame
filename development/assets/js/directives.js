@@ -52,12 +52,12 @@ angular.module('app.directives', [])
         if(scope.rating.score > 0.70 && scope.rating.score <=0.84 ){
         scope.badge = "amber-green"
       }
-      if(scope.rating.score > 0.85){
-        scope.badge = "green"
-      }
+        if(scope.rating.score > 0.85){
+            scope.badge = "green"
+        }
+        }
     }
-  }
-})
+    })
 .directive('entityBadge' , function(){
   return {
     restrict: 'EA',
@@ -95,6 +95,56 @@ angular.module('app.directives', [])
         }
     }
 })
+.directive('starDisplayRating', function () {
+    return {
+        restrict: 'EA',
+        template:'<div class="rating-point">'+
+                 '<button class="button" type="button" id="star1">1</button>'+
+                 '<button class="button" type="button" id="star2">2</button>'+
+                 '<button class="button" type="button" id="star3">3</button>'+
+                 '<button class="button" type="button"  id="star4">4</button>'+
+                 '<button class="button" type="button" id="star5">5</button>'+
+               '</div>',
+        scope:{
+            ratingValue:'='
+        },
+       
+        link: function (scope, elem, attrs) {
+            console.log('showing star display', scope)
+            switch (scope.ratingValue){
+                case '1':
+                    $('#star1').siblings().removeClass('active')
+                $('#star1').addClass('active')
+                break;
+                case '5':
+                    $('#star5').siblings().removeClass('active')
+                $('#star5').addClass('active')
+                break;
+
+            }
+           
+
+            scope.setValue = function (index) {
+                   elem.bind('click', function(e){
+                scope.ratin.score = index;
+                  $(e.target).siblings().removeClass('active')
+                $(e.target).addClass('active')
+                // scope.onRatingSelected({
+                //     rating: index + 1
+                // });
+            })
+
+               
+            scope.$watch('ratingValue', function (oldVal, newVal) {
+                console.log('star old', oldVal);
+                console.log('star new', newVal)
+            });
+          
+        
+    }
+        }
+    }
+})
 .directive('starRating', function () {
     return {
         restrict: 'EA',
@@ -127,13 +177,10 @@ angular.module('app.directives', [])
                 //     rating: index + 1
                 // });
             })
-               
 
-            // scope.$watch('ratingValue', function (oldVal, newVal) {
-            //     if (newVal) {
-            //         updateStars();
-            //     }
-            // });
+               
+            
+          
         
     }
         }

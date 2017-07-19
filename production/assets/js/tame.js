@@ -931,12 +931,12 @@ angular.module('app.directives', [])
         if(scope.rating.score > 0.70 && scope.rating.score <=0.84 ){
         scope.badge = "amber-green"
       }
-      if(scope.rating.score > 0.85){
-        scope.badge = "green"
-      }
+        if(scope.rating.score > 0.85){
+            scope.badge = "green"
+        }
+        }
     }
-  }
-})
+    })
 .directive('entityBadge' , function(){
   return {
     restrict: 'EA',
@@ -974,6 +974,56 @@ angular.module('app.directives', [])
         }
     }
 })
+.directive('starDisplayRating', function () {
+    return {
+        restrict: 'EA',
+        template:'<div class="rating-point">'+
+                 '<button class="button" type="button" id="star1">1</button>'+
+                 '<button class="button" type="button" id="star2">2</button>'+
+                 '<button class="button" type="button" id="star3">3</button>'+
+                 '<button class="button" type="button"  id="star4">4</button>'+
+                 '<button class="button" type="button" id="star5">5</button>'+
+               '</div>',
+        scope:{
+            ratingValue:'='
+        },
+       
+        link: function (scope, elem, attrs) {
+            console.log('showing star display', scope)
+            switch (scope.ratingValue){
+                case '1':
+                    $('#star1').siblings().removeClass('active')
+                $('#star1').addClass('active')
+                break;
+                case '5':
+                    $('#star5').siblings().removeClass('active')
+                $('#star5').addClass('active')
+                break;
+
+            }
+           
+
+            scope.setValue = function (index) {
+                   elem.bind('click', function(e){
+                scope.ratin.score = index;
+                  $(e.target).siblings().removeClass('active')
+                $(e.target).addClass('active')
+                // scope.onRatingSelected({
+                //     rating: index + 1
+                // });
+            })
+
+               
+            scope.$watch('ratingValue', function (oldVal, newVal) {
+                console.log('star old', oldVal);
+                console.log('star new', newVal)
+            });
+          
+        
+    }
+        }
+    }
+})
 .directive('starRating', function () {
     return {
         restrict: 'EA',
@@ -1006,13 +1056,10 @@ angular.module('app.directives', [])
                 //     rating: index + 1
                 // });
             })
-               
 
-            // scope.$watch('ratingValue', function (oldVal, newVal) {
-            //     if (newVal) {
-            //         updateStars();
-            //     }
-            // });
+               
+            
+          
         
     }
         }
@@ -2316,34 +2363,34 @@ angular.module('app.controllers')
               $state.go('scheme')
           }
       })
-  angular.module('app.controllers')
-     .controller('ratingsCtrl', function(user,departments,groups, sectors,entities, $rootScope, $scope, $state, $stateParams, $feathers, $window ) {
+angular.module('app.controllers')
+    .controller('ratingsCtrl', function (user, departments, groups, sectors, entities, $rootScope, $scope, $state, $stateParams, $feathers, $window) {
 
-         if(!user){
-             $state.go('login')
-            
-         }
+        if (!user) {
+            $state.go('login')
 
-         console.log('entities', sectors)
-          $scope.departments = departments.data
-            $scope.groups = groups.data
-            $scope.sectors = sectors
-            $scope.entities = entities
-          $rootScope.user = user
-           $scope.schemerater =[]
-         $rootScope.isLoggedIn  = $rootScope.user ? true:false
-         $scope.showRatingPage =false
-         $schemeLoaded=false
-         console.log('show rootScope', $rootScope)
-          $scope.showEffect = false
-          $scope.showAssessment = false
-          $scope.ratingCompleted = false
-          $scope.orgSearch = false;
-          $scope.ratin = {
-              schemes: [],
-              creator : user._id
-          }
-          $rootScope.logout = function () {
+        }
+
+        console.log('entities', sectors)
+        $scope.departments = departments.data
+        $scope.groups = groups.data
+        $scope.sectors = sectors
+        $scope.entities = entities
+        $rootScope.user = user
+        $scope.schemerater = []
+        $rootScope.isLoggedIn = $rootScope.user ? true : false
+        $scope.showRatingPage = false
+        $schemeLoaded = false
+        console.log('show rootScope', $rootScope)
+        $scope.showEffect = false
+        $scope.showAssessment = false
+        $scope.ratingCompleted = false
+        $scope.orgSearch = false;
+        $scope.ratin = {
+            schemes: [],
+            creator: user._id
+        }
+        $rootScope.logout = function () {
             console.log('logout clicked')
             $feathers.logout().then(function (params) {
                 console.log(params);
@@ -2353,349 +2400,354 @@ angular.module('app.controllers')
 
             });
         }
-          console.log('showing organization type', user)
-          $scope.nextSlideU = function(scheme, slide, schemeLength , index) {
+        console.log('showing organization type', user)
+        $scope.nextSlideU = function (scheme, slide, schemeLength, index) {
             console.log('scheme length', schemeLength)
-            console.log('ndec' , index)
-              var errorState = false
+            console.log('ndec', index)
+            var errorState = false
 
-                  if (scheme.score >= 0) {
-                      scheme.error = false
+            if (scheme.score >= 0) {
+                scheme.error = false
 
-                  } else {
-                      scheme.error = true,
-                          errorState = true
-                  }
+            } else {
+                scheme.error = true,
+                    errorState = true
+            }
 
-                  console.log('showing scheme state', scheme )
-              if (!errorState && schemeLength !=(index+1)) {
-                  slide()
-              }
-          }
-          $scope.canSubmit = true
-          $scope.prevSlideU = function(slide) {
-              slide()
-          }
-          if (!user) {
-              $state.go('login')
-              return
-          }
+            console.log('showing scheme state', scheme)
+            if (!errorState && schemeLength != (index + 1)) {
+                slide()
+            }
+        }
+        $scope.canSubmit = true
+        $scope.prevSlideU = function (slide) {
+            slide()
+        }
+        if (!user) {
+            $state.go('login')
+            return
+        }
 
 
-          $scope.showResult = function(person) {
-              $state.go('entity', {
-                  query: person._id
-              })
-          }
-          $scope.searchOrganization = function() {
-              $scope.sectorsearching = false;
-                 $scope.orgsearching = true;
-          
-             var inputMin = 1;
-              $scope.ratin.organizationSelected = false
+        $scope.showResult = function (person) {
+            $state.go('entity', {
+                query: person._id
+            })
+        }
+        $scope.searchOrganization = function () {
+            $scope.sectorsearching = false;
+            $scope.orgsearching = true;
 
-              if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
+            var inputMin = 1;
+            $scope.ratin.organizationSelected = false
+
+            if ($scope.ratin.organization && $scope.ratin.organization.length >= inputMin) {
                 var entityService = $feathers.service('entity')
                 var entityConfig;
                 console.log('showing organization type', user)
                 console.log('params', $stateParams)
-                if($stateParams.ratingType == 'independent'){
-                  entityConfig ={
-                        query:{
-                       sectors : $scope.ratin.sectorId
+                if ($stateParams.ratingType == 'independent') {
+                    entityConfig = {
+                        query: {
+                            sectors: $scope.ratin.sectorId
                         }
-                   }
-                }else{
+                    }
+                } else {
 
-                  entityConfig ={
-                      query:{
-                         _id: user.selfEntities,
-                         sectors : $scope.ratin.sectorId
-                      }
-                   
-                  }
+                    entityConfig = {
+                        query: {
+                            _id: user.selfEntities,
+                            sectors: $scope.ratin.sectorId
+                        }
+
+                    }
                 }
-                console.log('entity config',entityConfig)
-                  entityService.find(entityConfig).then(function(entities) {
-                      console.log('returnd entit', entities)
-                      if (entities.data.length) {
-                          console.log('showing entities', entities.data)
-                          $scope.$apply(function() {
-                              $scope.orgSearch = true;
+                console.log('entity config', entityConfig)
+                entityService.find(entityConfig).then(function (entities) {
+                    console.log('returnd entit', entities)
+                    if (entities.data.length) {
+                        console.log('showing entities', entities.data)
+                        $scope.$apply(function () {
+                            $scope.orgSearch = true;
                             $scope.orgs = entities.data
 
 
 
-                          })
-                      }
-                  }).catch(function(err) {
-                      console.log('entity search error',err)
-                      $scope.orgSearch = false;
-                  })
-
-              } else {
-                  $scope.searching = false;
-              }
-          }
-
-          $scope.searchSector = function() {
-              var inputMin = 1;
-                $scope.sectorsearching = true;
-                   $scope.orgsearching = false;
-                 if ($scope.ratin.sector && $scope.ratin.sector.length >= inputMin) {
-                  $scope.ratin.sectorSelected = false
-
-                  var sectorService = $feathers.service('sector')
-                  sectorService.find({
-                    query: {
-                        _id:"58ae8c5b561deb07e1dc1d37"
+                        })
                     }
-                  }).then(function(sectors) {
+                }).catch(function (err) {
+                    console.log('entity search error', err)
+                    $scope.orgSearch = false;
+                })
 
-                      if (sectors.data.length) {
-                          console.log('showing sectors', sectors.data)
-                          $scope.$apply(function() {
-                              $scope.searching = true;
-                              $scope.results = sectors.data
-
-
-                          })
-                      }
-                  }).catch(function(err) {
-                      console.log(err)
-                      $scope.searching = false;
-                  })
-
-              } else {
-                  $scope.searching = false;
-              }
-          }
-          $scope.addSector = function(result) {
-              $scope.ratin.sectorId = result._id;
-
-              $scope.ratin.sector = result.name;
-              $scope.ratin.sectorSelected = true
-              //  $scope.results = []
-              $scope.searching = false;
-              $scope.sectorsearching =false
+            } else {
+                $scope.searching = false;
+            }
         }
-          $scope.addOrganization = function(result) {
-              console.log('rating now',$scope.ratin)
-              $scope.ratin.organizationId = result._id;
-                $scope.ratin.entity = result._id;
 
-              $scope.ratin.organization = result.name;
-              $scope.orgSearch = false;
-              $scope.ratin.organizationSelected = true
-              $scope.orgsearching=false
+        $scope.searchSector = function () {
+            var inputMin = 1;
+            $scope.sectorsearching = true;
+            $scope.orgsearching = false;
+            if ($scope.ratin.sector && $scope.ratin.sector.length >= inputMin) {
+                $scope.ratin.sectorSelected = false
 
-          }
-          $scope.loadDepartments = function(orgData){
-              if(!orgData){
-                  return
-              }
-              console.log('rating data',$scope.ratin)
-               $window.scrollTo(0,0); 
-              $scope.showAssessment =false;
-              $scope.showDepartment  = true
-          }
-          $scope.loadSchemes = function(assessmentData) {
-              // load schemes based on assessment data
-              console.log('assess', assessmentData)
-              if(!assessmentData){
-                  return
-              }
-              console.log('show ratin', $scope.ratin)
-             console.log('show user', user)
-              $window.scrollTo(0,0); 
-              $scope.showAssessment = true
-             $scope.showDepartment = false
-              if(user.userType =='independent-assessor'){
-                  //find  organization  rating ,
+                var sectorService = $feathers.service('sector')
+                sectorService.find({
+                    query: {
+                        _id: "58ae8c5b561deb07e1dc1d37"
+                    }
+                }).then(function (sectors) {
+
+                    if (sectors.data.length) {
+                        console.log('showing sectors', sectors.data)
+                        $scope.$apply(function () {
+                            $scope.searching = true;
+                            $scope.results = sectors.data
+
+
+                        })
+                    }
+                }).catch(function (err) {
+                    console.log(err)
+                    $scope.searching = false;
+                })
+
+            } else {
+                $scope.searching = false;
+            }
+        }
+        $scope.addSector = function (result) {
+            $scope.ratin.sectorId = result._id;
+
+            $scope.ratin.sector = result.name;
+            $scope.ratin.sectorSelected = true
+            //  $scope.results = []
+            $scope.searching = false;
+            $scope.sectorsearching = false
+        }
+        $scope.addOrganization = function (result) {
+            console.log('rating now', $scope.ratin)
+            $scope.ratin.organizationId = result._id;
+            $scope.ratin.entity = result._id;
+
+            $scope.ratin.organization = result.name;
+            $scope.orgSearch = false;
+            $scope.ratin.organizationSelected = true
+            $scope.orgsearching = false
+
+        }
+        $scope.loadDepartments = function (orgData) {
+            if (!orgData) {
+                return
+            }
+            console.log('rating data', $scope.ratin)
+            $window.scrollTo(0, 0);
+            $scope.showAssessment = false;
+            $scope.showDepartment = true
+        }
+        $scope.loadSchemes = function (assessmentData) {
+            // load schemes based on assessment data
+            console.log('assess', assessmentData)
+            if (!assessmentData) {
+                return
+            }
+            console.log('show ratin', $scope.ratin)
+            console.log('show user', user)
+            $window.scrollTo(0, 0);
+            $scope.showAssessment = true
+            $scope.showDepartment = false
+            if (user.userType == 'independent-assessor') {
+                //find  organization  rating ,
                 console.log('showing assessor type', user)
-                  var ratingService  = $feathers.service('rating')
-                  ratingService.find({
-                    query:{
-                      entity :$scope.ratin.organizationId
+                var ratingService = $feathers.service('rating')
+                ratingService.find({
+                    query: {
+                        entity: $scope.ratin.organizationId
                     }
-                  }).then(function(rating){
+                }).then(function (rating) {
                     console.log('showing rating', rating)
-                    if(rating.data.length){
-                      // there is an existing rating for this organization
-                      $scope.$apply(function(){
-                        console.log('rating data' , rating.data[0].ratingData )
-                        $scope._rating_id = rating.data[0]._id
-                        $scope.ratin = rating.data[0].ratingData
-                      })
+                    if (rating.data.length) {
+                        // there is an existing rating for this organization
+                        $scope.$apply(function () {
+                            console.log('rating data', rating.data[0].ratingData)
+                            $scope._rating_id = rating.data[0]._id
+                            $scope.ratin = rating.data[0].ratingData
+                        })
                     }
-                  }).catch(function(err){
+                }).catch(function (err) {
                     console.log('rating error', err)
-                  })
-              }else{
+                })
+            } else {
                 var schemeService = $feathers.service('scheme')
                 schemeService.find({
                     query: {
-                        'group':$scope.ratin.department,
+                        'group': $scope.ratin.department,
                         'sectors': $scope.ratin.sectorId,
 
                     }
-                }).then(function(schemes) {
+                }).then(function (schemes) {
                     console.log('testq schemes', schemes)
-                    var raterArray =[]
-                    $scope.schemerater= schemes.data.map(function(scheme){
-                          scheme.schemerater = []
-                          scheme.antidotes.map(function(antidote){
-                           var rateData ={
-                             scheme: scheme.name,
-                             schemeId: scheme._id ,
-                             antidoteName: antidote.name,
-                             antidoteDesc : antidote.description,
-                             antidoteId:antidote._id,
-                             score:antidote.score
-                           }
-                           scheme.schemerater.push(rateData)
-                         
-                        
-                         })
-                         return scheme
+                    var raterArray = []
+                    $scope.schemerater = schemes.data.map(function (scheme) {
+                        scheme.schemerater = []
+                        scheme.antidotes.map(function (antidote) {
+                            var rateData = {
+                                scheme: scheme.name,
+                                schemeId: scheme._id,
+                                antidoteName: antidote.name,
+                                antidoteDesc: antidote.description,
+                                antidoteId: antidote._id,
+                                score: antidote.score
+                            }
+                            scheme.schemerater.push(rateData)
+
+
+                        })
+                        return scheme
                     })
                     console.log('rater schemes', $scope.raterSchemes)
-                     schemes.data.map(function (scheme){
-                         scheme.antidotes.map(function(antidote){
-                           var rateData ={
-                             scheme: scheme.name,
-                             schemeId: scheme._id ,
-                             antidoteName: antidote.name,
-                             antidoteDesc : antidote.description,
-                             antidoteId:antidote._id,
-                             score:antidote.score
-                           }
-                           raterArray.push(rateData)
-                         })
-                     })
-                    $scope.$apply(function() {
-                    
-                   // $scope.schemerater = raterArray
-                       $scope.ratin.schemes = schemes.data
+                    schemes.data.map(function (scheme) {
+                        scheme.antidotes.map(function (antidote) {
+                            var rateData = {
+                                scheme: scheme.name,
+                                schemeId: scheme._id,
+                                antidoteName: antidote.name,
+                                antidoteDesc: antidote.description,
+                                antidoteId: antidote._id,
+                                score: antidote.score
+                            }
+                            raterArray.push(rateData)
+                        })
                     })
-                }).catch(function(err) {
+                    $scope.$apply(function () {
+
+                        // $scope.schemerater = raterArray
+                        $scope.ratin.schemes = schemes.data
+                    })
+                }).catch(function (err) {
                     console.log(err)
                 })
-              }
+            }
 
 
-          }
-          $scope.rateScheme = function(item, type) {
-                    
-                     if(!type){
-                         item.score = 0;
-                     }
-                    
-                  }
+        }
+        $scope.rateScheme = function (item, type) {
 
-          $scope.submitRating = function() {
+            if (!type) {
+                item.score = 0;
+            }
+
+        }
+
+        $scope.submitRating = function () {
             console.log('all rating value', $scope.ratin)
-            
-            
-              var ratingService = $feathers.service('rating')
-                if(user.userType =='independent-assessor'){
 
-                  ratingService.create($scope.ratin).then(function(ratinResult) {
-                      $scope.$apply(function() {
-                          console.log('result from rating', ratinResult)
-                          $scope.ratinResult = ratinResult
 
-                          $scope.ratingCompleted = true
-                      })
-                  }).catch(function(err) {
-                      console.log('ratin error', err)
-                  })
-                }else{
-                  console.log('rating data'  , $scope.schemerater)
-                  console.log('ratin ' , $scope.ratin)
-                  $scope.ratin.ratingData = $scope.schemerater
-                  console.log('ratings status ' , $scope.ratin)
-                  ratingService.create($scope.ratin).then(function(ratinResult) {
-                      $scope.$apply(function() {
-                          console.log('result from rating', ratinResult)
-                          $scope.ratinResult = ratinResult
+            var ratingService = $feathers.service('rating')
+            if (user.userType == 'independent-assessor') {
 
-                          $scope.ratingCompleted = true
-                      })
-                  }).catch(function(err) {
-                      console.log('ratin error', err)
-                  })
+                ratingService.create($scope.ratin).then(function (ratinResult) {
+                    $scope.$apply(function () {
+                        console.log('result from rating', ratinResult)
+                        $scope.ratinResult = ratinResult
+
+                        $scope.ratingCompleted = true
+                    })
+                }).catch(function (err) {
+                    console.log('ratin error', err)
+                })
+            } else {
+                console.log('rating data', $scope.schemerater)
+                console.log('ratin ', $scope.ratin)
+                $scope.ratin.ratingData = $scope.schemerater
+                console.log('ratings status ', $scope.ratin)
+                ratingService.create($scope.ratin).then(function (ratinResult) {
+                    $scope.$apply(function () {
+                        console.log('result from rating', ratinResult)
+                        $scope.ratinResult = ratinResult
+
+                        $scope.ratingCompleted = true
+                    })
+                }).catch(function (err) {
+                    console.log('ratin error', err)
+                })
+            }
+
+        }
+        $scope.viewRating = function () {
+            $state.go('rating-result', {
+                rating: $scope.ratinResult._id
+            })
+        }
+        $scope.completeRating = function (ratin) {
+
+            // var ratingService = $feathers.service('ratings')
+            // ratingService.create(ratin).then(function(storedRating){
+            //   $scope.$apply(function(){
+            //     $scope.ratingResult = storedRating
+            //   })
+            // })
+
+            console.log('rating data', ratin)
+            $window.scrollTo(0, 0);
+            $scope.ratingCompleted = true
+            $scope.showAssessment = false
+        }
+        $scope.showScheme = function () {
+            var groupService = $feathers.service('groups')
+            groupService.find({
+
+            }).then(function (groups) {
+
+                if (groups.data.length) {
+                    console.log('showing groups', groups.data)
+                    $scope.$apply(function () {
+                        $scope.schemeTypes = groups.data
+
+                    })
                 }
+            }).catch(function (err) {
+                console.log(err)
+                $scope.searching = false;
+            })
+        }
+        $scope.loadEffect = function () {
+            $scope.showEffect = true
+            var storyService = $feathers.service('stories')
+            storyService.find({}).then(function (stories) {
 
-          }
-          $scope.viewRating = function(){
-             $state.go('rating-result',{
-                 rating : $scope.ratinResult._id
-             })
-          }
-          $scope.completeRating = function(ratin) {
+                if (stories.data.length) {
+                    console.log('showing stories', stories.data)
+                    $scope.$apply(function () {
+                        $scope.schemeEffects = stories.data
 
-              // var ratingService = $feathers.service('ratings')
-              // ratingService.create(ratin).then(function(storedRating){
-              //   $scope.$apply(function(){
-              //     $scope.ratingResult = storedRating
-              //   })
-              // })
+                    })
+                }
+            }).catch(function (err) {
+                console.log(err)
+                $scope.searching = false;
+            })
+        }
+        $scope.rating = 0;
+        $scope.ratings = [{
+            current: 1,
+            max: 5
+        }];
 
-              console.log('rating data', ratin)
-               $window.scrollTo(0,0); 
-              $scope.ratingCompleted = true
-              $scope.showAssessment = false
-          }
-          $scope.showScheme = function() {
-              var groupService = $feathers.service('groups')
-              groupService.find({
-
-              }).then(function(groups) {
-
-                  if (groups.data.length) {
-                      console.log('showing groups', groups.data)
-                      $scope.$apply(function() {
-                          $scope.schemeTypes = groups.data
-
-                      })
-                  }
-              }).catch(function(err) {
-                  console.log(err)
-                  $scope.searching = false;
-              })
-          }
-          $scope.loadEffect = function() {
-              $scope.showEffect = true
-              var storyService = $feathers.service('stories')
-              storyService.find({}).then(function(stories) {
-
-                  if (stories.data.length) {
-                      console.log('showing stories', stories.data)
-                      $scope.$apply(function() {
-                          $scope.schemeEffects = stories.data
-
-                      })
-                  }
-              }).catch(function(err) {
-                  console.log(err)
-                  $scope.searching = false;
-              })
-          }
-          $scope.rating = 0;
-          $scope.ratings = [{
-              current: 1,
-              max: 5
-          }];
-
-          $scope.getSelectedRating = function(rating) {
-              $scope.rating.rate = rating;
-          }
-          $scope.addRating = function() {
-              console.log('final rating', $scope.rating)
-              $state.go('scheme')
-          }
-      })
+        $scope.getSelectedRating = function (rating) {
+            $scope.rating.rate = rating;
+        }
+        $scope.addRating = function () {
+            console.log('final rating', $scope.rating)
+            $state.go('scheme')
+        }
+        $scope.setOrganization= function(org){
+            console.log('the oprion', $scope.selectedOrg)
+            $scope.ratin.organization = $scope.selectedOrg.name
+            $scope.ratin.organizationId= $scope.selectedOrg._id
+        }
+    })
   angular.module('app.controllers')
      .controller('ratingsResultCtrl', function(user,rating, $rootScope, $scope, $state, $stateParams, $feathers) {
           
@@ -3284,6 +3336,7 @@ angular.module('app.controllers')
      .controller('viewRatingCtrl', function(ratings, $rootScope, $scope, $state, $stateParams, $feathers) {
 
                 $scope.ratings = ratings
+                $scope.ratingValue =0
           $rootScope.logout = function () {
             console.log('logout clicked')
             $feathers.logout().then(function (params) {
@@ -3297,6 +3350,10 @@ angular.module('app.controllers')
         $scope.setRating= function(rating){
           console.log('the rating', rating)
           $scope.theRating = rating
+          if(rating.ratingType =='public-assessor'){
+            $scope.ratingValue = rating.score
+          }
+          console.log('final scope',$scope)
         }
 
       })

@@ -5,6 +5,7 @@
           <div class="clearfix"></div>
            <div class="rating-area organization  organization-rating">
               <h5>Organization </h5>
+              {{theRating.score}}
               <h1>{{rating.entity[0].name}} ,{{rating.entity[0].city}}
                 <p class="rag right" ng-class="{'red': rating.score <= 0.49, 'amber-red':rating.score> 0.49 && rating.score<= 0.69, 'amber': rating.score== 0.70 , 'amber-green':rating.score>= 0.71 && rating.score<= 0.84,'green':rating.score> 0.85 }">RAG</p></h1> 
 

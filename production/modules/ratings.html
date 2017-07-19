@@ -21,7 +21,7 @@
           <div>
             <div class="form-group">
               <label>SELECT ORGANIZATION </label>
-               <select class="form-control"   required ng-options="option._id  as option.name for option in entities track by option._id" ng-model="ratin.organizationId">
+               <select class="form-control"   required ng-options="option.name for option in entities track by option._id" ng-model="selectedOrg" ng-change="setOrganization()">
 					<option value="" disabled selected>Please Select an organization</option>
           </select>
               <!--<input type="text" class="form-control" id="organization-name" placeholder="Nnamdi Azikiwe Univeristy" ng-model="ratin.organization"

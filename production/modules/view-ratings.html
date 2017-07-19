@@ -61,18 +61,24 @@
             <div class="clearfix"></div>
             <div class="rating-area organization details">
               <form method="post" action="">
+               
                 <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a>
-                  <p class="update" ng-class="{'red': rating.score <= 0.49, 'amber-red':rating.score> 0.49 && rating.score<= 0.69, 'amber': rating.score== 0.70 , 'amber-green':rating.score>= 0.71 && rating.score<= 0.84,'green':rating.score> 0.85 }">RAG</p>
-                </h1>
-
-
+                  <p class="update" ng-class="{'red': theRating.score <= 0.49, 'amber-red':theRating.score> 0.49 && theRating.score<= 0.69, 'amber': theRating.score== 0.70 , 'amber-green':theRating.score>= 0.71 && theRating.score<= 0.84,'green':rating.score> 0.85 }">RAG</p>
+                </h1> 
+              
+                <star-display-rating ratingValue= theRating.score  ng-show="theRating.ratingType=='public-assessor'"></star-display-rating>
+                <h5 ng-show="theRating.ratingType=='public-assessor'"> Scheme Class </h5>
+                <article>
+                  <p>{{theRating.group[0].name}}</p>
+                </article>
+              <h5>Comments</h5>
                 <article ng-show="theRating.comments">
-                  <h6>Comments</h6>
+                
                   <p> {{theRating.comments}}</p>
                 </article>
 
-                <h5> Schemes </h5>
-                <div class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
+                <h5 ng-show="theRating.ratingType!='public-assessor'"> Schemes </h5>
+                <div ng-show="theRating.ratingType!='public-assessor'" class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
                   <div class="rating-single">
                     <h3>{{scheme.name}}</h3>
                     <div class="row">

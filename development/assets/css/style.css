@@ -992,12 +992,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     line-height: 20px;
 }
 
+.antidote{
+    margin-bottom: 10px;
+}
 .label-group {
     border: 1px solid #d7d7d7;
     border-radius: 5px;
     display: inline-block;
     padding: 5px 20px;
-    margin-top: 30px;
+    margin-top: 0px;
     padding-top: 10px;
     margin-left:5px;
 }
