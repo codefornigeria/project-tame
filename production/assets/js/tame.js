@@ -3336,7 +3336,7 @@ angular.module('app.controllers')
      .controller('viewRatingCtrl', function(ratings, $rootScope, $scope, $state, $stateParams, $feathers) {
 
                 $scope.ratings = ratings
-                $scope.ratingValue =0
+                $scope.ratingValue =0 
           $rootScope.logout = function () {
             console.log('logout clicked')
             $feathers.logout().then(function (params) {
