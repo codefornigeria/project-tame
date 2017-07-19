@@ -918,13 +918,20 @@ angular.module('app.directives', [])
     },
     link:function(scope, elem, attrs){
         console.log('bbadge', scope.rating)
-      if(scope.rating.score <= 2.5){
+      if(scope.rating.score <= 0.49){
         scope.badge = "red"
       }
-      if(scope.rating.score > 2.5 && scope.rating.score <=4){
+        if(scope.rating.score > 0.49 && scope.rating.score <=0.69 ){
+        scope.badge = "amber-red"
+      }
+      
+      if(scope.rating.score == 0.70 ){
         scope.badge = "amber"
       }
-      if(scope.rating.score > 4){
+        if(scope.rating.score > 0.70 && scope.rating.score <=0.84 ){
+        scope.badge = "amber-green"
+      }
+      if(scope.rating.score > 0.85){
         scope.badge = "green"
       }
     }

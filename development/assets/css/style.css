@@ -437,14 +437,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     float:left;
     margin-right: 15px;
 }
-.recent-ratings table tr.amber .logo-area{
-    background: #fdcf2f;
-}
+
 .recent-ratings table tr.green .logo-area{
-    background: #9dde24;
+    background: #008000;
+}
+.recent-ratings table tr.amber-green .logo-area{
+    background: #9acd32;
+}
+.recent-ratings table tr.amber .logo-area{
+    background: #ffff00;
+}
+.recent-ratings table tr.amber-red .logo-area{
+    background: #ffa500;
 }
 .recent-ratings table tr.red .logo-area{
-    background: #fc6e50;
+    background: #ff0000;
 }
 
 .recent-ratings table h5{
@@ -519,15 +526,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
 }
 .update.red {
    
-    background: #ff0042;
+    background: #ff0000;
+}
+.update.amber-red {
+   
+    background: #ffa500;
 }
 .update.amber {
    
-    background: #fdcf2f;
+    background: #ffff00;
+}
+.update.amber-green {
+   
+    background: #9acd32;
 }
 .update.green {
    
-    background: #9dde24;
+    background: #008000;
   
 }
 a.update {
