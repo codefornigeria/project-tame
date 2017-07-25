@@ -28,25 +28,29 @@ angular.module('app', [
         $rootScope.currentUser = {
             isLoggedIn: LocalService.get('feathers-jwt')
         }
+        $rootScope.dataLoaded =false
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            //         $("#ui-view").html("");
-            //         $(".page-preloading").removeClass('hidden');
-            // //code state routing
-            //   // If it's a parent state, redirect to it's child
-            //         if (toState.redirectTo) {
-            //             event.preventDefault();
-            //             var params = toParams;
-            //             if (!_.isEmpty(fromParams)) _.extend(toParams, $location.search());
-            //             $state.go(toState.redirectTo, params);
-            //             return;
-            //         }
-            //scroll to top of page after each route change
+                 console.log('start value', toState)
+
+                    $("#ui-view").html("");
+                      //code state routing
+              // If it's a parent state, redirect to it's child
+                    if (toState.redirectTo) {
+                        event.preventDefault();
+                        var params = toParams;
+                        if (!_.isEmpty(fromParams)) _.extend(toParams, $location.search());
+                        $state.go(toState.redirectTo, params);
+                        return;
+                    }
+           // scroll to top of page after each route change
 
         })
         $rootScope.$on('$stateChangeSuccess', function () {
-            //  $(".page-preloading").addClass('hidden');
+              $("header").removeClass('hidden');
+              $("footer").removeClass('hidden');
+              
             $window.scrollTo(0, 0);
         });
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams) {
