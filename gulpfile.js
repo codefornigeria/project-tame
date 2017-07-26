@@ -99,7 +99,7 @@ gulp.task('vendorjs', ['clean:production'], function(){
 });
 
 gulp.task('appjsfiles', ['clean:production'], function(){
-    return gulp.src([ './configs/local.js', './development/assets/js/app.js', './development/assets/js/*.js', './development/assets/js/controllers/*.js','./development/modules/**/*.js'])
+    return gulp.src([ './configs/local.js', './development/assets/js/app.js', './development/assets/js/*.js', './development/assets/js/controllers/*.js','./development/assets/js/controllers/**/*.js','./development/modules/**/*.js'])
     .pipe(concat(json.name.toLowerCase() + '.js'))
     .pipe(gulpif(argv.production, uglify()))
     .pipe(gulpif(argv.production, rename({suffix: '.min'})))

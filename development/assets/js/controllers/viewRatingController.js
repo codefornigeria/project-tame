@@ -1,6 +1,6 @@
   angular.module('app.controllers')
-     .controller('viewRatingCtrl', function(ratings, $rootScope, $scope, $state, $stateParams, $feathers) {
-
+     .controller('viewRatingCtrl', function(ratings,$uibModal, $rootScope, $scope, $state, $stateParams, $feathers) {
+            
                 $scope.ratings = ratings
                 $scope.ratingValue =0 
           $rootScope.logout = function () {
@@ -20,6 +20,17 @@
             $scope.ratingValue = rating.score
           }
           console.log('final scope',$scope)
+        }
+        $scope.showRating = function(rating){
+          $uibModal.open({
+            controller:'viewRatingModalCtrl',
+            templateUrl:'modules/modals/publicrating.html',
+            resolve:{
+              rating: function(){
+                return rating
+              }
+            }
+          })
         }
 
       })

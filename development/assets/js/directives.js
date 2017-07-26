@@ -105,16 +105,27 @@ angular.module('app.directives', [])
                  '<button class="button" type="button"  id="star4">4</button>'+
                  '<button class="button" type="button" id="star5">5</button>'+
                '</div>',
-        scope:{
-            ratingValue:'='
-        },
+      
        
         link: function (scope, elem, attrs) {
             console.log('showing star display', scope)
-            switch (scope.ratingValue){
-                case '1':
+            var ratingValue = scope.theRating.score *5
+            switch (ratingValue){
+                case 1:
                     $('#star1').siblings().removeClass('active')
                 $('#star1').addClass('active')
+                break;
+                  case 2:
+                    $('#star2').siblings().removeClass('active')
+                $('#star2').addClass('active')
+                break;
+                  case 3:
+                    $('#star3').siblings().removeClass('active')
+                $('#star3').addClass('active')
+                break;
+                  case 4:
+                    $('#star4').siblings().removeClass('active')
+                $('#star4').addClass('active')
                 break;
                 case '5':
                     $('#star5').siblings().removeClass('active')

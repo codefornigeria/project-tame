@@ -1,57 +1,8 @@
-<section class="clearfix content-area">
-
-
-  <div class="schemes" ng-show="ratings.length">
-    <div class="container">
-      <h2> Ratings</h2>
-
-      <div class="row scheme-thumb-wrap">
-        <div class="col-md-4 col-sm-6" ng-repeat="rating in ratings">
-          <div class="scheme-thumb">
-            <p class="update left" ng-class="{'red': rating.score <= 0.49, 'amber-red':rating.score> 0.49 && rating.score<= 0.69, 'amber': rating.score== 0.70 , 'amber-green':rating.score>= 0.71 && rating.score<= 0.84,'green':rating.score> 0.85 }">{{rating.ratingType | asessorType}}</p>
-
-            <p class="update" ng-class="{'red': rating.score <= 0.49, 'amber-red':rating.score> 0.49 && rating.score<= 0.69, 'amber': rating.score== 0.70 , 'amber-green':rating.score>= 0.71 && rating.score<= 0.84,'green':rating.score> 0.85 }">RAG</p>
-            <h4></h4>
-            <h4><strong>Entity: </strong> {{rating.entity[0].name}} , {{rating.entity[0].city}} </h4>
-
-            <h5><strong>Specialization: </strong> {{rating.schemes[0].department[0].name}}</h5>
-            <h5><strong>Sector: </strong> Education</h5>
-            <h5><strong><a href=#>{{rating.schemes.length}} Schemes </a></strong></h5>
-            <h5><strong><a href=#>{{rating.ratingData.length}} Antidotes </a> </strong></h5>
-
-            <a  class="update" ng-click="showRating(rating)">view more.. </a>
-          </div>
-
-        </div>
-        <!-- End scheme thumb -->
-      </div>
-    </div>
-  </div>
-
-  <!-- End schemes -->
-
-
-  <div class="schemes" ng-show="!ratings.length">
-    <div class="container">
-      <h2> No search result found</h2>
-
-      <div class="row scheme-thumb-wrap">
-        <div class="col-md-4 col-sm-6">
-          <p>Ooops!!, we couldn't match your search criteria. please try again.</p>
-        </div>
-        <!-- End scheme thumb -->
-      </div>
-    </div>
-  </div>
-
-  <!-- End schemes -->
-
-  <!-- Modal -->
-  <div class="modal fade" id="success" tabindex="-1" role="dialog" aria-labelledby="success">
-    <div class="modal-dialog modal-lg" role="document">
+ <div class="" id="success">
+    <div role="document">
       <div class="modal-content ">
         <div class="modal-header">
-          <button type="button" class="close right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close right" aria-label="Close" ng-click="$dismiss()"><span aria-hidden="true">&times;</span></button>
         </div>
         <section class="clearfix content-area" class="modal-body">
           <div class="container">
@@ -66,7 +17,7 @@
                   <p class="update" ng-class="{'red': theRating.score <= 0.49, 'amber-red':theRating.score> 0.49 && theRating.score<= 0.69, 'amber': theRating.score== 0.70 , 'amber-green':theRating.score>= 0.71 && theRating.score<= 0.84,'green':rating.score> 0.85 }">RAG</p>
                 </h1> 
               
-                <star-display-rating ratingValue= theRating.score  ng-show="theRating.ratingType=='public-assessor'"></star-display-rating>
+                <star-display-rating  ng-show="theRating.ratingType=='public-assessor'"></star-display-rating>
                 <h5 ng-show="theRating.ratingType=='public-assessor'"> Scheme Class </h5>
                 <article>
                   <p>{{theRating.group[0].name}}</p>
@@ -148,4 +99,3 @@
       </div>
     </div>
   </div>
-</section>
