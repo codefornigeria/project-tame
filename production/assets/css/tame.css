@@ -1402,6 +1402,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     background: #ff0000;
 }
 
+.green {
+    color: #008000;
+}
+.amber-green {
+    color: #9acd32;
+}
+.amber {
+    color: #ffff00;
+}
+.amber-red {
+    color: #ffa500;
+}
+.red {
+    color: #ff0000;
+}
+
 .rating-area.organization-rating h5{
      font-weight: bold;
      color: #a2b1c0;

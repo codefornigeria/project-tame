@@ -217,7 +217,7 @@ angular.module('app.controllers')
                 var schemeService = $feathers.service('scheme')
                 schemeService.find({
                     query: {
-                        'group': $scope.ratin.department,
+                        'group': $scope.ratin.group,
                         'sectors': $scope.ratin.sectorId,
 
                     }

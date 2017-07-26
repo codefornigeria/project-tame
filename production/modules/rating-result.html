@@ -59,6 +59,11 @@
            <div class="rating-area organization details">
               <form method="post" action="">
                 <h1>{{rating.entity[0].name}}, {{rating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ rating.updatedAt }}'></time-ago></p></h1> 
+                <div class="rating-inwrap">
+                  <article>
+                    <p> The entity <strong>{{rating.entity[0].name}} </strong> is rated<span ng-class="{'red': rating.score <= 0.49, 'amber-red':rating.score> 0.49 && rating.score<= 0.69, 'amber': rating.score== 0.70 , 'amber-green':rating.score>= 0.71 && rating.score<= 0.84,'green':rating.score> 0.85 }"> {{rating.score | scoreFilter}} </span> for exposure to corruption risk in  <strong>{{rating.ratingData[0].group[0].name}} </strong></p>
+                  </article>
+                </div>
                <h5> Schemes </h5>
 			       <div class="rating-inwrap" ng-repeat="scheme in rating.ratingData">
                    <div class="rating-single">
