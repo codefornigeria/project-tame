@@ -2,12 +2,12 @@
     <div role="document">
       <div class="modal-content ">
         <div class="modal-header">
-          <button type="button" class="close right" aria-label="Close" ng-click="$dismiss()"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close right" aria-label="Close" ng-click="$close()"><span aria-hidden="true">&times;</span></button>
         </div>
         <section class="clearfix content-area" class="modal-body">
           <div class="container">
             <div class="form-group"></div>
-            <button data-dismiss="modal" class="prev btn btn-link"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to search result</button>
+            <button class="prev btn btn-link"><i class="fa fa-angle-left" aria-hidden="true"  ng-click="$close()"></i> Back to search result</button>
 
             <div class="clearfix"></div>
             <div class="rating-area organization details">

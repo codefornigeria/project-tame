@@ -1174,14 +1174,32 @@ angular.module('app.filters', [])
 .filter('countAntidotes', function () {
     return function (data) {
         var antidoteCount = 0
-        console.log('data',data)
-        data.map(rating=>{
+     data.map(rating=>{
             rating.antidotes.map(antidote =>{
                 antidoteCount++
             })
         })
 
         return antidoteCount
+      
+    };
+})
+.filter('antidoteState', function () {
+    return function (data, ratingData) {
+      //  console.log('the data', data)
+      //  console.log('the rating', ratingData)     //   var antidoteCount = 0
+        var item  = _.find(ratingData.schemerater ,(o)=>{
+            console.log('thr r' , o)
+            return o._id == data._id
+        })
+        console.log('the item ', item)
+        // data.map(rating=>{
+        //     rating.antidotes.map(antidote =>{
+        //         antidoteCount++
+        //     })
+        // })
+        return false
+       // return antidoteCount
       
     };
 })
@@ -3373,6 +3391,7 @@ angular.module('app.controllers')
         $scope.showRating = function(rating){
           $uibModal.open({
             controller:'viewRatingModalCtrl',
+            size:'lg',
             templateUrl:'modules/modals/publicrating.html',
             resolve:{
               rating: function(){

@@ -911,7 +911,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
 .main-nav .navbar-nav .join-us.group a.fa{
     color: #1968c0
 }
+.fa-check {
+  color : green;
+}
 
+.fa-close {
+    color:red
+}
 .main-nav .navbar-nav .join-us.group a.tw{
     color: #0bd3ff
 }

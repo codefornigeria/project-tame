@@ -60,7 +60,7 @@
               <form method="post" action="">
                 <h1>{{rating.entity[0].name}}, {{rating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ rating.updatedAt }}'></time-ago></p></h1> 
                <h5> Schemes </h5>
-			    <div class="rating-inwrap" ng-repeat="scheme in rating.schemes">
+			       <div class="rating-inwrap" ng-repeat="scheme in rating.ratingData">
                    <div class="rating-single">
                       <h3>{{scheme.name}}</h3>
                        <div class="row">
@@ -82,7 +82,7 @@
                                </article>
 
                                <article>
-                                 <h6>Antidote ({{scheme.antidotes.length}})</h6>
+                                 <h6>Antidote ({{scheme.schemerater.length}})</h6>
                                 
                                </article>
 
@@ -109,8 +109,8 @@
                            <div class="" id="collapseExample{{scheme._id}}">
                         <div class="card card-block">
 
-                          <p ng-repeat="antidote in scheme.antidotes">
-                            {{antidote.name}}
+                          <p ng-repeat="antidote in scheme.schemerater">
+                            {{antidote.antidoteName }} <i class="fa" aria-hidden="true" ng-class="{'fa-check':antidote.score !=0, 'fa-close':antidote.score==0}"  ></i> 
                           </p>
 
                         </div>

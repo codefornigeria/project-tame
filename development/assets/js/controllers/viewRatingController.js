@@ -24,6 +24,7 @@
         $scope.showRating = function(rating){
           $uibModal.open({
             controller:'viewRatingModalCtrl',
+            size:'lg',
             templateUrl:'modules/modals/publicrating.html',
             resolve:{
               rating: function(){
