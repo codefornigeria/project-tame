@@ -1243,27 +1243,27 @@ angular.module('app.filters', [])
 })
 
 angular.module('app.controllers')
-    .controller('appCtrl', function (user,schemes,entities, ratings ,groups,$scope, $rootScope, $window, $state, $stateParams, $feathers) {
-         $scope.showRater=false
-         $scope.groups = groups
-         $scope.ratin={ratingType:'public-assessor'}
-         $rootScope.user = user
-         $scope.searchKeyword ={};
-         $scope.schemes = schemes
-         $scope.entities = entities
-         $scope.ratings = ratings
+    .controller('appCtrl', function (user, schemes, entities, ratings, groups, $scope, $rootScope, $window, $state, $stateParams, $feathers) {
+        $scope.showRater = false
+        $scope.groups = groups
+        $scope.ratin = { ratingType: 'public-assessor' }
+        $rootScope.user = user
+        $scope.searchKeyword = {};
+        $scope.schemes = schemes
+        $scope.entities = entities
+        $scope.ratings = ratings
         $scope.sectorSplit = function (val) {
             //  console.log(val)
             return val.name
 
         }
         console.log('the user', user)
-        $rootScope.isLoggedIn  = $rootScope.user ? true:false
+        $rootScope.isLoggedIn = $rootScope.user ? true : false
         $scope.checkUser = function () {
             console.log('checking if user is logged in')
         }
-     
-       
+
+
         $rootScope.logout = function () {
             console.log('logout clicked')
             $feathers.logout().then(function (params) {
@@ -1274,37 +1274,37 @@ angular.module('app.controllers')
 
             });
         }
-          $scope.search = function() {
-              console.log('keywords',$scope.searchKeyword)
-            
-            $state.go('results', {
-        query: $scope.searchKeyword.keyword
-  })
-          }
-       
-      $scope.toResult = function(){
-          
-            $scope.showRater=false
-        }
-   $scope.ratingFunc =function(){
-            var ratingsService = $feathers.service('rating')
-        ratingsService.find({
-            query: {
+        $scope.search = function () {
+            console.log('keywords', $scope.searchKeyword)
 
-                      $limit:5  
-            }
-        }).then(function (ratings) {
-            if (ratings.data.length) {
-                console.log('test ratings', ratings.data)
-                $scope.$apply(function () {
-                    $scope.ratings = ratings.data
-                })
-            }
-        }).catch(function (err) {
-            console.log(err)
-        })
-   }
-  
+            $state.go('results', {
+                query: $scope.searchKeyword.keyword
+            })
+        }
+
+        $scope.toResult = function () {
+
+            $scope.showRater = false
+        }
+        $scope.ratingFunc = function () {
+            var ratingsService = $feathers.service('rating')
+            ratingsService.find({
+                query: {
+
+                    $limit: 5
+                }
+            }).then(function (ratings) {
+                if (ratings.data.length) {
+                    console.log('test ratings', ratings.data)
+                    $scope.$apply(function () {
+                        $scope.ratings = ratings.data
+                    })
+                }
+            }).catch(function (err) {
+                console.log(err)
+            })
+        }
+
 
         $scope.options = {
             tooltipEvents: [],
@@ -1326,43 +1326,46 @@ angular.module('app.controllers')
                 query: rating._id
             })
         }
-        $scope.ratingValue={}
-        $scope.publicRating= function(entity){
-          
-           $window.scrollTo(0,0); 
-                       
-            $scope.showRater=true
+        $scope.ratingValue = {}
+        $scope.publicRating = function (entity) {
+
+            $window.scrollTo(0, 0);
+
+            $scope.showRater = true
         }
-        $scope.setScheme = function(scheme){
+        $scope.setScheme = function (scheme) {
             $scope.theScheme = scheme
-                }
-        $scope.submitRating= function(valid){
-            if(!valid){
+        }
+        $scope.setRating = function (rating) {
+            $scope.cRating = rating
+        }
+        $scope.submitRating = function (valid) {
+            if (!valid) {
                 return
             }
             console.log('current', $scope.ratin)
             var ratinData = {
                 comments: $scope.ratin.comments,
-                ratingType:$scope.ratin.ratingType,
-                entity:$scope.currentEntity._id,
-                group:$scope.ratin.hasScheme=='YES'? [$scope.ratin.group]: null,
-                score:$scope.ratin.score,
-             //   sectors:[$scope.ratin.scheme.sectors[0]._id]
+                ratingType: $scope.ratin.ratingType,
+                entity: $scope.currentEntity._id,
+                group: $scope.ratin.hasScheme == 'YES' ? [$scope.ratin.group] : null,
+                score: $scope.ratin.score,
+                //   sectors:[$scope.ratin.scheme.sectors[0]._id]
             }
-                console.log('rating data', $scope.ratin)
-                  var ratingService = $feathers.service('rating')
-                
-                      ratingService.create(ratinData).then(function(ratinResult) {
-                          $scope.$apply(function() {
-                             $scope.ratingFunc()
-                             $scope.showRater=false
-                          })
-                      }).catch(function(err) {
-                          console.log('ratin error', err)
-                      })
-                
+            console.log('rating data', $scope.ratin)
+            var ratingService = $feathers.service('rating')
+
+            ratingService.create(ratinData).then(function (ratinResult) {
+                $scope.$apply(function () {
+                    $scope.ratingFunc()
+                    $scope.showRater = false
+                })
+            }).catch(function (err) {
+                console.log('ratin error', err)
+            })
+
         }
-        
+
     })
   angular.module('app.controllers')
      .controller('dashboardCtrl', function(user, $rootScope, $scope, $state, $stateParams, $feathers) {
