@@ -1424,6 +1424,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c5396', end
     color: #ff0000;
 }
 
+.btn-link.rating {
+    color: white;   
+}
 .rating-area.organization-rating h5{
      font-weight: bold;
      color: #a2b1c0;

@@ -1,9 +1,11 @@
 <tr ng-class="badge">
 							<td>
 								<div class="logo-area">
-								<button class="btn btn-link" data-toggle="modal" data-target="#currentRating" ng-click="setRating(rating)">	E </button>
+								<button class="btn btn-link rating"  ng-click="viewRating(rating)">	R </button>
 								</div>
-								<h5><button class="btn btn-link">	{{rating.entity[0].name}}<button class="btn btn-link">		</h5>
+								<h5>
+									<button class="btn btn-link"  ng-click="viewRating(rating)">	{{rating.entity[0].name}}
+									</button>	</h5>
 								<p class="time"><time-ago from-time='{{ rating.updatedAt }}'></time-ago></p>
 							</td>
 							<td>{{rating.schemes.length}}</td>
@@ -16,3 +18,4 @@
 							
 
 						</tr>
+

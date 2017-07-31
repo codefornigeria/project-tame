@@ -1,5 +1,5 @@
 angular.module('app.controllers')
-    .controller('appCtrl', function (user, schemes, entities, ratings, groups, $scope, $rootScope, $window, $state, $stateParams, $feathers) {
+    .controller('appCtrl', function (user, schemes, entities, ratings, groups, $scope, $rootScope, $window, $state, $stateParams, $feathers ,$uibModal) {
         $scope.showRater = false
         $scope.groups = groups
         $scope.ratin = { ratingType: 'public-assessor' }
@@ -29,6 +29,19 @@ angular.module('app.controllers')
                 $state.reload()
 
             });
+        }
+         $scope.showRating = function(rating){
+             console.log('ratings called', rating);
+          $uibModal.open({
+            controller:'viewRatingModalCtrl',
+            size:'lg',
+            templateUrl:'modules/modals/publicrating.html',
+            resolve:{
+              rating: function(){
+                return rating
+              }
+            }
+          })
         }
         $scope.search = function () {
             console.log('keywords', $scope.searchKeyword)
@@ -92,9 +105,7 @@ angular.module('app.controllers')
         $scope.setScheme = function (scheme) {
             $scope.theScheme = scheme
         }
-        $scope.setRating = function (rating) {
-            $scope.cRating = rating
-        }
+       
         $scope.submitRating = function (valid) {
             if (!valid) {
                 return

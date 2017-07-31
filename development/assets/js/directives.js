@@ -35,10 +35,12 @@ angular.module('app.directives', [])
     replace:true,
        templateUrl: "modules/directives/ratingcard.html",
      scope:{
-      rating:'='
+      rating:'=',
+      viewRating:'&viewRating'
     },
     link:function(scope, elem, attrs){
-        console.log('bbadge', scope.rating)
+       
+       
       if(scope.rating.score <= 0.49){
         scope.badge = "red"
       }
@@ -55,7 +57,10 @@ angular.module('app.directives', [])
         if(scope.rating.score > 0.85){
             scope.badge = "green"
         }
-        }
+        console.log('bbadge', scope)
+    }
+      
+   
     }
     })
 .directive('entityBadge' , function(){

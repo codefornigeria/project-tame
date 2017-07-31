@@ -918,10 +918,12 @@ angular.module('app.directives', [])
     replace:true,
        templateUrl: "modules/directives/ratingcard.html",
      scope:{
-      rating:'='
+      rating:'=',
+      viewRating:'&viewRating'
     },
     link:function(scope, elem, attrs){
-        console.log('bbadge', scope.rating)
+       
+       
       if(scope.rating.score <= 0.49){
         scope.badge = "red"
       }
@@ -938,7 +940,10 @@ angular.module('app.directives', [])
         if(scope.rating.score > 0.85){
             scope.badge = "green"
         }
-        }
+        console.log('bbadge', scope)
+    }
+      
+   
     }
     })
 .directive('entityBadge' , function(){
@@ -1243,7 +1248,7 @@ angular.module('app.filters', [])
 })
 
 angular.module('app.controllers')
-    .controller('appCtrl', function (user, schemes, entities, ratings, groups, $scope, $rootScope, $window, $state, $stateParams, $feathers) {
+    .controller('appCtrl', function (user, schemes, entities, ratings, groups, $scope, $rootScope, $window, $state, $stateParams, $feathers ,$uibModal) {
         $scope.showRater = false
         $scope.groups = groups
         $scope.ratin = { ratingType: 'public-assessor' }
@@ -1273,6 +1278,19 @@ angular.module('app.controllers')
                 $state.reload()
 
             });
+        }
+         $scope.showRating = function(rating){
+             console.log('ratings called', rating);
+          $uibModal.open({
+            controller:'viewRatingModalCtrl',
+            size:'lg',
+            templateUrl:'modules/modals/publicrating.html',
+            resolve:{
+              rating: function(){
+                return rating
+              }
+            }
+          })
         }
         $scope.search = function () {
             console.log('keywords', $scope.searchKeyword)
@@ -1336,9 +1354,7 @@ angular.module('app.controllers')
         $scope.setScheme = function (scheme) {
             $scope.theScheme = scheme
         }
-        $scope.setRating = function (rating) {
-            $scope.cRating = rating
-        }
+       
         $scope.submitRating = function (valid) {
             if (!valid) {
                 return
