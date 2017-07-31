@@ -1,101 +1,93 @@
- <div class="" id="success">
-    <div role="document">
+   	<!-- Modal -->
+
+    	<!-- Modal -->
+
+  <div  id="success" tabindex="-1" ">
+    <div  role="document">
       <div class="modal-content ">
         <div class="modal-header">
-          <button type="button" class="close right" aria-label="Close" ng-click="$close()"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <section class="clearfix content-area" class="modal-body">
-          <div class="container">
-            <div class="form-group"></div>
-            <button class="prev btn btn-link"><i class="fa fa-angle-left" aria-hidden="true"  ng-click="$close()"></i> Back to search result</button>
-
-            <div class="clearfix"></div>
-            <div class="rating-area organization details">
+        <button type="button" class="close right" aria-label="Close" ng-click="$close()"><span aria-hidden="true">&times;</span></button>
+          </div>
+         <section class="clearfix content-area" class="modal-body">
+        <div class="container">
+        <div class="form-group"></div>
+           <button class="prev btn btn-link"><i class="fa fa-angle-left" aria-hidden="true"  ng-click="$close()"></i> Back to search result</button>
+    <div class="clearfix"></div>
+           <div class="rating-area organization details">
               <form method="post" action="">
-               
-                <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a>
-                  <p class="update" ng-class="{'red': theRating.score <= 0.49, 'amber-red':theRating.score> 0.49 && theRating.score<= 0.69, 'amber': theRating.score== 0.70 , 'amber-green':theRating.score>= 0.71 && theRating.score<= 0.84,'green':rating.score> 0.85 }">RAG</p>
-                </h1> 
-              
-                <star-display-rating  ng-show="theRating.ratingType=='public-assessor'"></star-display-rating>
-                <h5 ng-show="theRating.ratingType=='public-assessor'"> Scheme Class </h5>
-                <article>
-                  <p>{{theRating.group[0].name}}</p>
-                </article>
-              <h5>Comments</h5>
-                <article ng-show="theRating.comments">
-                
-                  <p> {{theRating.comments}}</p>
-                </article>
+                <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ theRating.updatedAt }}'></time-ago></p></h1> 
+                <div class="rating-inwrap">
+                  <article>
+                    <p> The entity <strong>{{theRating.entity[0].name}} </strong> is rated<span ng-class="{'red': theRating.score <= 0.49, 'amber-red':theRating.score> 0.49 && theRating.score<= 0.69, 'amber': theRating.score== 0.70 , 'amber-green':theRating.score>= 0.71 && theRating.score<= 0.84,'green':theRating.score> 0.85 }"> {{theRating.score | scoreFilter}} </span> for exposure to corruption risk in  <strong>{{theRating.ratingData[0].group[0].name}} </strong></p>
+                  </article>
+                </div>
+               <h5> Schemes </h5>
+			       <div class="rating-inwrap" ng-repeat="scheme in theRating.ratingData">
+                   <div class="rating-single">
+                      <h3>{{scheme.name}}</h3>
+                       <div class="row">
+                          <div class="col-md-9">
+                             
+                               <article>
+                                 <h6>Sector</h6>
+                                  <p>Education</p>
+                               </article>
 
-                <h5 ng-show="theRating.ratingType!='public-assessor'"> Schemes </h5>
-                <div ng-show="theRating.ratingType!='public-assessor'" class="rating-inwrap" ng-repeat="scheme in theRating.schemes">
-                  <div class="rating-single">
-                    <h3>{{scheme.name}}</h3>
-                    <div class="row">
-                      <div class="col-md-9">
+                               <article>
+                                 <h6>Focus</h6>
+                                  <p> {{scheme.focus}}</p>
+                               </article>
 
-                        <article>
-                          <h6>Sector:</h6>
-                          <p>Education</p>
-                        </article>
+                               <article>
+                                 <h6>Level</h6>
+                                  <p>{{scheme.level}} </p>
+                               </article>
 
-                        <article>
-                          <h6>Focus</h6>
-                          <p> {{scheme.focus}}</p>
-                        </article>
+                               <article>
+                                 <h6>Antidote ({{scheme.schemerater.length}})</h6>
+                                
+                               </article>
 
-                        <article>
-                          <h6>Level</h6>
-                          <p>{{scheme.level}} </p>
-                        </article>
-
-                        <article>
-                          <h6>Antidotes ({{scheme.antidotes.length}})
-                            <!--<button class="btn btn-link"  type="button" data-toggle="collapse" data-target="#collapseExample{{scheme._id}}" aria-expanded="false" aria-controls="collapseExample{{scheme._id}}">view more.. </button>
-                            -->
-                          </h6>
-                        </article>
-
-                      </div>
-                      <div class="col-md-3">
-                        <div class="progress-area row">
-                          <div class="col-sm-12">
-                            <h3>Medium</h3>
-                            <p>Likelihood of Occurence </p>
-                            <div class="progress">
-                              <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
                           </div>
-                          <div class="col-sm-12">
-                            <h3>High</h3>
-                            <p>Frequency of Occurence </p>
-                            <div class="progress">
-                              <div class="progress-bar bg-danger" role="progressbar" style="width: 80%" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
+                          <div class="col-md-3">
+                              <div class="progress-area row">
+                                    <div class="col-sm-12">
+                                       <h3>{{scheme.likelihood}}</h3>
+                                       <p>Likelihood of Occurence </p>
+                                       <div class="progress">
+                                           <div class="progress-bar" ng-class="{'bg-success':scheme.likelihood=='Low' , 'bg-warning':scheme.likelihood=='Medium','bg-danger':scheme.likelihood=='High'}" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                       <h3>{{scheme.frequency}}</h3>
+                                       <p>Frequency of Occurence  </p>
+                                       <div class="progress">
+                                             <div class="progress-bar" ng-class="{'bg-success':scheme.frequency=='low' , 'bg-warning':scheme.frequency=='
+                                             Medium','bg-danger':scheme.frequency=='high'}" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                      </div>
+                                    </div>
+                                </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="collapse hide" id="collapseExample{{scheme._id}}">
+                           <div class="" id="collapseExample{{scheme._id}}">
                         <div class="card card-block">
 
-                          <p ng-repeat="antidote in scheme.antidotes">
-                            {{antidote.name}}
+                          <p ng-repeat="antidote in scheme.schemerater">
+                            {{antidote.antidoteName }} <i class="fa" aria-hidden="true" ng-class="{'fa-check':antidote.score !=0, 'fa-close':antidote.score==0}"  ></i> 
                           </p>
 
                         </div>
                       </div>
-                    </div>
-
-                  </div>
+                       </div>
+                    
+                   </div>
                 </div>
                 <div class="bottom-area">
-
-                </div>
+                    
+                   </div>
               </form>
-            </div>
-          </div>
-        </section>
+           </div>
+       </div>
+    </section>
       </div>
     </div>
   </div>

@@ -99,7 +99,7 @@ angular.module('app.controllers')
             if (!valid) {
                 return
             }
-            console.log('current', $scope.ratin)
+            
             var ratinData = {
                 comments: $scope.ratin.comments,
                 ratingType: $scope.ratin.ratingType,

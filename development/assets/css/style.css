@@ -531,22 +531,28 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
 .update.red {
    
     background: #ff0000;
+    color: white;
 }
 .update.amber-red {
    
     background: #ffa500;
+    color: white;
 }
 .update.amber {
    
     background: #ffff00;
+    color: white;
 }
 .update.amber-green {
    
     background: #9acd32;
+    color: white;
 }
+
 .update.green {
    
     background: #008000;
+    color: white;
   
 }
 a.update {

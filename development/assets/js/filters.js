@@ -32,7 +32,7 @@ angular.module('app.filters', [])
     })
     .filter('scoreFilter', function () {
         return function (data) {
-
+            console.log('the data valuer',data)
             if (data <= 0.49) {
                 return 'RED'
             }
@@ -40,7 +40,7 @@ angular.module('app.filters', [])
                 return 'AMBER RED'
             }else   if(data ==0.70) {
           return 'AMBER'
-      } else if (data => 0.71 && data <=0.84) {
+      } else if (data >= 0.71 && data <=0.84) {
                 return 'AMBER GREEN'
             } else if (data >= 0.85) {
                 return ' GREEN'
