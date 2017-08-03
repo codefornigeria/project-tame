@@ -945,7 +945,39 @@ angular.module('app.directives', [])
       
    
     }
-    })
+})
+.directive('ratingSchemeBadge' , function(){
+    return {
+        restrict:'EA',
+        replace: true,
+        templateUrl:"modules/directives/schemeratingcard.html",
+        scope: {
+            antidotes:'=',
+            schemerater:'='
+        },
+        link: function(scope,elem,attrs){
+            var antidoteScore = 0;
+            var schemeScore=0
+            scope.schemerater.map(function(rater){
+                schemeScore +=rater.score
+            })
+            scope.antidotes.map(function(antidote){
+                antidoteScore +=antidote.score
+            })
+
+            
+            console.log('schemeScore', schemeScore)
+            console.log('antidoteScore',antidoteScore   )
+            if(schemeScore == 0 ){
+                scope.ratingScore = 0
+            }else {
+                scope.ratingScore  = schemeScore/antidoteScore
+            }
+
+            console.log('show scope', scope)
+        }
+    }
+})
 .directive('entityBadge' , function(){
   return {
     restrict: 'EA',
@@ -957,6 +989,7 @@ angular.module('app.directives', [])
     }
   }
 })
+
 .directive('bootstrapWizard', function(){
     return {
         restrict:'EA',

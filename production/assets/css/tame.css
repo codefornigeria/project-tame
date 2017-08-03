@@ -480,14 +480,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
 }
 
 
-.recent-ratings table tr.amber .badge{
-    background: #fdcf2f;
-}
 .recent-ratings table tr.green .badge{
-    background: #9dde24;
+    background: #008000;
+}
+.recent-ratings table tr.amber-green .badge{
+    background: #9acd32;
+}
+.recent-ratings table tr.amber .badge{
+    background: #ffff00;
+}
+.recent-ratings table tr.amber-red .badge{
+    background: #ffa500;
 }
 .recent-ratings table tr.red .badge{
-    background: #ff0042;
+    background: #ff0000;
 }
 
 .schemes{
