@@ -211,15 +211,8 @@ angular.module('app', [
                         ratings: function ($q, $feathers, $state, LocalService) {
                             return $feathers.service('rating').find({
                                 query: {
-                                    $populate: {
-                                        path: 'scheme entity',
-                                        select: 'name  _id',
-                                        options: {
-                                            limit: 5
-                                        },
-
-                                    },
-                                      $sort: { createdAt: 1 },
+                                    
+                                      $sort: { createdAt: -1 },
                                 
                                     $limit: 5
                                 }
