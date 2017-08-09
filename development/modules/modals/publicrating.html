@@ -29,31 +29,46 @@
                        <h3>{{scheme.name}}</h3>
                          
                        <div class="row">
-                          <div class="col-md-9">
+                          <div class="col-md-4">
                                <article>
                                  <h6>Sector</h6>
                                   <p>Education</p>
                                </article>
 
-                               <article>
+                              
+
+                              
+                          </div>
+                           <div class="col-md-4">
+                            
+                              <article>
                                  <h6>Focus</h6>
                                   <p> {{scheme.focus}}</p>
                                </article>
 
+                          </div>
+                           <div class="col-md-4">
+                            
                                <article>
                                  <h6>Level</h6>
                                   <p>{{scheme.level}} </p>
                                </article>
 
+                            
+
+                          </div>
+                           <div class="col-md-12">
+                            
+                            
                                <article>
-                                 <h6>Antidote ({{scheme.schemerater.length}})</h6>
+                                 <h6>Antidotes ({{scheme.schemerater.length}})</h6>
                                 
                                </article>
 
                           </div>
                           <div class="col-md-3">
                               <div class="progress-area row">
-                                    <div class="col-sm-12">
+                                    <!--<div class="col-sm-12">
                                        <h3>{{scheme.likelihood}}</h3>
                                        <p>Likelihood of Occurence </p>
                                        <div class="progress">
@@ -67,7 +82,7 @@
                                              <div class="progress-bar" ng-class="{'bg-success':scheme.frequency=='low' , 'bg-warning':scheme.frequency=='
                                              Medium','bg-danger':scheme.frequency=='high'}" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                                       </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                           </div>
                            <div class="" id="collapseExample{{scheme._id}}">
