@@ -39,23 +39,23 @@
 
         </uib-tab>
         <uib-tab index="1" heading="New account">
-          <form name="registerForm " ng-submit="register(registerForm.$valid) " novalidate ng-show="!registered ">
+          <form name="registerForm " ng-submit="register(registerForm.$valid)" novalidate ng-show="!registered ">
             <div class="form-group ">
               <label>Enter e-mail</label>
-              <input type="email " name="email " class="form-control " placeholder="new@tame.com " ng-model="signup_data.email " required>
+              <input type="email " name="email" class="form-control " placeholder="new@tame.com " ng-model="signup_data.email " required>
               <span ng-show="registerForm.email.$invalid && !registerForm.email.$pristine " class="text-danger ">enter a valid email.</span>
             </div>
             <div class="row ">
               <div class="col-md-6 ">
-                <div class="form-group ">
+                <div class="form-group">
                   <label>First name</label>
-                  <input type="text " name="firstname " class="form-control " placeholder="First name
+                  <input type="text " name="firstname" class="form-control " placeholder="First name
                 " ng-model="signup_data.firstname " required>
                   <span ng-show="registerForm.firstname.$invalid && !registerForm.firstname.$pristine " class="text-danger ">enter your first name.</span>
                 </div>
               </div>
-              <div class="col-md-6 ">
-                <div class="form-group ">
+              <div class="col-md-6">
+                <div class="form-group">
                   <label>Last name</label>
                   <input type="text " class="form-control" placeholder="Last name " ng-model="signup_data.lastname " required>
                   <span ng-show="registerForm.lastname.$invalid && !registerForm.lastname.$pristine " class="text-danger ">enter your first name.</span>
@@ -63,18 +63,18 @@
               </div>
             </div>
             <div class="row ">
-              <div class="col-md-6 ">
-                <div class="form-group ">
+              <div class="col-md-6">
+                <div class="form-group">
                   <label>Password</label>
                   <input type="password" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
                 " ng-model="signup_data.password " required>
                   <span ng-show="registerForm.password.$invalid && !registerForm.password.$pristine " class="text-danger ">enter your first name.</span>
                 </div>
               </div>
-              <div class="col-md-6 ">
-                <div class="form-group ">
+              <div class="col-md-6">
+                <div class="form-group">
                   <label>Your Phone</label>
-                  <input type="text " class="form-control " placeholder="Your Number " ng-model="signup_data.phone ">
+                  <input type="text " class="form-control" placeholder="Your Number" ng-model="signup_data.phone">
                 </div>
               </div>
             </div>
@@ -85,14 +85,14 @@
               <user-type></user-type>
             </div>-->
 
-            <button type="submit " class="btn btn-block submit " ng-disabled="registerForm.$invalid ">Signup for Tame</button>
+            <button type="submit" class="btn btn-block submit" ng-disabled="registerForm.$invalid">Signup for Tame</button>
            <!--  <div class="or "></div>
             <div class="clearfix text-center social-access ">
               <a href="# "><img src="assets/img/twitter.png "></a>
               <a href="/auth/facebook "><img src="assets/img/facebook.png "></a>
             </div>
             -->
-            <div class="login-bottom-text text-center ">
+            <div class="login-bottom-text text-center">
               By signing up, you agree to the terms and conditions of TAME Project
             </div>
           </form>
