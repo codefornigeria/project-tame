@@ -16,7 +16,7 @@
            <div class="rating-area organization details">
               <form method="post" action="">
                 <h1>{{theRating.entity[0].name}}, {{theRating.entity[0].city}}</a> <p class="update right"><time-ago from-time='{{ theRating.updatedAt }}'></time-ago></p></h1> 
-                <star-display-rating> </star-display-rating>
+                <star-display-rating ng-show="theRating.ratingType=='public-assessor'"> </star-display-rating>
                 <div class="rating-inwrap">
                   <article ng-show="theRating.ratingType!='public-assessor'">
                     <p> The entity <strong>{{theRating.entity[0].name}} </strong> is rated<span ng-class="{'red': theRating.score <= 0.49, 'amber-red':theRating.score> 0.49 && theRating.score<= 0.69, 'amber': theRating.score== 0.70 , 'amber-green':theRating.score>= 0.71 && theRating.score<= 0.84,'green':theRating.score> 0.85 }"> {{theRating.score | scoreFilter}} </span> for exposure to corruption risk in  <strong>{{theRating.ratingData[0].group[0].name}} </strong></p>
@@ -25,9 +25,9 @@
                     <p> The entity <strong>{{theRating.entity[0].name}} </strong> is rated<span ng-class="{'red': theRating.score <= 0.49, 'amber-red':theRating.score> 0.49 && theRating.score<= 0.69, 'amber': theRating.score== 0.70 , 'amber-green':theRating.score>= 0.71 && theRating.score<= 0.84,'green':theRating.score> 0.85 }"> {{theRating.score | scoreFilter}} </span> for exposure to corruption risk in  <strong>{{theRating.group[0].name}} </strong></p>
                   </article>
                 </div>
-                 <h5    ng-show="theRating.ratingType=='public-assessor'"> Comments </h5>
+                 <h5  ng-show="theRating.ratingType=='public-assessor'"> Comments </h5>
 
-                  <div class="rating-inwrap">
+                  <div class="rating-inwrap" ng-show="theRating.ratingType=='public-assessor'">
                   <article>
                     <p> {{theRating.comments}}</p>
                   </article>
