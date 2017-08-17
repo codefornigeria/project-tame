@@ -1,91 +1,106 @@
-    <div class="f-w" id="rootwizard">
-              <div class="rating-progress">
-                  <div class="quiz-progress_area">
-                    <div id="bar" class="quiz-progress-bar progress ">
-                      <div class="bar quiz-progress-bar-inner progress-bar green-bold" style="width:5%;"></div>
-                    </div>
-                    <div class="count">
-                     <ul>
-                          <li ><a href="#tab0" data-toggle="tab"></a></li>
-                     
-                      <li  ng-repeat="tab in schemerater track by $index"><a href="#tab{{$index+1}}" data-toggle="tab">{{$index+1}}</a></li>
-                       
-                            <span class="total"> / {{schemerater.length}}</span>
-                      </ul>
-                   </div>
-                  </div><!--/ End progress bar -->
-              </div>
-              <h1>{{ratin.organization}}</h1>
-       
-              <div class="tab-content quiz-tab-content">
-                 <div class="tab-pane" id="tab0"  ng-class="{'active': $first }" >
-                      <div class="rating-inwrap">
-                         <div class="rating-single">
+<div class="f-w" id="rootwizard">
+  <div class="rating-progress">
+    <div class="quiz-progress_area">
+      <div id="bar" class="quiz-progress-bar progress ">
+        <div class="bar quiz-progress-bar-inner progress-bar green-bold" style="width:5%;"></div>
+      </div>
+      <div class="count">
+        <ul>
+          <li><a href="#tab0" data-toggle="tab"></a></li>
 
-                      
-                            <h3>Rating Information</h3>
-                             
-                             <div class="row" >
-                                <div class="col-sm-12 col-md-7">
-                                   
-                                     <article>
-                                     
-                                        <p>Before commencing this assessment it is important to note the followinf</p>
-                                        <ul>
-                                          <li>All questions provided for every scheme must be answered</li>
-                                        </ul>
-                                     </article>
-              
-                                </div>
-                               
-                             </div>
-                         </div>
-                      </div>
-                  </div>
-                  <div class="tab-pane  " id="tab{{$index+1}}" ng-repeat="scheme in  schemerater track by $index" >
-                      <div class="rating-inwrap">
-                         <div class="rating-single">
+          <li ng-repeat="tab in schemerater track by $index"><a href="#tab{{$index+1}}" data-toggle="tab">{{$index+1}}</a></li>
 
-                      
-                            <h3>Scheme: {{scheme.name}}</h3>
-                             <h4>Antidotes </h4>
-                             <div class="row" ng-repeat="rater in scheme.schemerater">
-                                <div class="col-sm-12 col-md-7">
-                                   
-                                     <article>
-                                     
-                                        <p>{{rater.antidoteName}}</p>
-                                     </article>
-              
-                                </div>
-                                <div class="col-sm-12 col-md-5 antidote">
-                                    <div class="label-group">
-            		     <label class="custom-control custom-radio">
+          <span class="total"> / {{schemerater.length}}</span>
+        </ul>
+      </div>
+    </div>
+    <!--/ End progress bar -->
+  </div>
+  <h1>{{ratin.organization}}</h1>
+
+  <div class="tab-content quiz-tab-content">
+    <div class="tab-pane" id="tab0" ng-class="{'active': $first }">
+      <div class="rating-inwrap">
+        <div class="rating-single">
+
+
+          <h3>Rating Information</h3>
+
+          <div class="row">
+            <div class="col-sm-12 col-md-7">
+
+              <article>
+
+                <p>Before commencing this assessment it is important to note the following</p>
+                <ul>
+                  <li>All questions provided for every scheme must be answered</li>
+                </ul>
+              </article>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane  " id="tab{{$index+1}}" ng-repeat="scheme in  schemerater track by $index">
+      <div class="rating-inwrap">
+        <div class="rating-single">
+
+
+          <h3>Scheme: {{scheme.name}}</h3>
+          <h4>Antidotes </h4>
+          <div class="row" ng-repeat="rater in scheme.schemerater">
+            <div class="col-sm-12 col-md-7">
+
+              <article>
+
+                <p>{{rater.antidoteName}}</p>
+              </article>
+
+            </div>
+
+            <div class="col-sm-12 col-md-5 antidote">
+              <div class="label-group">
+                <label class="custom-control custom-radio">
                                       <input  name="{{rater.schemeId}}{{rater.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(rater , true)">
                                       <span class="custom-control-indicator"></span>
                                       <span class="custom-control-description">Yes</span>
                                     </label>
-                                  <label class="custom-control custom-radio">
+                <label class="custom-control custom-radio">
                                     <input name="{{rater.schemeId}}{{rater.antidoteId}}"  type="radio" class="custom-control-input" ng-click="rateScheme(rater , false)">
                                     <span class="custom-control-indicator"></span>
                                     <span class="custom-control-description">No</span>
                                   </label>
 
-                                    </div>
-                                </div>
-                             </div>
-                         </div>
-                      </div>
-                  </div>
-                
               </div>
-              <div class="quiz-control bottom-area">
-                <ul class="pager wizard quiz-button-area">
-                  <li class="previous prev "><button class="btn btn-primary" ><i class="fa fa-angle-left" aria-hidden="true"></i>  Previous</button> </li>
-                  <li class="next"> <button class="nx btn btn-primary" >Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
-                  <p class="submit">Yes, this information is accurate to the best of my knowledge <button class="btn " type="submit" data-toggle="modal" data-target="#success" ng-click="submitRating()">SUBMIT</button></p>
-                  </li>
-                </ul>
+            </div>
+                      <div class="row" ng-show="ratingType=='independent' && rater.answer">
+               <div class="col-sm-4 col-md-7" >
+                  <article class="answer-details"> 
+                    <p>
+                     Indicate why this organization has this antidote </p></article>
+               </div>
+                <div class="col-sm-8 col-md-5">
+                <textarea class="label-group" ng-model="rater.comment" ></textarea>
+                </div>
+               </div>
+        
+   
+            </div>
+         </div>
+      </div>
+    </div>
 
-              </div>
-            </div>        
+  </div>
+  <div class="quiz-control bottom-area">
+    <ul class="pager wizard quiz-button-area">
+      <li class="previous prev "><button class="btn btn-primary"><i class="fa fa-angle-left" aria-hidden="true"></i>  Previous</button> </li>
+      <li class="next"> <button class="nx btn btn-primary">Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
+        <p class="submit">Yes, this information is accurate to the best of my knowledge <button class="btn " type="submit" data-toggle="modal"
+            data-target="#success" ng-click="submitRating()">SUBMIT</button></p>
+      </li>
+    </ul>
+
+  </div>
+</div>

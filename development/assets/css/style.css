@@ -496,6 +496,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', end
     background: #ff0000;
 }
 
+.answer-details{
+    float: right;
+    padding-top: 30px;
+}
 .schemes{
     padding: 90px 0;
     background: #fff;

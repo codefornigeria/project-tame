@@ -5,11 +5,11 @@ angular.module('app.controllers')
             $state.go('login')
 
         }
-
+        $scope.ratingType = $stateParams.ratingType
         console.log('entities', sectors)
         $scope.departments = departments.data
         $scope.groups = groups.data
-        $scope.sectors = sectors
+        $scope.sectors = sectors 
         $scope.entities = entities
         $rootScope.user = user
         $scope.schemerater = []
@@ -268,9 +268,14 @@ angular.module('app.controllers')
 
         }
         $scope.rateScheme = function (item, type) {
-
+            console.log(item)
+            console.log('params', $stateParams)
             if (!type) {
                 item.score = 0;
+                item.answer = false
+                item.comment=''
+            }else{
+                item.answer = true
             }
 
         }
